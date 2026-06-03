@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/sonner"
 import { QueryProvider } from "@/context/query-provider"
 import { ThemeProvider } from "@/context/theme-provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const sora = Sora({
   subsets: ["latin"],
@@ -53,7 +54,11 @@ export default function RootLayout({
     >
       <body className="font-sans">
         <ThemeProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </QueryProvider>
           <Toaster position="top-right" />
         </ThemeProvider>
       </body>
