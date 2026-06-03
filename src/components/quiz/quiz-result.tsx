@@ -1,0 +1,117 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+
+export function QuizResult({
+  quiz,
+  selected,
+  score,
+  onRetry,
+  passingScore,
+}: {
+  quiz: any
+  selected: Record<string, string>
+  score: number
+  onRetry: () => void
+  passingScore: number
+}) {
+  const passed = score >= passingScore
+  const questions = quiz.questions || []
+
+  return (
+    <div className="border-default bg-surface space-y-5 rounded-xl border p-6 text-center">
+      <Badge
+        variant={passed ? "secondary" : "destructive"}
+        className={passed ? "bg-emerald-100 text-emerald-800" : ""}
+      >
+        {passed ? "Passed" : "Needs retry"}
+      </Badge>
+      <p className="font-display text-6xl font-bold">
+        {score} / {questions.length}
+      </p>
+      <p className="text-secondary">
+        {passed
+          ? "You passed. Great job!"
+          : `Try again. You need ${passingScore} correct to pass.`}
+      </p>
+      <Badge variant="secondary" className="bg-amber-100 text-amber-800">
+        +{passed ? 150 : 30} XP
+      </Badge>
+      <Accordion
+        type="multiple"
+        className="border-muted w-full rounded-xl border px-4 text-left"
+      >
+        {questions.map((question: any, index: number) => {
+          const userAnswer = selected[question.id] || ""
+          let correct = false
+
+          if (question.correctAnswer !== undefined) {
+            if (
+              question.type === "text" ||
+              typeof question.correctAnswer === "string"
+            ) {
+              correct =
+                userAnswer.toLowerCase().trim() ===
+                String(question.correctAnswer).toLowerCase().trim()
+            } else {
+              correct = userAnswer === question.correctAnswer
+            }
+          } else if (question.correctIndex !== undefined && question.options) {
+            correct = userAnswer === question.options[question.correctIndex]
+          }
+
+          return (
+            <AccordionItem
+              key={question.id}
+              value={question.id}
+              className="border-muted border-t border-b-0 first:border-t-0"
+            >
+              <AccordionTrigger className="hover:no-underline">
+                <span className="flex items-center gap-3">
+                  <Badge
+                    variant={correct ? "secondary" : "destructive"}
+                    className={correct ? "bg-emerald-100 text-emerald-800" : ""}
+                  >
+                    {correct ? "Correct" : "Review"}
+                  </Badge>
+                  Question {index + 1}
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="font-semibold">{question.question}</p>
+                {!correct && (
+                  <div className="mt-3 rounded border border-red-100 bg-red-50 p-3 text-sm text-red-800">
+                    <span className="font-bold">Your answer:</span>{" "}
+                    {userAnswer || (
+                      <em className="text-red-400">No answer provided</em>
+                    )}
+                    <br />
+                    <span className="font-bold">Correct answer:</span>{" "}
+                    {question.correctAnswer ||
+                      question.options?.[question.correctIndex] ||
+                      "N/A"}
+                  </div>
+                )}
+                {question.explanation && (
+                  <p className="text-secondary border-muted mt-3 border-t pt-3 text-sm">
+                    {question.explanation}
+                  </p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          )
+        })}
+      </Accordion>
+      {!passed ? (
+        <Button onClick={onRetry} type="button" variant="secondary">
+          Retry Quiz
+        </Button>
+      ) : null}
+    </div>
+  )
+}
