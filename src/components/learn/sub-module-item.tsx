@@ -53,17 +53,17 @@ export function SubModuleItem({
             }
           }
         })
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [module.type, module.id, courseId, complete, markSubModuleComplete])
 
   return (
-    <div className="group border-default bg-surface/50 flex flex-col gap-3 rounded-xl border p-3 transition-all hover:bg-white hover:shadow-sm sm:flex-row sm:items-center">
+    <div className="group border-default bg-surface/50 flex flex-col gap-3 rounded-md border p-3 transition-all hover:bg-white hover:shadow-sm sm:flex-row sm:items-center">
       <Link
         className="focus-ring flex min-w-0 flex-1 items-center gap-3 rounded-md no-underline"
         href={`/course/${courseId}/learn/${weekId}/${module.id}`}
       >
-        <span className="text-primary grid size-10 shrink-0 place-items-center rounded-lg bg-green-50 transition-colors group-hover:bg-green-100">
+        <span className="text-primary grid size-10 shrink-0 place-items-center rounded-md bg-green-50 transition-colors group-hover:bg-green-100">
           <Icon className="size-4.5" aria-hidden />
         </span>
         <span className="min-w-0">

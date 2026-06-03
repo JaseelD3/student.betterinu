@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default function LoginLoading() {
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-6">
-      <div className="border-border bg-card w-full max-w-md space-y-8 rounded-2xl border p-8 shadow-sm">
+      <div className="border-border bg-card w-full max-w-md space-y-8 rounded-md border p-8 shadow-sm">
         {/* Logo placeholder */}
         <div className="flex flex-col items-center gap-3">
           <Skeleton className="h-12 w-32" />
@@ -15,13 +15,13 @@ export default function LoginLoading() {
         <div className="space-y-5">
           <div className="space-y-1.5">
             <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-10 w-full rounded-lg" />
+            <Skeleton className="h-10 w-full rounded-md" />
           </div>
           <div className="space-y-1.5">
             <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-10 w-full rounded-lg" />
+            <Skeleton className="h-10 w-full rounded-md" />
           </div>
-          <Skeleton className="h-11 w-full rounded-lg" />
+          <Skeleton className="h-11 w-full rounded-md" />
         </div>
       </div>
     </div>

@@ -62,7 +62,7 @@ export function DocViewer({ content }: { content: any }) {
               {section.callout ? (
                 <div
                   className={cn(
-                    "mt-4 rounded-lg border p-4 text-sm",
+                    "mt-4 rounded-md border p-4 text-sm",
                     `callout-${section.callout.tone}`
                   )}
                 >
@@ -70,7 +70,7 @@ export function DocViewer({ content }: { content: any }) {
                 </div>
               ) : null}
               {section.codeExample ? (
-                <div className="border-muted bg-subtle mt-5 overflow-hidden rounded-xl border">
+                <div className="border-muted bg-subtle mt-5 overflow-hidden rounded-md border">
                   <div className="border-muted flex items-center justify-between border-b px-4 py-2">
                     <Badge
                       variant="secondary"
@@ -122,7 +122,7 @@ export function DocViewer({ content }: { content: any }) {
           )
         })}
       </article>
-      <aside className="border-default bg-surface sticky top-24 hidden h-fit rounded-xl border p-5 lg:block">
+      <aside className="border-default bg-surface sticky top-24 hidden h-fit rounded-md border p-5 lg:block">
         <p className="text-muted text-xs font-bold uppercase">
           Table of contents
         </p>

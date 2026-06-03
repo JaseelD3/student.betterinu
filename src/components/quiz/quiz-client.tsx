@@ -111,7 +111,7 @@ export function QuizClient({
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
-      <header className="border-default bg-surface rounded-xl border p-5">
+      <header className="border-default bg-surface rounded-md border p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <Badge variant="secondary" className="bg-[#1a4031] text-white">

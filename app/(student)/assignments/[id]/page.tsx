@@ -181,11 +181,10 @@ export default function AssignmentDetailPage() {
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
-                assignment.scope === "common"
-                  ? "border-purple-200 bg-purple-50 text-purple-700"
-                  : "border-blue-200 bg-blue-50 text-blue-700"
-              }`}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${assignment.scope === "common"
+                ? "border-purple-200 bg-purple-50 text-purple-700"
+                : "border-blue-200 bg-blue-50 text-blue-700"
+                }`}
             >
               {assignment.scope === "common" ? (
                 <>
@@ -232,7 +231,7 @@ export default function AssignmentDetailPage() {
 
         {/* Instructions */}
         {assignment.instructions && (
-          <div className="border-default mb-5 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="border-default mb-5 rounded-md border bg-white p-5 shadow-sm">
             <p className="text-muted mb-3 text-[10px] font-bold tracking-widest uppercase">
               Instructions
             </p>
@@ -255,7 +254,7 @@ export default function AssignmentDetailPage() {
 
         {/* Reference links */}
         {(assignment.reference_links || []).length > 0 && (
-          <div className="border-default mb-5 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="border-default mb-5 rounded-md border bg-white p-5 shadow-sm">
             <p className="text-muted mb-3 text-[10px] font-bold tracking-widest uppercase">
               Reference Links
             </p>
@@ -278,7 +277,7 @@ export default function AssignmentDetailPage() {
 
         {/* ── Instructor Feedback ── */}
         {isRejected && assignment.feedback && (
-          <div className="mb-5 rounded-2xl border border-red-200 bg-red-50 p-5">
+          <div className="mb-5 rounded-md border border-red-200 bg-red-50 p-5">
             <p className="mb-2 text-[10px] font-bold tracking-widest text-red-600 uppercase">
               Instructor Feedback
             </p>
@@ -288,7 +287,7 @@ export default function AssignmentDetailPage() {
 
         {/* ── Approved banner ── */}
         {isApproved && (
-          <div className="mb-5 flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 p-5">
+          <div className="mb-5 flex items-center gap-3 rounded-md border border-green-200 bg-green-50 p-5">
             <CheckCircle2 className="size-5 shrink-0 text-green-600" />
             <div>
               <p className="text-sm font-bold text-green-800">
@@ -305,7 +304,7 @@ export default function AssignmentDetailPage() {
 
         {/* ── Your Previous Submission (read-only view for pending/approved) ── */}
         {hasSubmission && (isPending || isApproved) && (
-          <div className="border-default mb-5 space-y-4 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="border-default mb-5 space-y-4 rounded-md border bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <p className="text-muted text-[10px] font-bold tracking-widest uppercase">
                 Your Submission
@@ -318,7 +317,7 @@ export default function AssignmentDetailPage() {
               </span>
             </div>
             {assignment.submitted_text && (
-              <div className="border-default bg-surface text-foreground rounded-xl border p-4 text-sm leading-relaxed whitespace-pre-wrap">
+              <div className="border-default bg-surface text-foreground rounded-md border p-4 text-sm leading-relaxed whitespace-pre-wrap">
                 {assignment.submitted_text}
               </div>
             )}
@@ -333,7 +332,7 @@ export default function AssignmentDetailPage() {
 
         {/* ── Submission / Resubmission Form ── */}
         {!isApproved && (
-          <div className="border-default space-y-4 rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="border-default space-y-4 rounded-md border bg-white p-5 shadow-sm">
             <p className="text-muted text-[10px] font-bold tracking-widest uppercase">
               {isRejected
                 ? "Resubmit Your Answer"
@@ -344,7 +343,7 @@ export default function AssignmentDetailPage() {
 
             {/* Show previous submission inline for rejected (editable) */}
             {isRejected && hasSubmission && (
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-medium text-amber-800">
+              <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs font-medium text-amber-800">
                 Your previous submission was returned for revision. Update your
                 answer below and resubmit.
               </div>
@@ -356,7 +355,7 @@ export default function AssignmentDetailPage() {
                 onChange={(e) => setSubmittedText(e.target.value)}
                 placeholder="Type your answer here..."
                 rows={6}
-                className="border-default bg-surface text-foreground focus:border-primary focus:ring-primary/20 w-full resize-y rounded-xl border p-4 text-sm outline-none focus:ring-1"
+                className="border-default bg-surface text-foreground focus:border-primary focus:ring-primary/20 w-full resize-y rounded-md border p-4 text-sm outline-none focus:ring-1"
               />
             )}
 
@@ -383,7 +382,7 @@ export default function AssignmentDetailPage() {
             )}
 
             {submitError && (
-              <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+              <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
                 {submitError}
               </p>
             )}
@@ -392,7 +391,7 @@ export default function AssignmentDetailPage() {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="bg-primary flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="bg-primary flex w-full items-center justify-center gap-2 rounded-md py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 {submitting ? (
                   <RoboLoader size="xs" className="text-current" />

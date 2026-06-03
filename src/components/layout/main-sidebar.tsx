@@ -28,7 +28,7 @@ export function Sidebar({
     <aside className="border-default sticky top-20 hidden h-[calc(100vh-5rem)] w-[430px] shrink-0 border-r lg:block">
       <ScrollArea className="h-full pr-8">
         {/* Course progress block */}
-        <div className="border-default mb-5 overflow-hidden rounded-lg border bg-white">
+        <div className="border-default mb-5 overflow-hidden rounded-md border bg-white">
           <div className="border-primary bg-primary border-b px-4 py-3">
             <p className="text-primary-light text-[10px] font-bold tracking-widest uppercase">
               Course Progress
@@ -70,7 +70,7 @@ export function Sidebar({
               return (
                 <AccordionItem
                   value={week.id}
-                  className={`overflow-hidden rounded-lg border border-b transition-all ${active ? "border-primary bg-white" : "border-default hover:border-strong bg-white"}`}
+                  className={`overflow-hidden rounded-md border border-b transition-all ${active ? "border-primary bg-white" : "border-default hover:border-strong bg-white"}`}
                   key={week.id}
                 >
                   <AccordionTrigger
@@ -93,7 +93,7 @@ export function Sidebar({
                               'button[data-state="closed"]'
                             )
                             if (trigger) {
-                              ;(trigger as HTMLElement).click()
+                              ; (trigger as HTMLElement).click()
                             }
                             weekEl.scrollIntoView({
                               behavior: "smooth",
@@ -102,13 +102,12 @@ export function Sidebar({
                           }
                           history.pushState(null, "", `#${week.id}`)
                         }}
-                        className={`flex-1 cursor-pointer text-left text-xs leading-snug ${
-                          unlocked
+                        className={`flex-1 cursor-pointer text-left text-xs leading-snug ${unlocked
                             ? active
                               ? "text-primary font-bold"
                               : "text-foreground hover:text-primary font-semibold"
                             : "text-muted pointer-events-none font-semibold"
-                        } focus-ring`}
+                          } focus-ring`}
                         href={`#${week.id}`}
                       >
                         {week.title.replace(":", " —")}

@@ -19,7 +19,7 @@ export function SyllabusList({ course }: { course: Course }) {
     <Accordion
       type="multiple"
       defaultValue={course.weeks.length > 0 ? [course.weeks[0].id] : []}
-      className="border-default bg-surface w-full rounded-xl border px-5"
+      className="border-default bg-surface w-full rounded-md border px-5"
     >
       {course.weeks.map((week, index) => {
         const unlocked = isWeekUnlocked(course, week.id)

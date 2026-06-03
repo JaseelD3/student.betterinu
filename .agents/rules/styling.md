@@ -31,7 +31,7 @@ CSS variable can express.
 ```tsx
 // ✅ CORRECT — semantic token classes
 <div className="bg-background text-foreground border border-border" />
-<div className="bg-card text-card-foreground rounded-lg p-4" />
+<div className="bg-card text-card-foreground rounded-md p-4" />
 <div className="bg-primary text-primary-foreground hover:bg-primary/90" />
 ```
 
@@ -49,7 +49,7 @@ Use ONLY these token-backed Tailwind utilities:
 | Borders     | `border-border` `border-input` `ring-ring` `outline-ring/50`          |
 | Sidebar     | `bg-sidebar` `text-sidebar-foreground` `border-sidebar-border`        |
 | Chart       | `text-chart-1` through `text-chart-5`                                 |
-| Radius      | `rounded-sm` `rounded-md` `rounded-lg` `rounded-xl` (from `--radius`) |
+| Radius      | `rounded-sm` `rounded-md` `rounded-md` `rounded-md` (from `--radius`) |
 
 > If a token is missing, ADD it to `app/globals.css` — do not hardcode.
 

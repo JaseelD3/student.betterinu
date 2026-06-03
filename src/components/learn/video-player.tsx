@@ -35,7 +35,7 @@ export function VideoPlayer({ module }: { module: SubModule }) {
       {/* Video player */}
       {embedUrl ? (
         <div className="mx-auto max-w-5xl">
-          <div className="border-default bg-subtle aspect-video overflow-hidden rounded-xl border shadow-lg">
+          <div className="border-default bg-subtle aspect-video overflow-hidden rounded-md border shadow-lg">
             <iframe
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -47,7 +47,7 @@ export function VideoPlayer({ module }: { module: SubModule }) {
         </div>
       ) : (
         <div className="mx-auto max-w-5xl">
-          <div className="border-default bg-subtle text-secondary flex aspect-video items-center justify-center rounded-xl border border-dashed">
+          <div className="border-default bg-subtle text-secondary flex aspect-video items-center justify-center rounded-md border border-dashed">
             <p>No video URL provided.</p>
           </div>
         </div>

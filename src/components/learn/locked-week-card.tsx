@@ -14,7 +14,7 @@ export function LockedWeekCard({
   return (
     <button
       aria-disabled="true"
-      className="group border-default hover:border-strong relative w-full cursor-default overflow-hidden rounded-lg border border-dashed bg-white/70 p-5 text-left transition-all"
+      className="group border-default hover:border-strong relative w-full cursor-default overflow-hidden rounded-md border border-dashed bg-white/70 p-5 text-left transition-all"
       onClick={() => notify(`Complete Week ${previousWeekNumber} first.`)}
       type="button"
     >

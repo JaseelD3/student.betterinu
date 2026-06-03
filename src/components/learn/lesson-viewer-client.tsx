@@ -72,26 +72,24 @@ function SidebarSubModuleItem({
         .then((data) => {
           if (data.submission) setAssignmentStatus(data.submission.status)
         })
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [module.type, module.id, courseId])
 
   return (
     <Link
       href={`/course/${courseId}/learn/${weekId}/${module.id}`}
-      className={`group relative flex items-center gap-3 rounded-xl px-3.5 py-3 transition-all duration-200 ${
-        isActive ? "bg-primary/8 shadow-sm" : "hover:bg-surface"
-      }`}
+      className={`group relative flex items-center gap-3 rounded-md px-3.5 py-3 transition-all duration-200 ${isActive ? "bg-primary/8 shadow-sm" : "hover:bg-surface"
+        }`}
     >
       {/* Step number / check indicator */}
       <div
-        className={`relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all ${
-          isComplete
-            ? "bg-primary text-white"
-            : isActive
-              ? "bg-primary ring-primary/20 text-white ring-2"
-              : "bg-surface border-default text-muted border"
-        }`}
+        className={`relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all ${isComplete
+          ? "bg-primary text-white"
+          : isActive
+            ? "bg-primary ring-primary/20 text-white ring-2"
+            : "bg-surface border-default text-muted border"
+          }`}
       >
         {isComplete ? (
           <CheckCircle2 className="size-3.5" />
@@ -102,11 +100,10 @@ function SidebarSubModuleItem({
 
       <div className="min-w-0 flex-1">
         <p
-          className={`truncate text-[13px] leading-snug font-semibold transition-colors ${
-            isActive
-              ? "text-primary"
-              : "text-foreground group-hover:text-primary"
-          }`}
+          className={`truncate text-[13px] leading-snug font-semibold transition-colors ${isActive
+            ? "text-primary"
+            : "text-foreground group-hover:text-primary"
+            }`}
         >
           {module.title}
         </p>
@@ -203,7 +200,7 @@ export function LessonViewerClient({
   if (isCurrentDayLocked) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-amber-200 bg-amber-50">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-md border border-amber-200 bg-amber-50">
           <Lock className="size-9 text-amber-500" aria-hidden />
         </div>
         <h2 className="font-display text-foreground text-2xl font-bold tracking-tight">
@@ -215,7 +212,7 @@ export function LessonViewerClient({
         <Link
           className={
             buttonVariants({ variant: "outline" }) +
-            " border-default mt-8 gap-2 rounded-xl px-5"
+            " border-default mt-8 gap-2 rounded-md px-5"
           }
           href={`/course/${course.id}/learn`}
         >
@@ -342,12 +339,12 @@ export function LessonViewerClient({
               {/* Lesson header */}
               <div>
                 <div className="mb-4 flex flex-wrap items-center gap-2">
-                  <span className="bg-surface border-default text-secondary inline-flex items-center gap-1.5 rounded-lg border px-3 py-1 text-[11px] font-bold tracking-widest uppercase">
+                  <span className="bg-surface border-default text-secondary inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-[11px] font-bold tracking-widest uppercase">
                     <ContentIcon className="size-3" aria-hidden />
                     {typeLabels[subModule.type] || subModule.type}
                   </span>
                   {complete && (
-                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-bold tracking-widest text-emerald-700 uppercase">
+                    <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-bold tracking-widest text-emerald-700 uppercase">
                       <CheckCircle2 className="size-3" aria-hidden />
                       Completed
                     </span>
@@ -460,7 +457,7 @@ export function LessonViewerClient({
                     }
                   />
                 ) : (
-                  <div className="border-default text-secondary rounded-xl border border-dashed p-10 text-center text-sm">
+                  <div className="border-default text-secondary rounded-md border border-dashed p-10 text-center text-sm">
                     Unknown content type
                   </div>
                 )}
@@ -483,7 +480,7 @@ export function LessonViewerClient({
                         href={link.url}
                         rel="noopener noreferrer"
                         target="_blank"
-                        className="group border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-all"
+                        className="group border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold transition-all"
                       >
                         <ExternalLink className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         {link.label}
@@ -503,7 +500,7 @@ export function LessonViewerClient({
             <div className="justify-self-start">
               {previous ? (
                 <Link
-                  className="border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition-all"
+                  className="border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold transition-all"
                   href={`/course/${course.id}/learn/${week.id}/${previous.module.id}`}
                 >
                   <ChevronLeft className="size-4 shrink-0" />
@@ -524,11 +521,10 @@ export function LessonViewerClient({
                     )
                   }
                   type="button"
-                  className={`flex min-w-[160px] items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold shadow-sm transition-all active:scale-95 ${
-                    complete
-                      ? "bg-emerald-600 text-white shadow-emerald-200 hover:bg-emerald-700"
-                      : "bg-primary hover:bg-primary/90 shadow-primary/20 text-white"
-                  }`}
+                  className={`flex min-w-[160px] items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold shadow-sm transition-all active:scale-95 ${complete
+                    ? "bg-emerald-600 text-white shadow-emerald-200 hover:bg-emerald-700"
+                    : "bg-primary hover:bg-primary/90 shadow-primary/20 text-white"
+                    }`}
                 >
                   {complete && <CheckCircle2 className="size-4 shrink-0" />}
                   {complete ? "Completed" : "Mark Complete"}
@@ -536,7 +532,7 @@ export function LessonViewerClient({
               ) : (
                 <div className="flex items-center justify-center">
                   {complete ? (
-                    <span className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-700">
+                    <span className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-700">
                       <CheckCircle2 className="size-3.5" /> Completed
                     </span>
                   ) : (
@@ -554,9 +550,9 @@ export function LessonViewerClient({
             <div className="justify-self-end">
               {next ? (
                 next.day.id !== day.id &&
-                !day.subModules.every((m) => isSubModuleComplete(m.id)) ? (
+                  !day.subModules.every((m) => isSubModuleComplete(m.id)) ? (
                   <div className="flex flex-col items-end gap-1">
-                    <span className="border-default text-muted flex cursor-not-allowed items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold opacity-50">
+                    <span className="border-default text-muted flex cursor-not-allowed items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold opacity-50">
                       <Lock className="size-3.5 shrink-0" />
                       <span className="hidden sm:inline">Locked</span>
                     </span>
@@ -568,7 +564,7 @@ export function LessonViewerClient({
                   </div>
                 ) : (
                   <Link
-                    className="border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition-all"
+                    className="border-default bg-surface text-secondary hover:border-primary/30 hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold transition-all"
                     href={`/course/${course.id}/learn/${week.id}/${next.module.id}`}
                   >
                     <span className="hidden sm:inline">Next</span>
@@ -577,7 +573,7 @@ export function LessonViewerClient({
                 )
               ) : (
                 <Link
-                  className="bg-primary hover:bg-primary/90 shadow-primary/20 flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold text-white shadow-sm transition-all active:scale-95"
+                  className="bg-primary hover:bg-primary/90 shadow-primary/20 flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold text-white shadow-sm transition-all active:scale-95"
                   href={`/course/${course.id}/learn`}
                 >
                   Finish Week

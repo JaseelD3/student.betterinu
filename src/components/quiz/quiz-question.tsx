@@ -20,7 +20,7 @@ export function QuizQuestion({
   const options = question.options || []
 
   return (
-    <div className="border-default bg-surface rounded-xl border p-5">
+    <div className="border-default bg-surface rounded-md border p-5">
       <p className="text-muted text-sm font-bold uppercase">
         Q {index + 1} of {total}
       </p>
@@ -32,7 +32,7 @@ export function QuizQuestion({
         {isText ? (
           <input
             type="text"
-            className="border-default bg-subtle text-foreground focus:border-focus focus:ring-focus w-full rounded-lg border p-4 outline-none focus:ring-1"
+            className="border-default bg-subtle text-foreground focus:border-focus focus:ring-focus w-full rounded-md border p-4 outline-none focus:ring-1"
             placeholder="Type your answer here..."
             value={selected || ""}
             onChange={(e) => onSelect(e.target.value)}
@@ -45,7 +45,7 @@ export function QuizQuestion({
                 className={cn(
                   "h-auto justify-start py-4 text-left",
                   isSelected &&
-                    "border-focus bg-primary text-primary-foreground"
+                  "border-focus bg-primary text-primary-foreground"
                 )}
                 key={option}
                 onClick={() => onSelect(option)}

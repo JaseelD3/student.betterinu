@@ -55,9 +55,7 @@ export default function RootLayout({
       <body className="font-sans">
         <ThemeProvider>
           <QueryProvider>
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
+            <TooltipProvider>{children}</TooltipProvider>
           </QueryProvider>
           <Toaster position="top-right" />
         </ThemeProvider>

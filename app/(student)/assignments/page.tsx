@@ -143,11 +143,10 @@ export default function MyAssignmentsPage() {
         <div className="border-default mb-6 flex border-b">
           <button
             onClick={() => setActiveTab("course")}
-            className={`flex items-center gap-2 border-b-2 px-4 pb-3 text-sm font-bold transition-colors ${
-              activeTab === "course"
-                ? "border-primary text-primary"
-                : "text-muted hover:text-foreground border-transparent"
-            }`}
+            className={`flex items-center gap-2 border-b-2 px-4 pb-3 text-sm font-bold transition-colors ${activeTab === "course"
+              ? "border-primary text-primary"
+              : "text-muted hover:text-foreground border-transparent"
+              }`}
           >
             <GraduationCap className="size-4" />
             Course Tasks
@@ -161,11 +160,10 @@ export default function MyAssignmentsPage() {
           </button>
           <button
             onClick={() => setActiveTab("other")}
-            className={`flex items-center gap-2 border-b-2 px-4 pb-3 text-sm font-bold transition-colors ${
-              activeTab === "other"
-                ? "border-primary text-primary"
-                : "text-muted hover:text-foreground border-transparent"
-            }`}
+            className={`flex items-center gap-2 border-b-2 px-4 pb-3 text-sm font-bold transition-colors ${activeTab === "other"
+              ? "border-primary text-primary"
+              : "text-muted hover:text-foreground border-transparent"
+              }`}
           >
             <Globe className="size-4" />
             Other Tasks
@@ -188,7 +186,7 @@ export default function MyAssignmentsPage() {
         {isLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+              <Skeleton key={i} className="h-20 w-full rounded-md" />
             ))}
           </div>
         ) : activeTab === "course" ? (
@@ -204,8 +202,8 @@ export default function MyAssignmentsPage() {
                     f === "all"
                       ? courseAssignments!.length
                       : courseAssignments!.filter(
-                          (a) => a.submission_status === f
-                        ).length
+                        (a) => a.submission_status === f
+                      ).length
                   const labels: Record<CourseFilter, string> = {
                     all: "All",
                     pending: "Under Review",
@@ -216,11 +214,10 @@ export default function MyAssignmentsPage() {
                     <button
                       key={f}
                       onClick={() => setCourseFilter(f)}
-                      className={`rounded-full border px-4 py-1.5 text-xs font-bold capitalize transition-colors ${
-                        courseFilter === f
-                          ? "bg-primary border-primary text-white"
-                          : "text-secondary border-default hover:border-primary hover:text-primary bg-white"
-                      }`}
+                      className={`rounded-full border px-4 py-1.5 text-xs font-bold capitalize transition-colors ${courseFilter === f
+                        ? "bg-primary border-primary text-white"
+                        : "text-secondary border-default hover:border-primary hover:text-primary bg-white"
+                        }`}
                     >
                       {labels[f]} ({count})
                     </button>
@@ -229,7 +226,7 @@ export default function MyAssignmentsPage() {
               </div>
             )}
             {filteredCourse.length === 0 ? (
-              <div className="border-default flex flex-col items-center justify-center rounded-2xl border border-dashed bg-white py-24 text-center">
+              <div className="border-default flex flex-col items-center justify-center rounded-md border border-dashed bg-white py-24 text-center">
                 <GraduationCap className="text-muted mb-3 size-12" />
                 <p className="text-foreground text-sm font-semibold">
                   {courseFilter === "all"
@@ -267,8 +264,8 @@ export default function MyAssignmentsPage() {
                     f === "all"
                       ? standaloneAssignments!.length
                       : standaloneAssignments!.filter(
-                          (a) => (a.submission_status ?? "todo") === f
-                        ).length
+                        (a) => (a.submission_status ?? "todo") === f
+                      ).length
                   const labels: Record<OtherFilter, string> = {
                     all: "All",
                     todo: "To Do",
@@ -280,11 +277,10 @@ export default function MyAssignmentsPage() {
                     <button
                       key={f}
                       onClick={() => setOtherFilter(f)}
-                      className={`rounded-full border px-4 py-1.5 text-xs font-bold capitalize transition-colors ${
-                        otherFilter === f
-                          ? "bg-primary border-primary text-white"
-                          : "text-secondary border-default hover:border-primary hover:text-primary bg-white"
-                      }`}
+                      className={`rounded-full border px-4 py-1.5 text-xs font-bold capitalize transition-colors ${otherFilter === f
+                        ? "bg-primary border-primary text-white"
+                        : "text-secondary border-default hover:border-primary hover:text-primary bg-white"
+                        }`}
                     >
                       {labels[f]} ({count})
                     </button>
@@ -293,7 +289,7 @@ export default function MyAssignmentsPage() {
               </div>
             )}
             {filteredOther.length === 0 ? (
-              <div className="border-default flex flex-col items-center justify-center rounded-2xl border border-dashed bg-white py-24 text-center">
+              <div className="border-default flex flex-col items-center justify-center rounded-md border border-dashed bg-white py-24 text-center">
                 <Globe className="text-muted mb-3 size-12" />
                 <p className="text-foreground text-sm font-semibold">
                   {otherFilter === "all"
@@ -332,7 +328,7 @@ function CourseAssignmentCard({
   const cfg =
     STATUS_CFG[status as keyof typeof STATUS_CFG] ?? STATUS_CFG.pending
   return (
-    <div className="border-default flex items-center gap-4 rounded-2xl border bg-white p-4 shadow-sm">
+    <div className="border-default flex items-center gap-4 rounded-md border bg-white p-4 shadow-sm">
       <span className={`size-2.5 shrink-0 rounded-full ${cfg.dot}`} />
       <div className="min-w-0 flex-1">
         <div className="mb-0.5 flex flex-wrap items-center gap-2">
@@ -355,7 +351,7 @@ function CourseAssignmentCard({
           )}
         </div>
         {status === "rejected" && a.feedback && (
-          <p className="mt-1 truncate rounded-lg bg-red-50 px-2 py-1 text-xs text-red-600">
+          <p className="mt-1 truncate rounded-md bg-red-50 px-2 py-1 text-xs text-red-600">
             Feedback: {a.feedback}
           </p>
         )}
@@ -382,18 +378,17 @@ function StandaloneCard({
   return (
     <Link
       href={`/assignments/${a.assignment_id}`}
-      className="group border-default hover:border-primary/30 flex items-center gap-4 rounded-2xl border bg-white p-4 shadow-sm transition-all hover:shadow-md"
+      className="group border-default hover:border-primary/30 flex items-center gap-4 rounded-md border bg-white p-4 shadow-sm transition-all hover:shadow-md"
     >
       <span className={`size-2.5 shrink-0 rounded-full ${cfg.dot}`} />
       <div className="min-w-0 flex-1">
         <div className="mb-0.5 flex flex-wrap items-center gap-2">
           <p className="text-foreground text-sm font-bold">{a.title}</p>
           <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase ${
-              a.scope === "common"
-                ? "border-purple-200 bg-purple-50 text-purple-700"
-                : "border-blue-200 bg-blue-50 text-blue-700"
-            }`}
+            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase ${a.scope === "common"
+              ? "border-purple-200 bg-purple-50 text-purple-700"
+              : "border-blue-200 bg-blue-50 text-blue-700"
+              }`}
           >
             {a.scope === "common" ? (
               <>
@@ -421,7 +416,7 @@ function StandaloneCard({
           )}
         </div>
         {status === "rejected" && a.feedback && (
-          <p className="mt-1 truncate rounded-lg bg-red-50 px-2 py-1 text-xs text-red-600">
+          <p className="mt-1 truncate rounded-md bg-red-50 px-2 py-1 text-xs text-red-600">
             Feedback: {a.feedback}
           </p>
         )}

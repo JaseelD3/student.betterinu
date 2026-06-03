@@ -48,7 +48,7 @@ export function CourseHero({ course }: { course: Course }) {
                 alt={course.title}
                 width={384}
                 height={256}
-                className="h-64 w-96 rounded-2xl object-cover"
+                className="h-64 w-96 rounded-md object-cover"
               />
             </div>
           )}

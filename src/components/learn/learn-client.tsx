@@ -35,7 +35,7 @@ export function LearnClient({ course }: { course: Course }) {
       <Sidebar activeWeekId={activeWeek.id} course={paddedCourse} />
       <div className="min-w-0 flex-1 space-y-4">
         {/* Course header */}
-        <div className="border-default overflow-hidden rounded-lg border bg-white">
+        <div className="border-default overflow-hidden rounded-md border bg-white">
           <div className="p-6">
             <nav
               className="text-muted mb-4 flex items-center gap-2 text-xs font-semibold"
@@ -65,7 +65,7 @@ export function LearnClient({ course }: { course: Course }) {
 
         {paddedCourse.weeks.map((week: any, index: number) =>
           isWeekUnlocked(paddedCourse, week.id) &&
-          !week.id.startsWith("dummy") ? (
+            !week.id.startsWith("dummy") ? (
             <WeekCard courseId={paddedCourse.id} key={week.id} week={week} />
           ) : (
             <LockedWeekCard

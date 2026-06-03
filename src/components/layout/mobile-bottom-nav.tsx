@@ -32,7 +32,7 @@ export function MobileBottomNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-2 text-[10px] font-medium transition-colors",
+              "flex flex-1 flex-col items-center justify-center gap-1 rounded-md py-2 text-[10px] font-medium transition-colors",
               isActive
                 ? "text-sidebar-primary"
                 : "text-sidebar-foreground/60 hover:text-sidebar-foreground"

@@ -219,9 +219,9 @@ function InstallmentRow({
   const pct =
     installment.totalAmount > 0
       ? Math.min(
-          Math.round((installment.paidAmount / installment.totalAmount) * 100),
-          100
-        )
+        Math.round((installment.paidAmount / installment.totalAmount) * 100),
+        100
+      )
       : 0
 
   const hasWaiver = installment.waiverReduction > 0
@@ -279,13 +279,12 @@ function InstallmentRow({
         <div>
           <p className="text-muted-foreground mb-0.5 text-[10px]">Balance </p>
           <p
-            className={`text-sm font-bold ${
-              installment.remainingBalance > 0
+            className={`text-sm font-bold ${installment.remainingBalance > 0
                 ? installment.status === "overdue"
                   ? "text-red-600"
                   : "text-red-600"
                 : "text-green-600"
-            }`}
+              }`}
           >
             {fmt(installment.remainingBalance)}
           </p>
@@ -426,15 +425,15 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
   const pct =
     enrollment.totalAmount > 0
       ? Math.min(
-          Math.round((enrollment.paidAmount / enrollment.totalAmount) * 100),
-          100
-        )
+        Math.round((enrollment.paidAmount / enrollment.totalAmount) * 100),
+        100
+      )
       : 0
 
   const isInstallment = enrollment.paymentType === "installment"
 
   return (
-    <div className="border-default overflow-hidden rounded-xl border bg-white shadow-sm">
+    <div className="border-default overflow-hidden rounded-md border bg-white shadow-sm">
       {/* Header */}
       <div className="border-default bg-muted/5 flex items-start justify-between gap-3 border-b px-5 py-4">
         <div className="min-w-0 flex-1 space-y-1.5">
@@ -485,11 +484,10 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
                 Outstanding
               </p>
               <p
-                className={`text-sm font-bold ${
-                  enrollment.outstandingBalance > 0
+                className={`text-sm font-bold ${enrollment.outstandingBalance > 0
                     ? "text-foreground"
                     : "text-green-600"
-                }`}
+                  }`}
               >
                 {fmt(enrollment.outstandingBalance)}
               </p>
@@ -580,7 +578,7 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
 
 function FeeCardSkeleton() {
   return (
-    <div className="border-default h-48 animate-pulse rounded-xl border bg-white shadow-sm" />
+    <div className="border-default h-48 animate-pulse rounded-md border bg-white shadow-sm" />
   )
 }
 
@@ -609,7 +607,7 @@ function StudentFeeSectionInner() {
 
   if (!enrollments || enrollments.length === 0) {
     return (
-      <div className="border-default flex flex-col items-center gap-3 rounded-xl border border-dashed bg-white py-14 text-center shadow-sm">
+      <div className="border-default flex flex-col items-center gap-3 rounded-md border border-dashed bg-white py-14 text-center shadow-sm">
         <CreditCard size={36} className="text-muted-foreground" />
         <div>
           <p className="text-foreground font-semibold">No fee records</p>

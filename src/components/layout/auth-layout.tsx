@@ -19,7 +19,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       <div className="grid min-h-screen w-full md:grid-cols-2">
         {/* Left: branding image — desktop only */}
         <div className="relative hidden p-6 md:block lg:p-5">
-          <div className="from-primary/90 via-accent/80 to-secondary/60 relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br">
+          <div className="from-primary/90 via-accent/80 to-secondary/60 relative h-full w-full overflow-hidden rounded-md bg-gradient-to-br">
             <Image
               src="/betty-img.png"
               alt="Betterinu Login Branding"
@@ -32,7 +32,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
 
         {/* Right: slot for form */}
         <div className="flex flex-col justify-center p-8 sm:p-12 md:p-16 lg:p-20">
-          <Card className="border-border/50 mx-auto w-full max-w-sm rounded-2xl border p-6 sm:p-8 md:border-0 md:shadow-none md:ring-0">
+          <Card className="border-border/50 mx-auto w-full max-w-sm rounded-md border p-6 sm:p-8 md:border-0 md:shadow-none md:ring-0">
             {children}
           </Card>
         </div>

@@ -92,7 +92,7 @@ export default function CourseDetailPage() {
                 <div className="mt-4 grid gap-3">
                   {stats.map(({ Icon, label, value }) => (
                     <div
-                      className="bg-subtle flex items-center justify-between gap-3 rounded-lg p-3"
+                      className="bg-subtle flex items-center justify-between gap-3 rounded-md p-3"
                       key={label}
                     >
                       <span className="text-secondary flex items-center gap-2 text-sm">

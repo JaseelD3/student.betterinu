@@ -94,11 +94,10 @@ export function FileUploader({
           setDragging(false)
           if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files)
         }}
-        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors ${
-          dragging
-            ? "border-primary bg-primary/5"
-            : "border-default bg-surface hover:border-primary/60 hover:bg-primary/5"
-        }`}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-6 text-center transition-colors ${dragging
+          ? "border-primary bg-primary/5"
+          : "border-default bg-surface hover:border-primary/60 hover:bg-primary/5"
+          }`}
       >
         {uploading ? (
           <RoboLoader size="sm" />
@@ -128,7 +127,7 @@ export function FileUploader({
       />
 
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
           {error}
         </p>
       )}
@@ -139,7 +138,7 @@ export function FileUploader({
           {files.map((f, i) => (
             <li
               key={i}
-              className="border-default flex items-center gap-2 rounded-lg border bg-white px-3 py-2 text-sm"
+              className="border-default flex items-center gap-2 rounded-md border bg-white px-3 py-2 text-sm"
             >
               {fileIcon(f.type)}
               <span className="text-foreground flex-1 truncate">{f.name}</span>

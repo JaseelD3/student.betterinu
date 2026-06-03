@@ -19,16 +19,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
 
   return (
-    <Sidebar 
-      variant="inset" 
-      collapsible="icon" 
-      className="bg-gradient-to-b from-sidebar via-sidebar to-sidebar/98 border-r border-sidebar-border/40 shadow-[1px_0_10px_-5px_rgba(0,0,0,0.05)] transition-all"
+    <Sidebar
+      variant="inset"
+      collapsible="icon"
+      className="from-sidebar via-sidebar to-sidebar/98 border-sidebar-border/40 border-r bg-gradient-to-b shadow-[1px_0_10px_-5px_rgba(0,0,0,0.05)] transition-all"
       {...props}
     >
-      <SidebarHeader className="h-14 border-b border-sidebar-border/30 flex items-center justify-center p-0 select-none">
-        <Link href="/" className="group/logo flex items-center justify-center w-full h-full">
+      <SidebarHeader className="border-sidebar-border/30 flex h-14 items-center justify-center border-b p-0 select-none">
+        <Link
+          href="/"
+          className="group/logo flex h-full w-full items-center justify-center"
+        >
           {state === "collapsed" ? (
-            <div className="bg-gradient-to-tr from-primary/20 to-sidebar-accent flex aspect-square size-9 items-center justify-center overflow-hidden rounded-xl border border-primary/10 shadow-inner group-hover/logo:scale-105 group-hover/logo:border-primary/20 transition-all duration-300">
+            <div className="from-primary/20 to-sidebar-accent border-primary/10 group-hover/logo:border-primary/20 flex aspect-square size-9 items-center justify-center overflow-hidden rounded-md border bg-gradient-to-tr shadow-inner transition-all duration-300 group-hover/logo:scale-105">
               <Image
                 src="/logo.svg"
                 alt="Betterinu Logo Symbol"

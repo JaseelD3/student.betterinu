@@ -118,7 +118,7 @@ export function QuizViewer({
 
   if (questions.length === 0) {
     return (
-      <div className="text-muted border-default flex flex-col items-center justify-center rounded-xl border border-dashed py-20 text-center">
+      <div className="text-muted border-default flex flex-col items-center justify-center rounded-md border border-dashed py-20 text-center">
         <HelpCircle className="mb-3 size-10 opacity-40" />
         <p className="font-semibold">No questions yet</p>
         <p className="mt-1 text-xs">
@@ -137,16 +137,14 @@ export function QuizViewer({
       <div className="space-y-6 pb-10">
         {/* Score Card */}
         <div
-          className={`rounded-2xl border-2 p-6 text-center shadow-sm ${
-            state.passed
-              ? "border-green-300 bg-green-50"
-              : "border-red-200 bg-red-50"
-          }`}
+          className={`rounded-md border-2 p-6 text-center shadow-sm ${state.passed
+            ? "border-green-300 bg-green-50"
+            : "border-red-200 bg-red-50"
+            }`}
         >
           <div
-            className={`mb-3 inline-flex size-16 items-center justify-center rounded-full ${
-              state.passed ? "bg-green-100" : "bg-red-100"
-            }`}
+            className={`mb-3 inline-flex size-16 items-center justify-center rounded-full ${state.passed ? "bg-green-100" : "bg-red-100"
+              }`}
           >
             {state.passed ? (
               <Trophy className="size-8 text-green-600" />
@@ -178,7 +176,7 @@ export function QuizViewer({
           <button
             type="button"
             onClick={retry}
-            className="border-primary text-primary hover:bg-primary/5 flex w-full items-center justify-center gap-2 rounded-xl border bg-white py-3 text-sm font-bold transition-colors"
+            className="border-primary text-primary hover:bg-primary/5 flex w-full items-center justify-center gap-2 rounded-md border bg-white py-3 text-sm font-bold transition-colors"
           >
             <RotateCcw className="size-4" /> Retake Quiz
           </button>
@@ -202,7 +200,7 @@ export function QuizViewer({
             return (
               <div
                 key={q.id}
-                className={`rounded-xl border p-4 ${isCorrect ? "border-green-200 bg-green-50/50" : "border-red-200 bg-red-50/50"}`}
+                className={`rounded-md border p-4 ${isCorrect ? "border-green-200 bg-green-50/50" : "border-red-200 bg-red-50/50"}`}
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -283,7 +281,7 @@ export function QuizViewer({
 
                     {/* Explanation */}
                     {q.explanation && (
-                      <div className="mt-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2">
+                      <div className="mt-2 rounded-md border border-blue-100 bg-blue-50 px-3 py-2">
                         <p className="text-[11px] leading-relaxed text-blue-700">
                           💡 {q.explanation}
                         </p>
@@ -306,7 +304,7 @@ export function QuizViewer({
   return (
     <div className="space-y-6 pb-10">
       {/* Header */}
-      <div className="border-default bg-surface flex items-center justify-between rounded-xl border p-4">
+      <div className="border-default bg-surface flex items-center justify-between rounded-md border p-4">
         <div className="flex items-center gap-2">
           <HelpCircle className="size-5 text-purple-500" />
           <div>
@@ -337,7 +335,7 @@ export function QuizViewer({
         type="button"
         onClick={submit}
         disabled={!allAnswered || submitting}
-        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-sm font-bold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
         {submitting ? (
           <>
@@ -350,7 +348,7 @@ export function QuizViewer({
         )}
       </button>
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-center text-xs font-semibold text-red-600">
+        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-center text-xs font-semibold text-red-600">
           {error}
         </p>
       )}
@@ -375,7 +373,7 @@ function QuestionBlock({
   onChange: (ans: string | number) => void
 }) {
   return (
-    <div className="border-default overflow-hidden rounded-xl border bg-white shadow-sm">
+    <div className="border-default overflow-hidden rounded-md border bg-white shadow-sm">
       {/* Question header */}
       <div className="bg-surface border-default border-b px-4 py-3">
         <div className="flex items-start gap-3">
@@ -400,11 +398,10 @@ function QuestionBlock({
             {(q.options || []).map((opt, oIdx) => (
               <label
                 key={oIdx}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-all ${
-                  answer === oIdx
-                    ? "border-primary bg-primary/5 shadow-sm"
-                    : "border-default bg-surface hover:border-primary/40"
-                }`}
+                className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-all ${answer === oIdx
+                  ? "border-primary bg-primary/5 shadow-sm"
+                  : "border-default bg-surface hover:border-primary/40"
+                  }`}
               >
                 <input
                   type="radio"
@@ -423,7 +420,7 @@ function QuestionBlock({
             value={(answer as string) || ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Type your answer here..."
-            className="border-default bg-surface focus:border-primary focus:ring-primary/10 w-full rounded-lg border px-3 py-2.5 text-sm transition-colors outline-none focus:ring-1"
+            className="border-default bg-surface focus:border-primary focus:ring-primary/10 w-full rounded-md border px-3 py-2.5 text-sm transition-colors outline-none focus:ring-1"
           />
         )}
       </div>

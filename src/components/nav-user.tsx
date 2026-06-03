@@ -56,26 +56,28 @@ export function NavUser() {
 
   return (
     <>
-      <SidebarMenu className="border-t border-sidebar-border/30 pt-4 px-1 pb-1">
+      <SidebarMenu className="border-sidebar-border/30 border-t px-1 pt-4 pb-1">
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className="w-full border border-sidebar-border/40 bg-sidebar-accent/30 shadow-2xs hover:bg-sidebar-accent/70 hover:border-sidebar-border/80 data-[state=open]:bg-sidebar-accent data-[state=open]:border-sidebar-border/80 transition-all duration-250 ease-in-out group/user"
+                className="border-sidebar-border/40 bg-sidebar-accent/30 hover:bg-sidebar-accent/70 hover:border-sidebar-border/80 data-[state=open]:bg-sidebar-accent data-[state=open]:border-sidebar-border/80 group/user w-full border shadow-2xs transition-all duration-250 ease-in-out"
               >
-                <Avatar className="size-8 rounded-xl border border-primary/15 shadow-inner">
-                  <AvatarFallback className="bg-gradient-to-br from-primary/20 via-primary/10 to-transparent text-primary rounded-xl text-xs font-black tracking-wider transition-transform group-hover/user:scale-105 duration-300">
+                <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
+                  <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider transition-transform duration-300 group-hover/user:scale-105">
                     {getInitials(name)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight ml-0.5">
-                  <span className="truncate font-semibold text-foreground/90 group-hover/user:text-foreground">{displayName}</span>
+                <div className="ml-0.5 grid flex-1 text-left text-sm leading-tight">
+                  <span className="text-foreground/90 group-hover/user:text-foreground truncate font-semibold">
+                    {displayName}
+                  </span>
                   <span className="text-muted-foreground/75 truncate text-[10px] font-medium tracking-wide">
                     {displayEmail}
                   </span>
                 </div>
-                <ChevronsUpDown className="ml-auto size-3.5 text-muted-foreground/60 transition-transform duration-300 group-hover/user:translate-y-[-1px]" />
+                <ChevronsUpDown className="text-muted-foreground/60 ml-auto size-3.5 transition-transform duration-300 group-hover/user:translate-y-[-1px]" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
 
@@ -87,8 +89,8 @@ export function NavUser() {
             >
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="size-8 rounded-xl border border-primary/15 shadow-inner">
-                    <AvatarFallback className="bg-gradient-to-br from-primary/20 via-primary/10 to-transparent text-primary rounded-xl text-xs font-black tracking-wider">
+                  <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
+                    <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider">
                       {getInitials(name)}
                     </AvatarFallback>
                   </Avatar>
@@ -110,9 +112,7 @@ export function NavUser() {
                     Account
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() => setShowChangePassword(true)}
-                >
+                <DropdownMenuItem onSelect={() => setShowChangePassword(true)}>
                   <KeyRound />
                   Change Password
                 </DropdownMenuItem>

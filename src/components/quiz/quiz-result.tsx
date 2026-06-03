@@ -24,7 +24,7 @@ export function QuizResult({
   const questions = quiz.questions || []
 
   return (
-    <div className="border-default bg-surface space-y-5 rounded-xl border p-6 text-center">
+    <div className="border-default bg-surface space-y-5 rounded-md border p-6 text-center">
       <Badge
         variant={passed ? "secondary" : "destructive"}
         className={passed ? "bg-emerald-100 text-emerald-800" : ""}
@@ -44,7 +44,7 @@ export function QuizResult({
       </Badge>
       <Accordion
         type="multiple"
-        className="border-muted w-full rounded-xl border px-4 text-left"
+        className="border-muted w-full rounded-md border px-4 text-left"
       >
         {questions.map((question: any, index: number) => {
           const userAnswer = selected[question.id] || ""

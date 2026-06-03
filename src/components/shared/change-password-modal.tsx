@@ -74,7 +74,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
         {/* Header */}
         <div className="border-default flex items-center justify-between border-b px-6 py-4">
           <div className="flex items-center gap-2.5">
-            <div className="bg-primary/10 flex size-8 items-center justify-center rounded-lg">
+            <div className="bg-primary/10 flex size-8 items-center justify-center rounded-md">
               <Lock className="text-primary size-4" />
             </div>
             <h2 className="text-foreground text-base font-bold">
@@ -83,7 +83,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
           </div>
           <button
             onClick={onClose}
-            className="text-muted hover:bg-subtle hover:text-foreground rounded-lg p-1.5 transition-colors"
+            className="text-muted hover:bg-subtle hover:text-foreground rounded-md p-1.5 transition-colors"
             aria-label="Close"
           >
             <X className="size-4" />
@@ -107,7 +107,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
               </div>
               <button
                 onClick={onClose}
-                className="bg-primary mt-2 rounded-xl px-6 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                className="bg-primary mt-2 rounded-md px-6 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
               >
                 Done
               </button>
@@ -126,7 +126,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     required
                     placeholder="Enter current password"
-                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
+                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-md border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
                   />
                   <button
                     type="button"
@@ -154,7 +154,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
                     placeholder="Min. 6 characters"
-                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
+                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-md border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
                   />
                   <button
                     type="button"
@@ -182,7 +182,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     placeholder="Re-enter new password"
-                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
+                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 w-full rounded-md border px-3 py-2.5 pr-10 text-sm transition-all focus:ring-2 focus:outline-none"
                   />
                   <button
                     type="button"
@@ -199,7 +199,7 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
               </div>
 
               {error && (
-                <p className="rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
+                <p className="rounded-md border border-red-100 bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
                   {error}
                 </p>
               )}
@@ -208,14 +208,14 @@ export function ChangePasswordModal({ onClose }: ChangePasswordModalProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="border-default text-secondary hover:bg-subtle flex-1 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-colors"
+                  className="border-default text-secondary hover:bg-subtle flex-1 rounded-md border px-4 py-2.5 text-sm font-semibold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-primary flex-1 rounded-xl px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+                  className="bg-primary flex-1 rounded-md px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
                   {loading ? "Updating…" : "Update Password"}
                 </button>

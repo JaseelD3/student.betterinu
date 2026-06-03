@@ -161,9 +161,9 @@ export function AssignmentViewer({
   return (
     <div className="w-full space-y-6">
       {/* Assignment Header Card */}
-      <div className="border-default bg-surface rounded-2xl border p-6 shadow-sm">
+      <div className="border-default bg-surface rounded-md border p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-orange-100">
+          <span className="flex size-10 items-center justify-center rounded-md bg-orange-100">
             <ClipboardCheck className="size-5 text-orange-600" />
           </span>
           <div>
@@ -253,7 +253,7 @@ export function AssignmentViewer({
       {/* Status Banner */}
       {submission && status && (
         <div
-          className={`flex items-start gap-3 rounded-xl border p-4 ${status.bg}`}
+          className={`flex items-start gap-3 rounded-md border p-4 ${status.bg}`}
         >
           <status.Icon className={`mt-0.5 size-5 shrink-0 ${status.color}`} />
           <div>
@@ -264,7 +264,7 @@ export function AssignmentViewer({
               Submitted {new Date(submission.submitted_at).toLocaleString()}
             </p>
             {submission.feedback && (
-              <p className="text-foreground border-default mt-2 rounded-lg border bg-white/60 px-3 py-2 text-sm">
+              <p className="text-foreground border-default mt-2 rounded-md border bg-white/60 px-3 py-2 text-sm">
                 <strong>Instructor Feedback:</strong> {submission.feedback}
               </p>
             )}
@@ -274,7 +274,7 @@ export function AssignmentViewer({
 
       {/* Approved state */}
       {submission?.status === "approved" ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-green-200 bg-green-50 py-10 text-center">
+        <div className="flex flex-col items-center justify-center rounded-md border border-green-200 bg-green-50 py-10 text-center">
           <CheckCircle2 className="mb-3 size-12 text-green-600" />
           <p className="font-display text-primary text-xl font-bold">
             Assignment Approved!
@@ -293,7 +293,7 @@ export function AssignmentViewer({
         </div>
       ) : (
         /* Submission form */
-        <div className="border-default space-y-5 rounded-2xl border bg-white p-6 shadow-sm">
+        <div className="border-default space-y-5 rounded-md border bg-white p-6 shadow-sm">
           <h3 className="text-foreground text-sm font-bold">
             {canEdit
               ? submission?.status === "rejected"
@@ -314,7 +314,7 @@ export function AssignmentViewer({
                 disabled={!canEdit || submitting}
                 placeholder="Write your answer here..."
                 rows={8}
-                className="border-default bg-surface text-foreground focus:border-primary focus:ring-primary/20 w-full resize-y rounded-xl border p-4 text-sm leading-relaxed outline-none focus:ring-1 disabled:opacity-60"
+                className="border-default bg-surface text-foreground focus:border-primary focus:ring-primary/20 w-full resize-y rounded-md border p-4 text-sm leading-relaxed outline-none focus:ring-1 disabled:opacity-60"
               />
             </div>
           )}
@@ -355,7 +355,7 @@ export function AssignmentViewer({
                     }}
                     disabled={!canEdit || submitting}
                     placeholder="https://..."
-                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 flex-1 rounded-xl border px-4 py-2.5 text-sm outline-none focus:ring-1 disabled:opacity-60"
+                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 flex-1 rounded-md border px-4 py-2.5 text-sm outline-none focus:ring-1 disabled:opacity-60"
                   />
                   {canEdit && (
                     <button
@@ -376,39 +376,39 @@ export function AssignmentViewer({
           {/* File / image upload */}
           {(allowedTypes.includes("file") ||
             allowedTypes.includes("image")) && (
-            <div>
-              <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
-                {allowedTypes.includes("image") &&
-                !allowedTypes.includes("file")
-                  ? "Image Upload"
-                  : "File Upload"}
-              </label>
-              {canEdit ? (
-                <FileUploader
-                  folder={`submissions/${module.id}`}
-                  files={files}
-                  onChange={setFiles}
-                  accept={
-                    allowedTypes.includes("image") &&
+              <div>
+                <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
+                  {allowedTypes.includes("image") &&
                     !allowedTypes.includes("file")
-                      ? "image/*"
-                      : undefined
-                  }
-                />
-              ) : (
-                <FileViewer files={files} title="Your Submitted Files" />
-              )}
-            </div>
-          )}
+                    ? "Image Upload"
+                    : "File Upload"}
+                </label>
+                {canEdit ? (
+                  <FileUploader
+                    folder={`submissions/${module.id}`}
+                    files={files}
+                    onChange={setFiles}
+                    accept={
+                      allowedTypes.includes("image") &&
+                        !allowedTypes.includes("file")
+                        ? "image/*"
+                        : undefined
+                    }
+                  />
+                ) : (
+                  <FileViewer files={files} title="Your Submitted Files" />
+                )}
+              </div>
+            )}
 
           {error && (
-            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
+            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">
               {error}
             </p>
           )}
 
           {success && !error && (
-            <p className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs font-semibold text-green-600">
+            <p className="rounded-md border border-green-200 bg-green-50 px-3 py-2 text-xs font-semibold text-green-600">
               ✓ Submitted successfully! Your assignment is now pending review.
             </p>
           )}
