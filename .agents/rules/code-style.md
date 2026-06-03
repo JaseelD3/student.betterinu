@@ -2,11 +2,6 @@
 trigger: always_on
 ---
 
----
-description: Formatting, naming, imports, and TypeScript conventions
-alwaysApply: true
----
-
 # Code Style
 
 Match the existing files exactly. Prettier (`.prettierrc`) is the source of
@@ -22,7 +17,7 @@ truth — never override it inline.
 
 ```tsx
 // ❌ BAD
-import {Button} from '@/components/ui/button';
+import { Button } from "@/components/ui/button"
 
 // ✅ GOOD
 import { Button } from "@/components/ui/button"
@@ -64,11 +59,11 @@ import styles from "./robo-loader.module.css"
 
 - `strict: true` is on — fix types, don't reach for `any` or `// @ts-ignore`.
   Use `unknown` + narrowing, or define a real type.
-- Define a **local `type FooProps = { … }`** above each component (see
-  `components/layout/form-layout.tsx`). Use `interface` only when extending
-  another interface or for cross-file shared shapes (see `types/middleware.ts`).
-- For children: `React.PropsWithChildren` if that's all you need, otherwise add
-  `children: React.ReactNode` to the local props type.
+- Define a **local `type FooProps = { … }`** above each component.
+  Use `interface` only when extending another interface or for cross-file
+  shared shapes.
+- For children: `React.PropsWithChildren` if that's all you need, otherwise
+  add `children: React.ReactNode` to the local props type.
 - Default values via destructuring, not `defaultProps`.
 
 ```tsx
@@ -84,14 +79,14 @@ export function FormLayout({
   isSubmitting = false,
   cancelHref,
   children,
-}: FormLayoutProps) { /* … */ }
+}: FormLayoutProps) {
+  /* … */
+}
 ```
 
 ## Comments
 
-- Use `/** … */` JSDoc for non-obvious utilities / props (see
-  `lib/format-datetime.ts`, `components/loading/robo-loader.tsx`).
+- Use `/** … */` JSDoc for non-obvious utilities / props.
 - **Do not narrate code** with comments like `// set state` or `// import x`.
-  Comments should explain *why*, not *what*.
-- SQL files start with the standard header banner (see
-  `scripts/create/core/001_roles.sql`).
+  Comments should explain _why_, not _what_.
+- SQL files start with the standard header banner.

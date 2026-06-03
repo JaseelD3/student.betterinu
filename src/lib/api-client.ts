@@ -43,12 +43,14 @@ export type StandaloneAssignment = {
 
 function getApiUrl(path: string) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`
 
+  // If API URL is not set, use relative paths (proxied by next.config.ts in dev)
   if (!apiUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured")
+    return normalizedPath
   }
 
-  return `${apiUrl.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`
+  return `${apiUrl.replace(/\/$/, "")}${normalizedPath}`
 }
 
 export async function apiClient<T>(
@@ -80,7 +82,7 @@ export async function apiClient<T>(
   const response = await fetch(getApiUrl(path), {
     ...restOptions,
     headers: requestHeaders,
-    body: isJsonBody ? JSON.stringify(body) : body,
+    body: isJsonBody ? JSON.stringify(body) : (body as BodyInit),
   })
 
   if (!response.ok) {

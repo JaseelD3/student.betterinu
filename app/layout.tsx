@@ -1,10 +1,28 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import { Geist } from "next/font/google"
+import { Sora, Lato, JetBrains_Mono } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/sonner"
+import { QueryProvider } from "@/context/query-provider"
+import { ThemeProvider } from "@/context/theme-provider"
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600"],
+})
+
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "700"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500"],
+})
 
 export const metadata: Metadata = {
   title: "Betterinu LMS",
@@ -19,27 +37,25 @@ export const metadata: Metadata = {
     description:
       "A weekly skill-building LMS — courses, quizzes, progress, XP, and streaks.",
     images: [
-      {
-        url: "/logo.png",
-        width: 800,
-        height: 600,
-        alt: "Betterinu LMS",
-      },
+      { url: "/logo.png", width: 800, height: 600, alt: "Betterinu LMS" },
     ],
   },
 }
 
-/**
- * Bare root layout. The student route group adds the Navbar and ToastHost.
- */
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body>
-        {children}
-        <Toaster position="top-right" />
+    <html
+      lang="en"
+      className={cn(sora.variable, lato.variable, jetbrainsMono.variable)}
+      suppressHydrationWarning
+    >
+      <body className="font-sans">
+        <ThemeProvider>
+          <QueryProvider>{children}</QueryProvider>
+          <Toaster position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   )

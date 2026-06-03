@@ -1,25 +1,18 @@
 ---
-description: 
----
-
----
-description: How to plan, edit, verify, and report changes in this repo
-alwaysApply: true
+description:
 ---
 
 # Working Workflow
 
-Follow these steps for every non-trivial change. They reflect the user's
-standing rules (readability, modular design, fail-fast, security, full
-execution) and the structure of this codebase.
+Follow these steps for every non-trivial change.
 
 ## 1. Plan Before Editing
 
 - Read the relevant existing files first; match their style exactly.
-- For changes touching ≥3 files or new domains, sketch a plan (todo list)
-  before writing code.
+- For changes touching 3 or more files or new domains, sketch a plan (todo
+  list) before writing code.
 - Prefer **editing existing files** over creating new ones. Only create a new
-  file when there is no clear home in the current folders
+  file when there is no clear home in the current folders.
 
 ## 2. Single Responsibility & Modularity
 
@@ -31,7 +24,7 @@ execution) and the structure of this codebase.
 ## 3. Error Handling & Logging
 
 - Fail fast with descriptive messages, especially around env vars, auth, and
-  DB calls (mirror `lib/auth/firebase-admin.ts`).
+  DB calls.
 - Never silently swallow errors (`try { … } catch {}`). Either rethrow with
   context or surface a user-visible state.
 - Validate user input with the validators under `validators/<domain>/` — do
@@ -47,8 +40,7 @@ execution) and the structure of this codebase.
 
 ## 5. Verification (Run After Edits)
 
-When the change can affect compilation, lint, or formatting, run the
-**existing scripts** from `package.json` (do not invent new ones):
+When the change can affect compilation, lint, or formatting, run in order:
 
 ```bash
 pnpm typecheck   # tsc --noEmit
@@ -56,32 +48,28 @@ pnpm lint        # eslint
 pnpm format      # prettier --write **/*.{ts,tsx}
 ```
 
-Use the workspace's lint diagnostics tool on edited files and fix what you
-introduced (don't fix unrelated pre-existing issues unless asked).
+Fix what you introduced. Don't fix unrelated pre-existing issues unless asked.
 
 ## 6. Reporting
 
-End every substantive change with the project-mandated **folder-structure
-summary** showing which files were created/edited:
+End every substantive change with a folder-structure summary showing which
+files were created or edited:
 
 ```
 root/
 ├── components/
 │   └── layout/
-│       └── form-layout.tsx (edited)
+│       └── form-layout.tsx        (edited)
 ├── hooks/
-│   └── use-unsaved-changes.ts (created)
-└── .cursor/
-    └── rules/
-        └── workflow.mdc (created)
+│   └── use-unsaved-changes.ts     (created)
 ```
 
 ## 7. Don't
 
 - Don't introduce new dependencies without checking `package.json` for an
-  existing equivalent. If you must add one, use the **latest** version via
-  `pnpm add` — never invent a version string.
-- Don't replace `@tabler/icons-react` with another icon library.
+  existing equivalent. If you must add one, use `pnpm add` with the latest
+  version — never invent a version string.
+- Don't replace `@lucide react` with another icon library.
 - Don't bypass `cn()` and concatenate Tailwind class strings manually.
 - Don't add `// eslint-disable …` or `// @ts-ignore` to hide real problems.
 - Don't run `git commit`, `git push`, or destructive git commands unless the
