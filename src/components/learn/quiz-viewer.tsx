@@ -137,14 +137,16 @@ export function QuizViewer({
       <div className="space-y-6 pb-10">
         {/* Score Card */}
         <div
-          className={`rounded-md border-2 p-6 text-center shadow-sm ${state.passed
-            ? "border-green-300 bg-green-50"
-            : "border-red-200 bg-red-50"
-            }`}
+          className={`rounded-md border-2 p-6 text-center shadow-sm ${
+            state.passed
+              ? "border-green-300 bg-green-50"
+              : "border-red-200 bg-red-50"
+          }`}
         >
           <div
-            className={`mb-3 inline-flex size-16 items-center justify-center rounded-full ${state.passed ? "bg-green-100" : "bg-red-100"
-              }`}
+            className={`mb-3 inline-flex size-16 items-center justify-center rounded-full ${
+              state.passed ? "bg-green-100" : "bg-red-100"
+            }`}
           >
             {state.passed ? (
               <Trophy className="size-8 text-green-600" />
@@ -398,10 +400,11 @@ function QuestionBlock({
             {(q.options || []).map((opt, oIdx) => (
               <label
                 key={oIdx}
-                className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-all ${answer === oIdx
-                  ? "border-primary bg-primary/5 shadow-sm"
-                  : "border-default bg-surface hover:border-primary/40"
-                  }`}
+                className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-all ${
+                  answer === oIdx
+                    ? "border-primary bg-primary/5 shadow-sm"
+                    : "border-default bg-surface hover:border-primary/40"
+                }`}
               >
                 <input
                   type="radio"

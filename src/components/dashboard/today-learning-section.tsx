@@ -87,15 +87,15 @@ export function TodayLearningSection({
   // Find the next incomplete day in the active course
   const nextDay = activeCourse
     ? (() => {
-      for (const week of activeCourse.weeks) {
-        for (const day of week.days) {
-          if (!progress.completedDays.includes(day.id)) {
-            return { week, day }
+        for (const week of activeCourse.weeks) {
+          for (const day of week.days) {
+            if (!progress.completedDays.includes(day.id)) {
+              return { week, day }
+            }
           }
         }
-      }
-      return null
-    })()
+        return null
+      })()
     : null
 
   const subModules = nextDay?.day.subModules ?? []
@@ -135,10 +135,11 @@ export function TodayLearningSection({
                 <button
                   key={c.id}
                   onClick={() => setActiveCourseId(c.id)}
-                  className={`shrink-0 rounded-t-lg px-3 py-1.5 text-[10px] font-bold tracking-wide uppercase transition-colors ${activeCourse?.id === c.id
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                    }`}
+                  className={`shrink-0 rounded-t-lg px-3 py-1.5 text-[10px] font-bold tracking-wide uppercase transition-colors ${
+                    activeCourse?.id === c.id
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {c.title.split(" ").slice(0, 3).join(" ")}
                 </button>
@@ -164,10 +165,11 @@ export function TodayLearningSection({
                   {nextDay.day.title}
                 </p>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${completedCount === totalCount && totalCount > 0
-                    ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"
-                    : "bg-muted text-muted-foreground"
-                    }`}
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                    completedCount === totalCount && totalCount > 0
+                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300"
+                      : "bg-muted text-muted-foreground"
+                  }`}
                 >
                   {completedCount}/{totalCount} done
                 </span>
@@ -209,10 +211,11 @@ function SubModuleRow({
   return (
     <Link
       href={href}
-      className={`group flex items-center gap-3 rounded-md px-3 py-2.5 ring-1 transition-all duration-200 hover:shadow-sm ${isCompleted
-        ? "bg-muted/50 ring-border/30"
-        : "bg-card ring-foreground/8 hover:ring-primary/20"
-        }`}
+      className={`group flex items-center gap-3 rounded-md px-3 py-2.5 ring-1 transition-all duration-200 hover:shadow-sm ${
+        isCompleted
+          ? "bg-muted/50 ring-border/30"
+          : "bg-card ring-foreground/8 hover:ring-primary/20"
+      }`}
     >
       {isCompleted ? (
         <CheckCircle2 className="text-primary size-4 shrink-0" />
@@ -227,8 +230,9 @@ function SubModuleRow({
       </span>
 
       <p
-        className={`min-w-0 flex-1 truncate text-xs font-medium ${isCompleted ? "text-muted-foreground line-through" : "text-foreground"
-          }`}
+        className={`min-w-0 flex-1 truncate text-xs font-medium ${
+          isCompleted ? "text-muted-foreground line-through" : "text-foreground"
+        }`}
       >
         {subModule.title}
       </p>

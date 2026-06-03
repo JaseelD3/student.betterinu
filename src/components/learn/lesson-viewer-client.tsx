@@ -72,24 +72,26 @@ function SidebarSubModuleItem({
         .then((data) => {
           if (data.submission) setAssignmentStatus(data.submission.status)
         })
-        .catch(() => { })
+        .catch(() => {})
     }
   }, [module.type, module.id, courseId])
 
   return (
     <Link
       href={`/course/${courseId}/learn/${weekId}/${module.id}`}
-      className={`group relative flex items-center gap-3 rounded-md px-3.5 py-3 transition-all duration-200 ${isActive ? "bg-primary/8 shadow-sm" : "hover:bg-surface"
-        }`}
+      className={`group relative flex items-center gap-3 rounded-md px-3.5 py-3 transition-all duration-200 ${
+        isActive ? "bg-primary/8 shadow-sm" : "hover:bg-surface"
+      }`}
     >
       {/* Step number / check indicator */}
       <div
-        className={`relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all ${isComplete
-          ? "bg-primary text-white"
-          : isActive
-            ? "bg-primary ring-primary/20 text-white ring-2"
-            : "bg-surface border-default text-muted border"
-          }`}
+        className={`relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all ${
+          isComplete
+            ? "bg-primary text-white"
+            : isActive
+              ? "bg-primary ring-primary/20 text-white ring-2"
+              : "bg-surface border-default text-muted border"
+        }`}
       >
         {isComplete ? (
           <CheckCircle2 className="size-3.5" />
@@ -100,10 +102,11 @@ function SidebarSubModuleItem({
 
       <div className="min-w-0 flex-1">
         <p
-          className={`truncate text-[13px] leading-snug font-semibold transition-colors ${isActive
-            ? "text-primary"
-            : "text-foreground group-hover:text-primary"
-            }`}
+          className={`truncate text-[13px] leading-snug font-semibold transition-colors ${
+            isActive
+              ? "text-primary"
+              : "text-foreground group-hover:text-primary"
+          }`}
         >
           {module.title}
         </p>
@@ -521,10 +524,11 @@ export function LessonViewerClient({
                     )
                   }
                   type="button"
-                  className={`flex min-w-[160px] items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold shadow-sm transition-all active:scale-95 ${complete
-                    ? "bg-emerald-600 text-white shadow-emerald-200 hover:bg-emerald-700"
-                    : "bg-primary hover:bg-primary/90 shadow-primary/20 text-white"
-                    }`}
+                  className={`flex min-w-[160px] items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold shadow-sm transition-all active:scale-95 ${
+                    complete
+                      ? "bg-emerald-600 text-white shadow-emerald-200 hover:bg-emerald-700"
+                      : "bg-primary hover:bg-primary/90 shadow-primary/20 text-white"
+                  }`}
                 >
                   {complete && <CheckCircle2 className="size-4 shrink-0" />}
                   {complete ? "Completed" : "Mark Complete"}
@@ -550,7 +554,7 @@ export function LessonViewerClient({
             <div className="justify-self-end">
               {next ? (
                 next.day.id !== day.id &&
-                  !day.subModules.every((m) => isSubModuleComplete(m.id)) ? (
+                !day.subModules.every((m) => isSubModuleComplete(m.id)) ? (
                   <div className="flex flex-col items-end gap-1">
                     <span className="border-default text-muted flex cursor-not-allowed items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold opacity-50">
                       <Lock className="size-3.5 shrink-0" />

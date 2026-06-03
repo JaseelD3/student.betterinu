@@ -219,9 +219,9 @@ function InstallmentRow({
   const pct =
     installment.totalAmount > 0
       ? Math.min(
-        Math.round((installment.paidAmount / installment.totalAmount) * 100),
-        100
-      )
+          Math.round((installment.paidAmount / installment.totalAmount) * 100),
+          100
+        )
       : 0
 
   const hasWaiver = installment.waiverReduction > 0
@@ -279,12 +279,13 @@ function InstallmentRow({
         <div>
           <p className="text-muted-foreground mb-0.5 text-[10px]">Balance </p>
           <p
-            className={`text-sm font-bold ${installment.remainingBalance > 0
+            className={`text-sm font-bold ${
+              installment.remainingBalance > 0
                 ? installment.status === "overdue"
                   ? "text-red-600"
                   : "text-red-600"
                 : "text-green-600"
-              }`}
+            }`}
           >
             {fmt(installment.remainingBalance)}
           </p>
@@ -425,9 +426,9 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
   const pct =
     enrollment.totalAmount > 0
       ? Math.min(
-        Math.round((enrollment.paidAmount / enrollment.totalAmount) * 100),
-        100
-      )
+          Math.round((enrollment.paidAmount / enrollment.totalAmount) * 100),
+          100
+        )
       : 0
 
   const isInstallment = enrollment.paymentType === "installment"
@@ -484,10 +485,11 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
                 Outstanding
               </p>
               <p
-                className={`text-sm font-bold ${enrollment.outstandingBalance > 0
+                className={`text-sm font-bold ${
+                  enrollment.outstandingBalance > 0
                     ? "text-foreground"
                     : "text-green-600"
-                  }`}
+                }`}
               >
                 {fmt(enrollment.outstandingBalance)}
               </p>

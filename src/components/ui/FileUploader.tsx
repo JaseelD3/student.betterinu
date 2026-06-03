@@ -94,10 +94,11 @@ export function FileUploader({
           setDragging(false)
           if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files)
         }}
-        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-6 text-center transition-colors ${dragging
-          ? "border-primary bg-primary/5"
-          : "border-default bg-surface hover:border-primary/60 hover:bg-primary/5"
-          }`}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-6 text-center transition-colors ${
+          dragging
+            ? "border-primary bg-primary/5"
+            : "border-default bg-surface hover:border-primary/60 hover:bg-primary/5"
+        }`}
       >
         {uploading ? (
           <RoboLoader size="sm" />

@@ -45,7 +45,7 @@ export function QuizQuestion({
                 className={cn(
                   "h-auto justify-start py-4 text-left",
                   isSelected &&
-                  "border-focus bg-primary text-primary-foreground"
+                    "border-focus bg-primary text-primary-foreground"
                 )}
                 key={option}
                 onClick={() => onSelect(option)}

@@ -376,30 +376,30 @@ export function AssignmentViewer({
           {/* File / image upload */}
           {(allowedTypes.includes("file") ||
             allowedTypes.includes("image")) && (
-              <div>
-                <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
-                  {allowedTypes.includes("image") &&
+            <div>
+              <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
+                {allowedTypes.includes("image") &&
+                !allowedTypes.includes("file")
+                  ? "Image Upload"
+                  : "File Upload"}
+              </label>
+              {canEdit ? (
+                <FileUploader
+                  folder={`submissions/${module.id}`}
+                  files={files}
+                  onChange={setFiles}
+                  accept={
+                    allowedTypes.includes("image") &&
                     !allowedTypes.includes("file")
-                    ? "Image Upload"
-                    : "File Upload"}
-                </label>
-                {canEdit ? (
-                  <FileUploader
-                    folder={`submissions/${module.id}`}
-                    files={files}
-                    onChange={setFiles}
-                    accept={
-                      allowedTypes.includes("image") &&
-                        !allowedTypes.includes("file")
-                        ? "image/*"
-                        : undefined
-                    }
-                  />
-                ) : (
-                  <FileViewer files={files} title="Your Submitted Files" />
-                )}
-              </div>
-            )}
+                      ? "image/*"
+                      : undefined
+                  }
+                />
+              ) : (
+                <FileViewer files={files} title="Your Submitted Files" />
+              )}
+            </div>
+          )}
 
           {error && (
             <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">

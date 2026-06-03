@@ -53,7 +53,7 @@ export function SubModuleItem({
             }
           }
         })
-        .catch(() => { })
+        .catch(() => {})
     }
   }, [module.type, module.id, courseId, complete, markSubModuleComplete])
 

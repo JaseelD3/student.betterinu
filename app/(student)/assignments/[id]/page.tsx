@@ -181,10 +181,11 @@ export default function AssignmentDetailPage() {
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${assignment.scope === "common"
-                ? "border-purple-200 bg-purple-50 text-purple-700"
-                : "border-blue-200 bg-blue-50 text-blue-700"
-                }`}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
+                assignment.scope === "common"
+                  ? "border-purple-200 bg-purple-50 text-purple-700"
+                  : "border-blue-200 bg-blue-50 text-blue-700"
+              }`}
             >
               {assignment.scope === "common" ? (
                 <>

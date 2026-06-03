@@ -93,7 +93,7 @@ export function Sidebar({
                               'button[data-state="closed"]'
                             )
                             if (trigger) {
-                              ; (trigger as HTMLElement).click()
+                              ;(trigger as HTMLElement).click()
                             }
                             weekEl.scrollIntoView({
                               behavior: "smooth",
@@ -102,12 +102,13 @@ export function Sidebar({
                           }
                           history.pushState(null, "", `#${week.id}`)
                         }}
-                        className={`flex-1 cursor-pointer text-left text-xs leading-snug ${unlocked
+                        className={`flex-1 cursor-pointer text-left text-xs leading-snug ${
+                          unlocked
                             ? active
                               ? "text-primary font-bold"
                               : "text-foreground hover:text-primary font-semibold"
                             : "text-muted pointer-events-none font-semibold"
-                          } focus-ring`}
+                        } focus-ring`}
                         href={`#${week.id}`}
                       >
                         {week.title.replace(":", " —")}

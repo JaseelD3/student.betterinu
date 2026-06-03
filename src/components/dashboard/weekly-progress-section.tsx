@@ -97,8 +97,9 @@ function CourseWeekProgress({
               {/* Progress bar */}
               <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
                 <div
-                  className={`h-full rounded-full transition-all duration-700 ${isWeekComplete ? "bg-primary" : "bg-primary/60"
-                    }`}
+                  className={`h-full rounded-full transition-all duration-700 ${
+                    isWeekComplete ? "bg-primary" : "bg-primary/60"
+                  }`}
                   style={{ width: `${pct}%` }}
                 />
               </div>

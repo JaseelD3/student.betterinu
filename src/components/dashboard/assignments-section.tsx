@@ -258,10 +258,11 @@ function AssignmentRow({
   return (
     <Link
       href={item.href}
-      className={`group flex items-center gap-3 rounded-md px-3 py-2.5 ring-1 transition-all duration-200 hover:shadow-sm ${isOverdue
-        ? "bg-destructive/5 ring-destructive/20 hover:ring-destructive/30"
-        : "bg-card ring-foreground/8 hover:ring-primary/20"
-        }`}
+      className={`group flex items-center gap-3 rounded-md px-3 py-2.5 ring-1 transition-all duration-200 hover:shadow-sm ${
+        isOverdue
+          ? "bg-destructive/5 ring-destructive/20 hover:ring-destructive/30"
+          : "bg-card ring-foreground/8 hover:ring-primary/20"
+      }`}
     >
       <span className={`size-2 shrink-0 rounded-full ${cfg.dot}`} />
       <div className="min-w-0 flex-1">
@@ -280,8 +281,9 @@ function AssignmentRow({
         </span>
         {due && (
           <span
-            className={`text-[9px] font-medium ${due.isOverdue ? "text-destructive" : "text-muted-foreground"
-              }`}
+            className={`text-[9px] font-medium ${
+              due.isOverdue ? "text-destructive" : "text-muted-foreground"
+            }`}
           >
             {due.label}
           </span>

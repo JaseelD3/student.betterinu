@@ -166,10 +166,11 @@ export function FeePaymentsSection() {
                 {enr.courseTitle}
               </p>
               <span
-                className={`shrink-0 text-[11px] font-bold ${enr.outstandingBalance > 0
-                  ? "text-amber-600 dark:text-amber-400"
-                  : "text-emerald-600 dark:text-emerald-400"
-                  }`}
+                className={`shrink-0 text-[11px] font-bold ${
+                  enr.outstandingBalance > 0
+                    ? "text-amber-600 dark:text-amber-400"
+                    : "text-emerald-600 dark:text-emerald-400"
+                }`}
               >
                 {enr.outstandingBalance > 0
                   ? `${fmtCurrency(enr.outstandingBalance)} due`
