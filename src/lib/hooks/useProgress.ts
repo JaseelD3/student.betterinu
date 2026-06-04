@@ -57,7 +57,7 @@ export function useProgress() {
     if (raw) {
       try {
         setProgress({ ...initialProgress, ...JSON.parse(raw) })
-      } catch (e) {}
+      } catch (e) { }
     }
     setIsHydrated(true)
 
@@ -217,9 +217,9 @@ export function useProgress() {
           : current.badges
         const completedWeeks = result.passed
           ? unique([
-              ...current.completedWeeks,
-              `${result.courseId}:${result.weekId}`,
-            ])
+            ...current.completedWeeks,
+            `${result.courseId}:${result.weekId}`,
+          ])
           : current.completedWeeks
         const xp = current.xp + (result.passed ? 150 : 30)
 

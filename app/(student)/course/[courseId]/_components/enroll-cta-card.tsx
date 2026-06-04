@@ -14,7 +14,7 @@ type EnrollCtaCardProps = {
 export function EnrollCtaCard({ courseId }: EnrollCtaCardProps) {
   return (
     <Card>
-      <CardContent className="flex flex-col items-center gap-2 pt-5 text-center">
+      {/* <CardContent className="flex flex-col items-center gap-2 pt-5 text-center">
         <div className="from-primary/10 to-accent/5 flex size-10 items-center justify-center rounded-full bg-gradient-to-br">
           <Sparkles className="text-primary size-5" aria-hidden />
         </div>
@@ -24,7 +24,7 @@ export function EnrollCtaCard({ courseId }: EnrollCtaCardProps) {
         <p className="text-muted-foreground text-xs">
           Enroll now and get instant access to all course materials.
         </p>
-      </CardContent>
+      </CardContent> */}
       <Separator />
       <CardFooter className="pt-4">
         <EnrollButton courseId={courseId} size="md" className="w-full" />

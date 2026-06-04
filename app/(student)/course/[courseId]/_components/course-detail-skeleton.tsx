@@ -4,9 +4,6 @@ import { Separator } from "@/components/ui/separator"
 export function CourseDetailSkeleton() {
   return (
     <div className="flex min-h-0 w-full flex-col gap-6 p-4 sm:p-6">
-      {/* Breadcrumb */}
-      <Skeleton className="h-4 w-48" />
-
       {/* Hero */}
       <div className="bg-card ring-foreground/10 flex flex-col gap-6 overflow-hidden rounded-md p-6 ring-1 lg:flex-row">
         <div className="flex flex-1 flex-col gap-4">
