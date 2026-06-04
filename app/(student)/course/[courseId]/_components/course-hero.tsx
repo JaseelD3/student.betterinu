@@ -2,7 +2,7 @@ import type { CSSProperties } from "react"
 import Image from "next/image"
 import { DM_Sans, DM_Serif_Display } from "next/font/google"
 
-import { BookOpen, Clock, Laptop, UserRound } from "lucide-react"
+import { BookOpen, Clock, Laptop, User } from "lucide-react"
 
 import { Card } from "@/components/ui/card"
 import { EnrollButton } from "@/components/course/enroll-button"
@@ -49,7 +49,7 @@ export function CourseHero({ course }: { course: Course }) {
             {/* Meta chips */}
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="border-border bg-muted/50 text-muted-foreground inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[13px]">
-                <UserRound className="size-3.5" aria-hidden />
+                <User className="size-3.5" aria-hidden />
                 {course.instructor}
               </span>
               <span className="border-border bg-muted/50 text-muted-foreground inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[13px]">

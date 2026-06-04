@@ -1,74 +1,84 @@
 "use client"
 
-import { WelcomeHeader } from "@/components/dashboard/welcome-header"
-import { StatsSummary } from "@/components/dashboard/stats-summary"
-import { MyCoursesSection } from "@/components/dashboard/my-courses-section"
-import { TodayLearningSection } from "@/components/dashboard/today-learning-section"
-import { WeeklyProgressSection } from "@/components/dashboard/weekly-progress-section"
-import { AssignmentsSection } from "@/components/dashboard/assignments-section"
-import { FeePaymentsSection } from "@/components/dashboard/fee-payments-section"
+import { Separator } from "@/components/ui/separator"
+import { DashboardStats } from "@/components/dashboard/dashboard-stats"
+import { ContinueLearningSection } from "@/components/dashboard/continue-learning-section"
+import { UpcomingDeadlinesSection } from "@/components/dashboard/upcoming-deadlines-section"
+import { RecentActivitySection } from "@/components/dashboard/recent-activity-section"
 import {
   useDashboardCourses,
   useDashboardAssignments,
-  useDashboardStandaloneTasks,
 } from "@/lib/hooks/use-dashboard"
-import { useStudentFee } from "@/lib/hooks/useStudentFee"
+import { useAuthStore } from "@/store/useAuthStore"
+
+function getGreeting() {
+  const h = new Date().getHours()
+  if (h < 12) return "Good morning"
+  if (h < 17) return "Good afternoon"
+  return "Good evening"
+}
+
+function formatDate() {
+  return new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+}
 
 export function DashboardShell() {
-  const { data: courses, isLoading: isLoadingCourses } = useDashboardCourses()
+  const { student } = useAuthStore()
+  const firstName = student?.name?.split(" ")[0] ?? null
 
-  const { data: submissions, isLoading: isLoadingSubmissions } =
+  const { data: courses, isLoading: isLoadingCourses } = useDashboardCourses()
+  const { data: assignments, isLoading: isLoadingAssignments } =
     useDashboardAssignments()
 
-  const { data: standaloneTasks, isLoading: isLoadingStandalone } =
-    useDashboardStandaloneTasks()
-
-  const { data: feeEnrollments, isLoading: isLoadingFee } = useStudentFee()
-
   return (
-    <div className="mx-auto max-w-7xl space-y-5 p-4 sm:p-6">
-      {/* Header */}
-      <WelcomeHeader
-        courseCount={isLoadingCourses ? null : (courses?.length ?? 0)}
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6">
+      {/* ── Page header ──────────────────────────────────────────────── */}
+      <header className="flex flex-col gap-1">
+        <h1 className="font-display text-foreground text-2xl font-semibold sm:text-3xl">
+          {getGreeting()}
+          {firstName ? `, ${firstName}` : ""}
+        </h1>
+        <p className="text-muted-foreground text-sm">{formatDate()}</p>
+      </header>
+
+      <Separator />
+
+      {/* ── Stats row ────────────────────────────────────────────────── */}
+      <DashboardStats
+        courses={courses}
+        assignments={assignments}
+        isLoadingCourses={isLoadingCourses}
+        isLoadingAssignments={isLoadingAssignments}
       />
 
-      {/* Stats summary row */}
-      <StatsSummary
-        submissions={submissions}
-        feeEnrollments={feeEnrollments}
-        isLoadingSubmissions={isLoadingSubmissions}
-        isLoadingFee={isLoadingFee}
-      />
+      {/* ── Two-column section ───────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
+        {/* Left — 65% */}
+        <ContinueLearningSection
+          courses={courses}
+          isLoading={isLoadingCourses}
+        />
 
-      {/* Main two-column grid */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
-        {/* Left column */}
-        <div className="flex flex-col gap-5">
-          <MyCoursesSection courses={courses} isLoading={isLoadingCourses} />
-
-          <TodayLearningSection
-            courses={courses}
-            isLoading={isLoadingCourses}
-          />
-
-          <WeeklyProgressSection
-            courses={courses}
-            isLoading={isLoadingCourses}
-          />
-        </div>
-
-        {/* Right column */}
-        <div className="flex flex-col gap-5">
-          <AssignmentsSection
-            courses={courses}
-            submissions={submissions}
-            standaloneTasks={standaloneTasks}
-            isLoading={isLoadingSubmissions || isLoadingStandalone}
-          />
-
-          <FeePaymentsSection />
-        </div>
+        {/* Right — 35% */}
+        <UpcomingDeadlinesSection
+          assignments={assignments}
+          isLoading={isLoadingAssignments}
+        />
       </div>
+
+      <Separator />
+
+      {/* ── Recent activity feed ─────────────────────────────────────── */}
+      <RecentActivitySection
+        courses={courses}
+        assignments={assignments}
+        isLoading={isLoadingCourses || isLoadingAssignments}
+      />
     </div>
   )
 }

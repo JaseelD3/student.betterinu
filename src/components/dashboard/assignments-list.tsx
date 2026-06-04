@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import {
   CheckCircle2,
   Clock,
@@ -8,26 +7,22 @@ import {
   ClipboardCheck,
   AlertCircle,
 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from "next/link"
-import type { Course } from "@/types"
-import { studentApi } from "@/lib/api-client"
+import { useDashboardAssignments } from "@/lib/hooks/use-dashboard"
+import type { DashboardAssignment } from "@/types/dashboard"
+import type { SubmissionStatus } from "@/types/assignment"
 
-interface Submission {
-  id: string
-  assignment_id: string
-  course_id: string
-  week_id: string
-  day_id: string
-  course_title: string
-  submitted_text: string
-  submitted_at: string
-  status: "pending" | "approved" | "rejected"
-  feedback?: string
-}
-
-const STATUS_CONFIG = {
+const STATUS_CONFIG: Record<
+  SubmissionStatus,
+  {
+    Icon: React.ElementType
+    label: string
+    textCls: string
+    bgCls: string
+  }
+> = {
   todo: {
     Icon: AlertCircle,
     label: "To Do",
@@ -54,21 +49,17 @@ const STATUS_CONFIG = {
   },
 }
 
-export function AssignmentsList({
-  enrolledCourses,
-}: {
-  enrolledCourses: Course[] | null
-}) {
-  const [submissions, setSubmissions] = useState<Submission[] | null>(null)
+const SORT_ORDER: Record<SubmissionStatus, number> = {
+  todo: 0,
+  rejected: 1,
+  pending: 2,
+  approved: 3,
+}
 
-  useEffect(() => {
-    studentApi
-      .listAssignments()
-      .then((data) => setSubmissions(data.submissions ?? []))
-      .catch(() => setSubmissions([]))
-  }, [])
+export function AssignmentsList() {
+  const { data: assignments, isLoading } = useDashboardAssignments()
 
-  if (submissions === null || enrolledCourses === null) {
+  if (isLoading) {
     return (
       <Card>
         <CardContent className="space-y-4 pt-4">
@@ -79,44 +70,11 @@ export function AssignmentsList({
     )
   }
 
-  // Find all assignments from enrolled courses
-  const allAssignments: any[] = []
-  enrolledCourses.forEach((course) => {
-    course.weeks.forEach((week) => {
-      week.days.forEach((day) => {
-        day.subModules.forEach((mod) => {
-          if (mod.type === "assignment") {
-            // Find if there's a submission for this
-            const submission = submissions.find(
-              (s) => s.assignment_id === mod.id
-            )
-            allAssignments.push({
-              id: submission?.id || `unsub-${mod.id}`,
-              assignment_id: mod.id,
-              course_id: course.id,
-              week_id: week.id,
-              day_id: day.id,
-              course_title: course.title,
-              assignment_title: mod.title || "Assignment",
-              submitted_at: submission?.submitted_at,
-              status: submission ? submission.status : "todo",
-              feedback: submission?.feedback,
-            })
-          }
-        })
-      })
-    })
-  })
-
-  // Sort: To Do first, then Revise (rejected), then Pending, then Approved
-  const sortOrder = { todo: 0, rejected: 1, pending: 2, approved: 3 }
-  allAssignments.sort(
-    (a, b) =>
-      sortOrder[a.status as keyof typeof sortOrder] -
-      sortOrder[b.status as keyof typeof sortOrder]
+  const sorted = [...(assignments ?? [])].sort(
+    (a, b) => SORT_ORDER[a.status] - SORT_ORDER[b.status]
   )
 
-  if (allAssignments.length === 0) {
+  if (sorted.length === 0) {
     return (
       <Card className="border-dashed">
         <CardContent className="text-muted-foreground flex flex-col items-center py-12 text-center">
@@ -131,51 +89,51 @@ export function AssignmentsList({
     <Card>
       <CardContent className="px-0 pt-0 pb-0">
         <div className="divide-border divide-y">
-          {allAssignments.map((sub) => {
-            const status =
-              STATUS_CONFIG[sub.status as keyof typeof STATUS_CONFIG] ||
-              STATUS_CONFIG.todo
-            const linkHref = `/course/${sub.course_id}/learn/${sub.week_id}/${sub.assignment_id}`
-
-            return (
-              <Link
-                key={sub.id}
-                href={linkHref}
-                className="hover:bg-muted/50 focus-ring flex flex-col p-4 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-foreground truncate text-sm font-semibold">
-                      {sub.assignment_title}
-                    </p>
-                    <p className="text-muted-foreground mt-0.5 truncate text-[11px]">
-                      {sub.course_title}
-                    </p>
-                    {sub.submitted_at && (
-                      <p className="text-muted-foreground mt-1 text-[10px]">
-                        Submitted:{" "}
-                        {new Date(sub.submitted_at).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
-                  <span
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase ${status.bgCls} ${status.textCls}`}
-                  >
-                    <status.Icon className="size-3" />
-                    {status.label}
-                  </span>
-                </div>
-                {sub.feedback && (
-                  <div className="bg-surface border-border text-foreground mt-2 rounded border p-2 text-xs">
-                    <strong className="text-muted-foreground">Feedback:</strong>{" "}
-                    {sub.feedback}
-                  </div>
-                )}
-              </Link>
-            )
-          })}
+          {sorted.map((sub) => (
+            <AssignmentRow key={sub.id} assignment={sub} />
+          ))}
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+function AssignmentRow({ assignment }: { assignment: DashboardAssignment }) {
+  const status = STATUS_CONFIG[assignment.status]
+  const linkHref = `/course/${assignment.courseId}/assignments/${assignment.id}`
+
+  return (
+    <Link
+      href={linkHref}
+      className="hover:bg-muted/50 focus-ring flex flex-col p-4 transition-colors"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <p className="text-foreground truncate text-sm font-semibold">
+            {assignment.title}
+          </p>
+          <p className="text-muted-foreground mt-0.5 truncate text-[11px]">
+            {assignment.courseTitle}
+          </p>
+          {assignment.dueDate && (
+            <p className="text-muted-foreground mt-1 text-[10px]">
+              Due: {new Date(assignment.dueDate).toLocaleDateString()}
+            </p>
+          )}
+        </div>
+        <span
+          className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase ${status.bgCls} ${status.textCls}`}
+        >
+          <status.Icon className="size-3" />
+          {status.label}
+        </span>
+      </div>
+      {assignment.feedback && (
+        <div className="bg-surface border-border text-foreground mt-2 rounded border p-2 text-xs">
+          <strong className="text-muted-foreground">Feedback:</strong>{" "}
+          {assignment.feedback}
+        </div>
+      )}
+    </Link>
   )
 }

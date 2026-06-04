@@ -1,10 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { GraduationCap, Sparkles, Flame } from "lucide-react"
-import { getClientAuth } from "@/lib/firebase-client"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useProgress } from "@/lib/hooks/useProgress"
+import { useAuthStore } from "@/store/useAuthStore"
 
 type WelcomeHeaderProps = {
   courseCount: number | null
@@ -28,17 +27,12 @@ function getGreeting() {
 }
 
 export function WelcomeHeader({ courseCount }: WelcomeHeaderProps) {
-  const [name, setName] = useState<string | null>(null)
-  const [email, setEmail] = useState<string | null>(null)
+  /** Read name/email from the store — hydrated by StudentAuthGuard */
+  const { student } = useAuthStore()
   const { progress } = useProgress()
 
-  useEffect(() => {
-    return getClientAuth().onAuthStateChanged((user) => {
-      setName(user?.displayName ?? null)
-      setEmail(user?.email ?? null)
-    })
-  }, [])
-
+  const name = student?.name ?? null
+  const email = student?.email ?? null
   const greeting = getGreeting()
   const firstName = name ? name.split(" ")[0] : null
 

@@ -8,12 +8,12 @@ import {
 } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useProgress } from "@/lib/hooks/useProgress"
-import type { AssignmentSubmission } from "@/lib/api-client"
-import type { StudentFeeEnrollment } from "@/lib/services/student-fee-service"
+import type { DashboardAssignment } from "@/types/dashboard"
+import type { FeeDetail } from "@/types/fee"
 
 type StatsSummaryProps = {
-  submissions: AssignmentSubmission[] | undefined
-  feeEnrollments: StudentFeeEnrollment[] | undefined
+  submissions: DashboardAssignment[] | undefined
+  feeEnrollments: FeeDetail | undefined
   isLoadingSubmissions: boolean
   isLoadingFee: boolean
 }
@@ -32,10 +32,8 @@ export function StatsSummary({
   const totalPending =
     submissions?.filter((s) => s.status === "pending").length ?? 0
 
-  const totalPaid =
-    feeEnrollments?.reduce((sum, e) => sum + e.paidAmount, 0) ?? 0
-  const totalOutstanding =
-    feeEnrollments?.reduce((sum, e) => sum + e.outstandingBalance, 0) ?? 0
+  const totalPaid = feeEnrollments?.paidAmount ?? 0
+  const totalOutstanding = feeEnrollments?.outstandingBalance ?? 0
 
   const stats = [
     {

@@ -11,13 +11,11 @@ import {
   ClipboardList,
 } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
-import type { AssignmentSubmission } from "@/lib/api-client"
-import type { StandaloneAssignment } from "@/lib/api-client"
-import type { Course } from "@/types"
+import type { DashboardAssignment } from "@/types/dashboard"
+import type { StandaloneAssignment } from "@/types/assignment"
 
 type AssignmentsSectionProps = {
-  courses: Course[] | undefined
-  submissions: AssignmentSubmission[] | undefined
+  submissions: DashboardAssignment[] | undefined
   standaloneTasks: StandaloneAssignment[] | undefined
   isLoading: boolean
 }
@@ -63,7 +61,6 @@ function fmtDate(iso: string | null | undefined) {
 }
 
 export function AssignmentsSection({
-  courses,
   submissions,
   standaloneTasks,
   isLoading,
@@ -79,38 +76,27 @@ export function AssignmentsSection({
     feedback?: string | null
   }
 
-  const courseItems: FlatItem[] = []
-  if (courses && submissions) {
-    courses.forEach((course) => {
-      course.weeks?.forEach((week) => {
-        week.days?.forEach((day) => {
-          day.subModules?.forEach((sm) => {
-            if (sm.type !== "assignment") return
-            const sub = submissions.find((s) => s.assignment_id === sm.id)
-            courseItems.push({
-              id: sub?.id ?? `unsub-${sm.id}`,
-              title: sm.title || "Assignment",
-              courseTitle: course.title,
-              href: `/course/${course.id}/learn/${week.id}/${sm.id}`,
-              status: sub ? sub.status : "todo",
-              dueDate: sm.assignmentData?.dueDate ?? null,
-              feedback: sub?.feedback,
-            })
-          })
-        })
-      })
-    })
-  }
+  /** DashboardAssignment already carries pre-joined fields — no need to
+   *  traverse course.weeks. Map it directly to the flat display type. */
+  const courseItems: FlatItem[] = (submissions ?? []).map((s) => ({
+    id: s.id,
+    title: s.title,
+    courseTitle: s.courseTitle,
+    href: `/course/${s.courseId}/assignments/${s.id}`,
+    status: s.status,
+    dueDate: s.dueDate,
+    feedback: s.feedback,
+  }))
 
-  // Standalone tasks
+  // Standalone tasks — map camelCase new type fields
   const standaloneItems: FlatItem[] =
     standaloneTasks?.map((t) => ({
-      id: t.assignment_id,
+      id: t.assignmentId,
       title: t.title,
-      courseTitle: t.course_title ?? "Standalone Task",
-      href: `/assignments/${t.assignment_id}`,
-      status: (t.submission_status ?? "todo") as FlatItem["status"],
-      dueDate: t.due_date,
+      courseTitle: t.courseTitle ?? "Standalone Task",
+      href: `/assignments/${t.assignmentId}`,
+      status: (t.submissionStatus ?? "todo") as FlatItem["status"],
+      dueDate: t.dueDate,
       feedback: null,
     })) ?? []
 
