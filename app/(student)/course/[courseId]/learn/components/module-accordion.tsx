@@ -1,19 +1,19 @@
 "use client"
 
 import { useMemo } from "react"
+import { Lock } from "lucide-react"
 import type { CourseId, Day } from "@/types"
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
 import { useProgress } from "@/lib/hooks/useProgress"
+import { cn } from "@/lib/utils"
 import { ProgressBar } from "./progress-bar"
 import { SubModuleItem } from "./sub-module-item"
 import { CompletionBadge } from "./completion-badge"
-
-import { Lock } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 
 export function ModuleAccordion({
   courseId,
@@ -27,9 +27,9 @@ export function ModuleAccordion({
   isLocked?: boolean
 }) {
   const { isSubModuleComplete, isDayComplete } = useProgress()
+
   const completeCount = useMemo(
-    () =>
-      day.subModules.filter((module) => isSubModuleComplete(module.id)).length,
+    () => day.subModules.filter((m) => isSubModuleComplete(m.id)).length,
     [day.subModules, isSubModuleComplete]
   )
   const percent = day.subModules.length
@@ -38,27 +38,36 @@ export function ModuleAccordion({
 
   return (
     <section
-      className={`border-default rounded-md border bg-white px-2 py-0 shadow-sm transition-opacity ${isLocked ? "opacity-60 grayscale-[0.2]" : ""}`}
+      className={cn(
+        "border-border bg-card overflow-hidden rounded-md border transition-opacity",
+        isLocked && "pointer-events-none opacity-50"
+      )}
       id={day.id}
     >
       <AccordionItem value={day.id} className="border-b-0">
-        <AccordionTrigger className="px-2 py-4 hover:no-underline [&[data-state=open]>span>svg]:rotate-180">
-          <span className="flex w-full flex-col gap-3 px-2 text-left sm:flex-row sm:items-center sm:justify-between">
-            <span className="flex items-center gap-3">
-              <span>
-                {/* <span className="block text-[11px] font-bold uppercase tracking-widest text-primary">{day.label}</span> */}
-                <span className="font-display text-foreground text-xl font-bold tracking-tight">
-                  {day.title}
-                </span>
-              </span>
+        <AccordionTrigger
+          className={cn(
+            "hover:no-underline px-4 py-3 [&[data-state=open]>span>svg]:rotate-180",
+            isLocked && "cursor-default"
+          )}
+        >
+          <span className="flex w-full items-center justify-between gap-3 text-left">
+            {/* Day title */}
+            <span className="font-heading text-foreground text-sm font-bold leading-snug">
+              {day.title}  
             </span>
-            {isLocked ? (
-              <Badge variant="outline" className="text-muted mr-4">
-                <Lock className="mr-1 size-3" aria-hidden />
-                Locked
-              </Badge>
-            ) : (
-              <span className="mr-4">
+
+            {/* Right badge */}
+            <span className="shrink-0">
+              {isLocked ? (
+                <Badge
+                  variant="outline"
+                  className="text-muted-foreground gap-1 text-[11px]"
+                >
+                  <Lock className="size-3" aria-hidden />
+                  Locked
+                </Badge>
+              ) : (
                 <CompletionBadge
                   complete={
                     isDayComplete(day.id) ||
@@ -66,25 +75,27 @@ export function ModuleAccordion({
                       completeCount === day.subModules.length)
                   }
                 />
-              </span>
-            )}
+              )}
+            </span>
           </span>
         </AccordionTrigger>
+
         <AccordionContent>
-          <div className="px-4 pb-4">
+          <div className="border-border border-t px-4 pt-3 pb-4">
+            {/* Locked state message */}
             {isLocked ? (
-              <div className="border-default bg-surface text-muted flex flex-col items-center justify-center rounded-md border border-dashed py-8 text-center">
-                <Lock className="mb-3 size-8 opacity-50" aria-hidden />
-                <p className="text-foreground font-bold">This day is locked</p>
-                <p className="mt-1 max-w-sm text-sm">
-                  Complete all lessons in the previous day to unlock this
+              <div className="border-border text-muted-foreground flex flex-col items-center justify-center gap-2 rounded-md border border-dashed py-6 text-center">
+                <Lock className="size-5 opacity-40" aria-hidden />
+                <p className="text-xs font-semibold">
+                  Complete the previous day&apos;s lessons to unlock this
                   content.
                 </p>
               </div>
             ) : (
               <>
-                <div className="bg-surface mb-5 space-y-2 rounded-md p-4">
-                  <div className="text-primary flex items-center justify-between text-[11px] font-bold tracking-widest uppercase">
+                {/* Day progress */}
+                <div className="bg-muted/50 mb-3 space-y-1.5 rounded-md px-3 py-2.5">
+                  <div className="text-primary flex items-center justify-between text-[11px] font-bold uppercase tracking-widest">
                     <span>Day progress</span>
                     <span>
                       {completeCount} / {day.subModules.length}
@@ -95,13 +106,17 @@ export function ModuleAccordion({
                     label={`${day.title} progress`}
                   />
                 </div>
-                <div className="grid gap-3">
+
+                {/* Lesson rows */}
+                <div className="grid gap-1.5">
                   {day.subModules.map((module) => (
                     <SubModuleItem
                       courseId={courseId}
                       key={module.id}
                       module={module}
                       weekId={weekId}
+                      dayId={day.id}
+                      daySubModulesIds={day.subModules.map((m) => m.id)}
                     />
                   ))}
                 </div>

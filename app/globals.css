@@ -20,8 +20,11 @@
   --destructive: oklch(0.6257 0.2058 29.0773);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.9436 0.0051 228.8204);
+  --border-strong: oklch(0.80 0.01 228.8204);
   --input: oklch(0.9436 0.0051 228.8204);
   --ring: oklch(0.761 0.2015 149.7403);
+  --progress-status: oklch(0.92 0.04 240.0);
+  --progress-status-foreground: oklch(0.4 0.16 240.0);
   --chart-1: oklch(0.761 0.2015 149.7403);
   --chart-2: oklch(0.4335 0.0754 182.2315);
   --chart-3: oklch(0.5762 0.0995 182.3964);
@@ -84,8 +87,11 @@
   --destructive: oklch(0.6257 0.2058 29.0773);
   --destructive-foreground: oklch(0.9436 0.0051 228.8204);
   --border: oklch(0.3351 0.0253 234.8586);
+  --border-strong: oklch(0.45 0.02 234.8586);
   --input: oklch(0.3351 0.0253 234.8586);
   --ring: oklch(0.6509 0.1283 170.4258);
+  --progress-status: oklch(0.25 0.06 240.0);
+  --progress-status-foreground: oklch(0.85 0.05 240.0);
   --chart-1: oklch(0.761 0.2015 149.7403);
   --chart-2: oklch(0.6509 0.1283 170.4258);
   --chart-3: oklch(0.5762 0.0995 182.3964);
@@ -145,7 +151,10 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-progress-status: var(--progress-status);
+  --color-progress-status-foreground: var(--progress-status-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -182,12 +191,18 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
+
   h1,
   h2,
   h3,

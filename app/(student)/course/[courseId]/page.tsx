@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-
+import { PageWrapper } from "@/components/layout/page-wrapper"
 import { CourseDetailClient } from "./_components/course-detail-client"
 
 type PageProps = {
@@ -19,5 +19,9 @@ export async function generateMetadata({
 export default async function CourseDetailPage({ params }: PageProps) {
   const { courseId } = await params
 
-  return <CourseDetailClient courseId={courseId} />
+  return (
+    <PageWrapper>
+      <CourseDetailClient courseId={courseId} />
+    </PageWrapper>
+  )
 }

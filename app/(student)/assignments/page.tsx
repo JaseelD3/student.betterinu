@@ -125,7 +125,7 @@ export default function MyAssignmentsPage() {
 
   return (
     <PageWrapper>
-      <div className="mx-auto max-w-7xl px-4 pt-8 pb-16">
+      <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-6">
           <div className="mb-1 flex items-center gap-3">

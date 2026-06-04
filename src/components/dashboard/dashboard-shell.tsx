@@ -36,7 +36,7 @@ export function DashboardShell() {
     useDashboardAssignments()
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8">
       {/* ── Page header ──────────────────────────────────────────────── */}
       <header className="flex flex-col gap-1">
         <h1 className="font-display text-foreground text-2xl font-semibold sm:text-3xl">

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { PageWrapper } from "@/components/layout/page-wrapper"
-import { LearnClient } from "@/components/learn/learn-client"
+import { LearnClient } from "./components/learn-client"
 import RoboLoader from "@/components/loading/robo-loader"
 import { studentApi } from "@/lib/api-client"
 import type { Course } from "@/types"
@@ -22,7 +22,7 @@ export default function CourseLearnPage() {
   if (!course) {
     return (
       <PageWrapper>
-        <div className="flex h-64 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center">
           <RoboLoader size="md" />
         </div>
       </PageWrapper>
@@ -30,10 +30,10 @@ export default function CourseLearnPage() {
   }
 
   return (
-    <PageWrapper>
-      <div className="mx-auto max-w-7xl">
-        <LearnClient course={course} />
-      </div>
+    // noPadding — LearnClient applies its own padding so the left sidebar
+    // can bleed flush to the left edge while the right column gets p-4 sm:p-6
+    <PageWrapper noPadding className="pb-16 md:pb-0">
+      <LearnClient course={course} />
     </PageWrapper>
   )
 }

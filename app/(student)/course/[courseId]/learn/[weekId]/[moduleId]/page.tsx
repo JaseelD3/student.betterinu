@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { LessonViewerClient } from "@/components/learn/lesson-viewer-client"
+import { LessonViewerClient } from "../../components/lesson-viewer-client"
 import RoboLoader from "@/components/loading/robo-loader"
 import { studentApi } from "@/lib/api-client"
 import type { Course, Day, SubModule, Week } from "@/types"

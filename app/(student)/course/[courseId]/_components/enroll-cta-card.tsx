@@ -3,7 +3,7 @@
 import { Sparkles } from "lucide-react"
 
 import type { CourseId } from "@/types"
-import { EnrollButton } from "@/components/course/enroll-button"
+import { EnrollButton } from "./enroll-button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 

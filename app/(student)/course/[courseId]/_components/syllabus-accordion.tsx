@@ -84,7 +84,7 @@ export function SyllabusAccordion({ course }: SyllabusAccordionProps) {
                         />
                       )}
                       <span className="text-foreground text-base font-semibold">
-                        {week.title}
+                        {week.title} 
                       </span>
                       {week.isShared && (
                         <Badge variant="secondary" className="text-[10px]">
@@ -118,7 +118,8 @@ export function SyllabusAccordion({ course }: SyllabusAccordionProps) {
                           {dayIndex > 0 && <Separator className="my-2" />}
                           <div className="py-1">
                             <p className="text-foreground mb-1.5 text-sm font-semibold">
-                              {day.label}: {day.title}
+                              {/* {day.label}: */}
+                               {day.title}
                             </p>
                             <ul className="flex flex-col gap-2">
                               {day.subModules.map((sm) => {

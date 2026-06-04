@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageWrapper } from "@/components/layout/page-wrapper"
 import { DashboardShell } from "@/components/dashboard/dashboard-shell"
 
 export const metadata: Metadata = {
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 }
 
 export default function DashboardPage() {
-  return <DashboardShell />
+  return (
+    <PageWrapper>
+      <DashboardShell />
+    </PageWrapper>
+  )
 }

@@ -5,7 +5,7 @@ import { DM_Sans, DM_Serif_Display } from "next/font/google"
 import { BookOpen, Clock, Laptop, User } from "lucide-react"
 
 import { Card } from "@/components/ui/card"
-import { EnrollButton } from "@/components/course/enroll-button"
+import { EnrollButton } from "./enroll-button"
 import type { Course } from "@/types"
 
 const dmSerif = DM_Serif_Display({ weight: ["400"], subsets: ["latin"] })
@@ -21,7 +21,7 @@ export function CourseHero({ course }: { course: Course }) {
 
   return (
     <Card className="overflow-hidden py-0">
-      <div className={`grid grid-cols-1 lg:grid-cols-[1fr_420px] lg:items-stretch ${dmSans.className}`}>
+      <div className={`grid grid-cols-1 lg:grid-cols-[1fr_420px] lg:items-stretch `}>
         {/* Left: Content */}
         <section className="px-3 py-5 sm:px-5">
           {/* Track badge */}
