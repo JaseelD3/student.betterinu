@@ -24,7 +24,7 @@ export function Sidebar({
   const { isDayComplete, isWeekUnlocked, isSubModuleComplete } = useProgress()
 
   return (
-    <aside className="border-border-strong/50 sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[360px] shrink-0 border-r-2 lg:block">
+    <aside className="border-border-strong sticky top-0 hidden h-[calc(100vh-3.5rem)] w-[360px] shrink-0 border-r-2 lg:block">
       <ScrollArea className="h-full">
         <div className="px-5 pt-5 pb-5">
           {/* Course progress block */}

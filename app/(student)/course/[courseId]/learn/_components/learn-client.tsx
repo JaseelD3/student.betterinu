@@ -50,7 +50,7 @@ export function LearnClient({ course }: { course: Course }) {
         {/* Week cards */}
         {paddedCourse.weeks.map((week: any, index: number) =>
           isWeekUnlocked(paddedCourse, week.id) &&
-          !week.id.startsWith("dummy") ? (
+            !week.id.startsWith("dummy") ? (
             <WeekCard courseId={paddedCourse.id} key={week.id} week={week} />
           ) : (
             <LockedWeekCard

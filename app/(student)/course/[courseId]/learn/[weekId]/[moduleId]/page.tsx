@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { LessonViewerClient } from "../../components/lesson-viewer-client"
+import { LessonViewerClient } from "../../_components/lesson-viewer-client"
 import RoboLoader from "@/components/loading/robo-loader"
+import { PageWrapper } from "@/components/layout/page-wrapper"
 import { studentApi } from "@/lib/api-client"
 import type { Course, Day, SubModule, Week } from "@/types"
 
@@ -22,8 +23,10 @@ export default function ModuleViewerPage() {
   }>()
   const [match, setMatch] = useState<ModuleMatch | null>(null)
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    setIsLoading(true)
     studentApi
       .getCourse(courseId)
       .then(({ course }) => {
@@ -34,40 +37,49 @@ export default function ModuleViewerPage() {
             )
             if (subModule && week.id === weekId) {
               setMatch({ course, week, day, subModule })
+              setIsLoading(false)
               return
             }
           }
         }
 
         setError("Lesson not found")
+        setIsLoading(false)
       })
-      .catch((err: unknown) =>
+      .catch((err: unknown) => {
         setError(err instanceof Error ? err.message : "Lesson not found")
-      )
+        setIsLoading(false)
+      })
   }, [courseId, moduleId, weekId])
 
   if (error) {
-    return <p className="pt-24 text-center text-sm text-red-600">{error}</p>
+    return (
+      <PageWrapper>
+        <p className="pt-24 text-center text-sm text-red-600">{error}</p>
+      </PageWrapper>
+    )
   }
 
+  // Only show full page loader on initial load when we have NO match data to render the sidebar
   if (!match) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <RoboLoader size="md" />
-      </div>
+      <PageWrapper>
+        <div className="flex flex-1 items-center justify-center">
+          <RoboLoader size="md" />
+        </div>
+      </PageWrapper>
     )
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden pt-[72px]">
-      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col">
-        <LessonViewerClient
-          course={match.course}
-          day={match.day}
-          subModule={match.subModule}
-          week={match.week}
-        />
-      </div>
-    </div>
+    <PageWrapper noPadding className="min-h-0 overflow-hidden pb-16 md:pb-0">
+      <LessonViewerClient
+        course={match.course}
+        day={match.day}
+        subModule={match.subModule}
+        week={match.week}
+        isLoading={isLoading}
+      />
+    </PageWrapper>
   )
 }

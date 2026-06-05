@@ -44,12 +44,21 @@ export function SidebarHeaderBar() {
   const segments = pathname.split("/").filter(Boolean)
   const isCoursePath = segments[0] === "course" && segments[1]
   const courseId = isCoursePath ? segments[1] : ""
+  const moduleId = segments[2] === "learn" && segments[4] ? segments[4] : ""
 
   const { data: course, isLoading } = useCourse(courseId)
+
+  // Resolve module title when on a lesson page
+  const moduleTitle = moduleId && course
+    ? course.weeks
+        .flatMap((w) => w.days.flatMap((d) => d.subModules))
+        .find((m) => m.id === moduleId)?.title ?? null
+    : null
 
   const renderBreadcrumb = () => {
     if (isCoursePath) {
       const showLearn = segments[2] === "learn"
+      const showLesson = showLearn && segments[3] && segments[4]
       return (
         <Breadcrumb>
           <BreadcrumbList>
@@ -59,8 +68,30 @@ export function SidebarHeaderBar() {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            
-            {showLearn ? (
+
+            {showLesson ? (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/course/${courseId}`}>
+                      {course?.title || "Course"}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href={`/course/${courseId}/learn`}>Learn</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="max-w-[180px] truncate font-medium">
+                    {moduleTitle ?? "Lesson"}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            ) : showLearn ? (
               <>
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>

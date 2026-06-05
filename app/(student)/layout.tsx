@@ -24,7 +24,7 @@ export default function StudentLayout({
           <SidebarHeaderBar />
 
           {/* Page content — each page uses PageWrapper for consistent padding */}
-          <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-minimal">{children}</div>
         </SidebarInset>
 
         {/* Mobile floating bottom nav — hidden on desktop */}

@@ -26,7 +26,7 @@ export function PageWrapper({ children, noPadding = false, className }: PageWrap
   return (
     <div
       className={cn(
-        "flex flex-1 min-h-0 w-full flex-col",
+        "flex flex-1 w-full flex-col",
         !noPadding && "p-4 pb-20 sm:p-5 sm:pb-20 md:pb-5",
         className
       )}

@@ -43,7 +43,7 @@ export function CourseDetailClient({ courseId }: CourseDetailClientProps) {
   }
 
   return (
-    <div className="flex min-h-0 w-full flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       {/* Hero */}
       <CourseHero course={course} />
 

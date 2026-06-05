@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { PageWrapper } from "@/components/layout/page-wrapper"
-import { LearnClient } from "./components/learn-client"
+import { LearnClient } from "./_components/learn-client"
 import RoboLoader from "@/components/loading/robo-loader"
 import { studentApi } from "@/lib/api-client"
 import type { Course } from "@/types"
