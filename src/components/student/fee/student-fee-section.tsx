@@ -79,27 +79,27 @@ const STATUS_CFG: Record<
   upcoming: {
     label: "Upcoming",
     icon: Clock,
-    cls: "bg-blue-50 text-blue-700 border-blue-200",
+    cls: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/30",
   },
   paid: {
     label: "Paid",
     icon: CheckCircle2,
-    cls: "bg-green-50 text-green-700 border-green-200",
+    cls: "bg-green-50 text-green-700 border-green-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30",
   },
   partially_paid: {
     label: "Partial",
     icon: Minus,
-    cls: "bg-amber-50 text-amber-700 border-amber-200",
+    cls: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/30",
   },
   overdue: {
     label: "Overdue",
     icon: AlertCircle,
-    cls: "bg-red-50 text-red-700 border-red-200",
+    cls: "bg-red-50 text-red-700 border-red-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/30",
   },
   waived: {
     label: "Waived",
     icon: CheckCircle2,
-    cls: "bg-purple-50 text-purple-700 border-purple-200",
+    cls: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/30 dark:text-purple-400 dark:border-purple-900/30",
   },
 }
 
@@ -164,14 +164,14 @@ function ReminderBanners({
   return (
     <div className="mb-6 flex flex-col gap-3">
       {overdueCount > 0 && (
-        <div className="flex items-start gap-3 rounded-md border border-red-200 bg-red-50 px-4 py-3">
-          <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-600" />
+        <div className="flex items-start gap-3 rounded-md border border-red-200 bg-red-50 dark:border-red-900/30 dark:bg-red-950/20 px-4 py-3">
+          <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-600 dark:text-red-400" />
           <div>
-            <p className="text-sm font-bold text-red-800">
+            <p className="text-sm font-bold text-red-800 dark:text-red-200">
               You have {overdueCount} overdue payment
               {overdueCount > 1 ? "s" : ""}
             </p>
-            <p className="mt-0.5 text-xs text-red-700">
+            <p className="mt-0.5 text-xs text-red-700 dark:text-red-300">
               Please contact the admin or pay at the earliest to avoid further
               penalties.
             </p>
@@ -180,13 +180,13 @@ function ReminderBanners({
       )}
 
       {nextDueInstallment && (
-        <div className="flex items-start gap-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3">
-          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600" />
+        <div className="flex items-start gap-3 rounded-md border border-amber-200 bg-amber-50 dark:border-amber-900/30 dark:bg-amber-950/20 px-4 py-3">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
           <div>
-            <p className="text-sm font-bold text-amber-800">
+            <p className="text-sm font-bold text-amber-800 dark:text-amber-200">
               Upcoming payment reminder
             </p>
-            <p className="mt-0.5 text-xs text-amber-700">
+            <p className="mt-0.5 text-xs text-amber-700 dark:text-amber-300">
               Your next installment of{" "}
               <span className="font-semibold">
                 {fmt(nextDueInstallment.remainingBalance)}
@@ -231,7 +231,7 @@ function InstallmentRow({
     installment.overpaymentReduction
 
   return (
-    <div className="border-default flex flex-col gap-2 rounded-md border bg-white p-3">
+    <div className="border-default flex flex-col gap-2 rounded-md border bg-card p-3">
       {/* Top row: number label + status badge + date */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -302,8 +302,8 @@ function InstallmentRow({
 
       {/* Waiver note */}
       {hasWaiver && (
-        <div className="flex items-center gap-1.5 rounded-md border border-emerald-100/50 bg-emerald-50 px-2.5 py-1 text-[10px] text-emerald-700">
-          <Gift className="size-3 shrink-0 text-emerald-600" />
+        <div className="flex items-center gap-1.5 rounded-md border border-emerald-100/50 bg-emerald-50 dark:border-emerald-900/30 dark:bg-emerald-950/20 px-2.5 py-1 text-[10px] text-emerald-700 dark:text-emerald-400">
+          <Gift className="size-3 shrink-0 text-emerald-600 dark:text-emerald-400" />
           <span>
             Fee waiver of{" "}
             <span className="font-semibold">
@@ -374,7 +374,7 @@ function PaymentHistorySection({ logs }: { logs: StudentPaymentLog[] }) {
                   {logs.map((log) => (
                     <tr
                       key={log.id}
-                      className="hover:bg-muted/10 bg-white transition-colors"
+                      className="hover:bg-muted/10 bg-card transition-colors"
                     >
                       <td className="text-muted-foreground px-3 py-2.5">
                         {fmtDate(log.paymentDate)}
@@ -394,7 +394,7 @@ function PaymentHistorySection({ logs }: { logs: StudentPaymentLog[] }) {
                         <Button
                           variant="ghost"
                           size="xs"
-                          className="border-border text-muted-foreground h-6 rounded border px-1.5 text-[10px] font-semibold hover:text-teal-700"
+                          className="border-border text-muted-foreground h-6 rounded border px-1.5 text-[10px] font-semibold hover:text-primary"
                           onClick={() => setReceiptLogId(log.id)}
                         >
                           <ReceiptText className="mr-1 size-3" />
@@ -434,7 +434,7 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
   const isInstallment = enrollment.paymentType === "installment"
 
   return (
-    <div className="border-default overflow-hidden rounded-md border bg-white shadow-sm">
+    <div className="border-default overflow-hidden rounded-md border bg-card shadow-sm">
       {/* Header */}
       <div className="border-default bg-muted/5 flex items-start justify-between gap-3 border-b px-5 py-4">
         <div className="min-w-0 flex-1 space-y-1.5">
@@ -452,7 +452,7 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
             {enrollment.isPlanCustomized && (
               <Badge
                 variant="outline"
-                className="border-blue-200 bg-blue-50 text-[10px] font-semibold text-blue-700"
+                className="border-blue-200 bg-blue-50 dark:border-blue-900/30 dark:bg-blue-950/20 text-[10px] font-semibold text-blue-700 dark:text-blue-400"
               >
                 Custom Plan
               </Badge>
@@ -580,7 +580,7 @@ function FeeCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
 
 function FeeCardSkeleton() {
   return (
-    <div className="border-default h-48 animate-pulse rounded-md border bg-white shadow-sm" />
+    <div className="border-default h-48 animate-pulse rounded-md border bg-card shadow-sm" />
   )
 }
 
@@ -609,7 +609,7 @@ function StudentFeeSectionInner() {
 
   if (!enrollments || enrollments.length === 0) {
     return (
-      <div className="border-default flex flex-col items-center gap-3 rounded-md border border-dashed bg-white py-14 text-center shadow-sm">
+      <div className="border-default flex flex-col items-center gap-3 rounded-md border border-dashed bg-card py-14 text-center shadow-sm">
         <CreditCard size={36} className="text-muted-foreground" />
         <div>
           <p className="text-foreground font-semibold">No fee records</p>

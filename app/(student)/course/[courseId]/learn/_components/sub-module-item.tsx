@@ -58,7 +58,7 @@ export function SubModuleItem({
             }
           }
         })
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [module.type, module.id, courseId, complete, markSubModuleComplete, dayId, daySubModulesIds])
 
@@ -152,7 +152,7 @@ export function SubModuleItem({
               ? "bg-accent/80 text-accent-foreground hover:bg-primary/90"
               : "hover:bg-accent hover:text-accent-foreground hover:border-accent"
           )}
-         >
+        >
           {complete && <CheckCircle2 className="size-3" aria-hidden />}
           {complete ? "Done" : "Mark Done"}
         </Button>

@@ -14,11 +14,12 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ThemeToggle } from "@/components/shared/theme-toggle"
 import { useCourse } from "@/lib/hooks/use-course"
+import { useStandaloneAssignment } from "@/lib/hooks/use-assignments"
 
 const ROUTE_LABELS: Record<string, string> = {
   "/": "Dashboard",
   "/courses": "My Courses",
-  "/assignments": "Assignments",
+  "/assignments": "My Tasks",
   "/profile": "My Profile",
   "/support": "Support",
   "/about": "About",
@@ -31,7 +32,7 @@ function getPageLabel(pathname: string): string {
   // Prefix match (e.g. /course/[id]/learn/…)
   if (pathname.startsWith("/course")) return "My Courses"
   if (pathname.startsWith("/quiz")) return "Quiz"
-  if (pathname.startsWith("/assignments")) return "Assignments"
+  if (pathname.startsWith("/assignments")) return "My Tasks"
 
   return "Betterinu"
 }
@@ -46,7 +47,11 @@ export function SidebarHeaderBar() {
   const courseId = isCoursePath ? segments[1] : ""
   const moduleId = segments[2] === "learn" && segments[4] ? segments[4] : ""
 
+  const isAssignmentPath = segments[0] === "assignments" && segments[1]
+  const assignmentId = isAssignmentPath ? segments[1] : ""
+
   const { data: course, isLoading } = useCourse(courseId)
+  const { data: assignment, isLoading: isAssignmentLoading } = useStandaloneAssignment(assignmentId)
 
   // Resolve module title when on a lesson page
   const moduleTitle = moduleId && course
@@ -112,6 +117,26 @@ export function SidebarHeaderBar() {
                 </BreadcrumbPage>
               </BreadcrumbItem>
             )}
+          </BreadcrumbList>
+        </Breadcrumb>
+      )
+    }
+
+    if (isAssignmentPath) {
+      return (
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/assignments">My Tasks</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="max-w-[260px] truncate font-medium">
+                {assignment?.title || (isAssignmentLoading ? "Loading..." : "Task Details")}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       )

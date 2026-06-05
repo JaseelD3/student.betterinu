@@ -5,7 +5,6 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import {
-  ArrowLeft,
   Mail,
   Phone,
   MapPin,
@@ -29,16 +28,20 @@ import {
 } from "@/components/ui/avatar"
 import { StudentFeeSection } from "@/components/student/fee/student-fee-section"
 import { studentApi } from "@/lib/api-client"
+import { PageWrapper } from "@/components/layout/page-wrapper"
 
 const STATUS_CFG = {
   active: {
     label: "Active",
-    cls: "bg-green-50 text-green-700 border-green-200",
+    cls: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30",
   },
-  inactive: { label: "Inactive", cls: "bg-red-50 text-red-700 border-red-200" },
+  inactive: { 
+    label: "Inactive", 
+    cls: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/30" 
+  },
   pending: {
     label: "Pending",
-    cls: "bg-yellow-50 text-yellow-700 border-yellow-200",
+    cls: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/30",
   },
 } as const
 
@@ -55,7 +58,7 @@ function Avatar({ url, name }: { url?: string; name: string }) {
     .join("")
     .toUpperCase()
   return (
-    <UIDAvatar className="size-24 shadow-md ring-4 ring-white">
+    <UIDAvatar className="size-24 shadow-md ring-4 ring-background">
       {url && <AvatarImage src={url} alt={name} className="object-cover" />}
       <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold">
         {initials}
@@ -78,11 +81,11 @@ function InfoRow({
 
   return (
     <div className="border-default flex items-start gap-3 border-b py-3 last:border-0">
-      <div className="bg-subtle mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md">
+      <div className="bg-primary/5 mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md">
         <Icon className="text-primary size-4" />
       </div>
       <div>
-        <p className="text-muted mb-0.5 text-xs font-medium">{label}</p>
+        <p className="text-muted-foreground mb-0.5 text-xs font-medium">{label}</p>
         <p className="text-foreground text-sm font-semibold">{displayValue}</p>
       </div>
     </div>
@@ -101,7 +104,7 @@ function SectionCard({
   return (
     <Card className={cn("gap-0 pb-1", className)}>
       <CardHeader className="border-default border-b pb-3">
-        <CardTitle className="text-muted text-xs font-bold tracking-wider uppercase">
+        <CardTitle className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
           {title}
         </CardTitle>
       </CardHeader>
@@ -140,12 +143,12 @@ export default function StudentProfilePage() {
   if (error || !student) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="border-default flex flex-col items-center justify-center rounded-md border border-dashed bg-white py-20 text-center shadow-sm">
-          <ShieldAlert className="mb-4 size-10 text-red-500" />
+        <div className="border-default flex flex-col items-center justify-center rounded-md border border-dashed bg-card py-20 text-center shadow-sm">
+          <ShieldAlert className="mb-4 size-10 text-destructive" />
           <h3 className="text-foreground text-lg font-bold">
             Failed to load profile
           </h3>
-          <p className="text-muted mt-2 text-sm">
+          <p className="text-muted-foreground mt-2 text-sm">
             {error || "Please sign in again."}
           </p>
           <Link
@@ -175,21 +178,21 @@ export default function StudentProfilePage() {
       : undefined
 
   const renderDocRow = (url: string, label: string) => (
-    <div className="border-default bg-elevated/40 hover:bg-elevated flex items-center justify-between gap-3 rounded-md border p-3 transition-colors">
+    <div className="border-default bg-muted/40 hover:bg-muted/70 flex items-center justify-between gap-3 rounded-md border p-3 transition-colors">
       <div className="flex min-w-0 items-center gap-3">
         <div className="bg-primary/5 border-primary/10 flex size-10 shrink-0 items-center justify-center rounded-md border">
           <FileText className="text-primary size-5" />
         </div>
         <div className="min-w-0">
           <p className="text-foreground truncate text-sm font-bold">{label}</p>
-          <p className="text-muted truncate text-xs">Uploaded Attachment</p>
+          <p className="text-muted-foreground truncate text-xs">Uploaded Attachment</p>
         </div>
       </div>
       <a
         href={url}
         target="_blank"
         rel="noreferrer"
-        className="text-primary border-default hover:bg-subtle inline-flex shrink-0 items-center gap-1.5 rounded-md border bg-white px-3 py-2 text-xs font-bold transition-colors hover:underline"
+        className="text-primary border-border hover:bg-muted inline-flex shrink-0 items-center gap-1.5 rounded-md border bg-card px-3 py-2 text-xs font-bold transition-colors hover:underline"
       >
         View File
       </a>
@@ -197,17 +200,10 @@ export default function StudentProfilePage() {
   )
 
   return (
-    <div className="bg-subtle mt-16 min-h-screen w-full px-4 py-10 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <Link
-          href="/"
-          className="text-secondary hover:text-primary mb-6 inline-flex items-center gap-2 text-sm font-medium transition-colors"
-        >
-          <ArrowLeft className="size-4" /> Back to Dashboard
-        </Link>
-
+    <PageWrapper className="bg-muted/30 pb-20 sm:pb-20 md:pb-5">
+      <div className="mx-auto max-w-7xl w-full">
         {/* Page header */}
-        <div className="border-default mb-6 flex flex-wrap items-center justify-between gap-4 rounded-md border bg-white p-5">
+        <div className="border-default mb-6 flex flex-wrap items-center justify-between gap-4 rounded-md border bg-card p-5">
           <div className="flex items-center gap-5">
             <Avatar url={student.profile_image_url} name={student.name} />
             <div>
@@ -221,12 +217,12 @@ export default function StudentProfilePage() {
                   {statusCfg.label}
                 </span>
               </div>
-              <p className="text-secondary mt-1 text-sm">{student.email}</p>
+              <p className="text-muted-foreground mt-1 text-sm">{student.email}</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="bg-subtle border-default text-muted rounded-md border px-2 py-0.5 font-mono text-[11px]">
+                <span className="bg-muted border-default text-muted-foreground rounded-md border px-2 py-0.5 font-mono text-[11px]">
                   ID: {student.student_code || student.id.slice(0, 8)}
                 </span>
-                <span className="border-default text-secondary rounded-md border px-2 py-0.5 text-[11px] font-semibold">
+                <span className="border-default text-muted-foreground rounded-md border px-2 py-0.5 text-[11px] font-semibold">
                   {typeCfg.label}
                 </span>
               </div>
@@ -346,7 +342,7 @@ export default function StudentProfilePage() {
             <CardHeader className="border-default border-b pb-3">
               <div className="flex items-center gap-2">
                 <CreditCard className="text-primary size-4" />
-                <CardTitle className="text-muted text-xs font-bold tracking-wider uppercase">
+                <CardTitle className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                   Fee & Payments
                 </CardTitle>
               </div>
@@ -357,6 +353,6 @@ export default function StudentProfilePage() {
           </Card>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   )
 }

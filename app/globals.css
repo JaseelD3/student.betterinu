@@ -38,6 +38,15 @@
   --sidebar-accent-foreground: oklch(0.4335 0.0754 182.2315);
   --sidebar-border: oklch(0.9436 0.0051 228.8204);
   --sidebar-ring: oklch(0.761 0.2015 149.7403);
+  /* Status semantic tokens */
+  --status-todo: oklch(0.91 0.04 225);
+  --status-todo-foreground: oklch(0.32 0.10 225);
+  --status-pending: oklch(0.93 0.07 88);
+  --status-pending-foreground: oklch(0.42 0.13 78);
+  --status-approved: oklch(0.92 0.07 148);
+  --status-approved-foreground: oklch(0.33 0.12 148);
+  --status-rejected: oklch(0.93 0.06 22);
+  --status-rejected-foreground: oklch(0.42 0.18 22);
   --font-sans:
     Segoe UI, Helvetica Neue, Helvetica, Lucida Grande, Arial, Ubuntu,
     Cantarell, Fira Sans, sans-serif;
@@ -107,6 +116,15 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(62.794% 0.14633 157.337);
+  /* Status semantic tokens — dark */
+  --status-todo: oklch(0.24 0.05 225);
+  --status-todo-foreground: oklch(0.82 0.08 225);
+  --status-pending: oklch(0.24 0.06 88);
+  --status-pending-foreground: oklch(0.88 0.09 88);
+  --status-approved: oklch(0.22 0.07 148);
+  --status-approved-foreground: oklch(0.82 0.10 148);
+  --status-rejected: oklch(0.22 0.06 22);
+  --status-rejected-foreground: oklch(0.82 0.12 22);
   /* Custom dark token overrides */
   --bg-base: oklch(0.145 0 0);
   --bg-surface: oklch(0.205 0 0);
@@ -220,6 +238,15 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Status token utilities */
+  --color-status-todo: var(--status-todo);
+  --color-status-todo-foreground: var(--status-todo-foreground);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-foreground: var(--status-pending-foreground);
+  --color-status-approved: var(--status-approved);
+  --color-status-approved-foreground: var(--status-approved-foreground);
+  --color-status-rejected: var(--status-rejected);
+  --color-status-rejected-foreground: var(--status-rejected-foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);

@@ -54,7 +54,7 @@ export function ModuleAccordion({
           <span className="flex w-full items-center justify-between gap-3 text-left">
             {/* Day title */}
             <span className="font-heading text-foreground text-sm font-bold leading-snug">
-              {day.title}  
+              {day.title}
             </span>
 
             {/* Right badge */}

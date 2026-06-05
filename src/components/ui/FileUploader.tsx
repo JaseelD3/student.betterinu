@@ -38,7 +38,7 @@ function fileIcon(type: string = "") {
     return <FileText className="size-4 shrink-0 text-red-500" />
   if (type.includes("spreadsheet") || type.includes("xlsx"))
     return <FileSpreadsheet className="size-4 shrink-0 text-green-600" />
-  return <Paperclip className="text-secondary size-4 shrink-0" />
+  return <Paperclip className="text-muted-foreground size-4 shrink-0" />
 }
 
 export function FileUploader({
@@ -104,12 +104,12 @@ export function FileUploader({
           <RoboLoader size="sm" />
         ) : (
           <>
-            <UploadCloud className="text-muted size-7" />
-            <p className="text-secondary text-sm font-semibold">
+            <UploadCloud className="text-muted-foreground size-7" />
+            <p className="text-foreground text-sm font-semibold">
               Drag &amp; drop files, or{" "}
               <span className="text-primary underline">browse</span>
             </p>
-            <p className="text-muted text-[11px]">
+            <p className="text-muted-foreground text-[11px]">
               {accept === "image/*"
                 ? "Images only (PNG, JPG, WEBP, GIF)"
                 : "Images, PDFs, DOCX, PPTX, XLSX, TXT"}
@@ -144,7 +144,7 @@ export function FileUploader({
               {fileIcon(f.type)}
               <span className="text-foreground flex-1 truncate">{f.name}</span>
               {f.size && (
-                <span className="text-muted shrink-0 text-[11px]">
+                <span className="text-muted-foreground shrink-0 text-[11px]">
                   {(f.size / 1024).toFixed(1)} KB
                 </span>
               )}

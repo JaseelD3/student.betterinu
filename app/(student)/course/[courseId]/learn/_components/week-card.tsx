@@ -88,8 +88,8 @@ export function WeekCard({
         type="multiple"
         defaultValue={
           !week.days[0] ||
-          (week.days.length > 1 &&
-            !week.days[0].subModules.every((m) => isSubModuleComplete(m.id)))
+            (week.days.length > 1 &&
+              !week.days[0].subModules.every((m) => isSubModuleComplete(m.id)))
             ? []
             : [week.days[0].id]
         }

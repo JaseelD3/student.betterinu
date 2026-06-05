@@ -56,12 +56,14 @@ export function useStandaloneAssignments() {
  */
 export function useStandaloneAssignment(id: string) {
   return useQuery({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryKey: queryKeys.assignments.detail(id),
     queryFn: async () => {
-      const res = await apiClient<{ assignments: StandaloneAssignment[] }>(
+      // NOTE: The API returns snake_case fields; `any[]` matches the runtime shape.
+      const res = await apiClient<{ assignments: any[] }>(
         "/api/student/standalone-assignments"
       )
-      return (res.assignments ?? []).find((a) => a.assignment_id === id) ?? null
+      return (res.assignments ?? []).find((a: any) => a.assignment_id === id) ?? null
     },
     enabled: Boolean(id),
     staleTime: 60_000,

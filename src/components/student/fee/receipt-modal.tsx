@@ -57,7 +57,7 @@ export function ReceiptModal({
         variant="outline"
         size="sm"
         onClick={() => window.print()}
-        className="h-8 bg-white text-xs font-semibold"
+        className="h-8 text-xs font-semibold"
       >
         <Printer className="mr-1.5 size-3.5" /> Print Receipt
       </Button>

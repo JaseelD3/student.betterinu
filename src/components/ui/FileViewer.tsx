@@ -61,7 +61,7 @@ function FileCard({ file }: { file: AttachedFile }) {
         />
         <div className="border-default flex items-center gap-2 border-t px-3 py-2">
           <ImageIcon className="size-3.5 shrink-0 text-blue-500" />
-          <span className="text-secondary flex-1 truncate text-xs">
+          <span className="text-foreground flex-1 truncate text-xs">
             {file.name}
           </span>
           <a
@@ -101,7 +101,7 @@ function FileCard({ file }: { file: AttachedFile }) {
 
   // Generic doc / download
   const Icon = isSpreadsheet ? FileSpreadsheet : Paperclip
-  const iconCls = isSpreadsheet ? "text-green-600" : "text-secondary"
+  const iconCls = isSpreadsheet ? "text-green-600" : "text-muted-foreground"
 
   return (
     <div className="border-default bg-surface flex items-center gap-3 rounded-md border px-4 py-3">
@@ -127,7 +127,7 @@ export function FileViewer({ files, title = "Attachments" }: FileViewerProps) {
 
   return (
     <div className="space-y-3">
-      <p className="text-muted text-xs font-bold tracking-widest uppercase">
+      <p className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
         {title}
       </p>
       <div className="space-y-3">
