@@ -2,18 +2,16 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
 import { ChevronsUpDown, LogOut, UserCircle, KeyRound } from "lucide-react"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -35,6 +33,7 @@ function getInitials(name: string | null | undefined) {
 
 export function NavUser() {
   const { isMobile } = useSidebar()
+  const pathname = usePathname()
   const [name, setName] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [showChangePassword, setShowChangePassword] = useState(false)
@@ -56,79 +55,86 @@ export function NavUser() {
 
   return (
     <>
-      <SidebarMenu className="border-sidebar-border/30 border-t px-1 pt-4 pb-1">
+      <SidebarMenu className="border-sidebar-border/30 border-t px-1  pb-1">
         <SidebarMenuItem>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+          <Popover>
+            <PopoverTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className="border-sidebar-border/40 bg-sidebar-accent/30 hover:bg-sidebar-accent/70 hover:border-sidebar-border/80 data-[state=open]:bg-sidebar-accent data-[state=open]:border-sidebar-border/80 group/user w-full border shadow-2xs transition-all duration-250 ease-in-out"
+                className="border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:border-primary group/user w-full border shadow-2xs transition-all duration-250 ease-in-out"
               >
-                <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
-                  <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider transition-transform duration-300 group-hover/user:scale-105">
+                <Avatar className="border-primary-foreground/30 size-8 rounded-md border shadow-inner transition-colors">
+                  <AvatarFallback className="from-primary-foreground/20 via-primary-foreground/10 text-primary-foreground rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider transition-all duration-300 group-hover/user:scale-105">
                     {getInitials(name)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="ml-0.5 grid flex-1 text-left text-sm leading-tight">
-                  <span className="text-foreground/90 group-hover/user:text-foreground truncate font-semibold">
+                  <span className="text-primary-foreground truncate font-semibold transition-colors">
                     {displayName}
                   </span>
-                  <span className="text-muted-foreground/75 truncate text-[10px] font-medium tracking-wide">
+                  <span className="text-primary-foreground/80 truncate text-[10px] font-medium tracking-wide transition-colors">
                     {displayEmail}
                   </span>
                 </div>
-                <ChevronsUpDown className="text-muted-foreground/60 ml-auto size-3.5 transition-transform duration-300 group-hover/user:translate-y-[-1px]" />
+                <ChevronsUpDown className="text-primary-foreground/80 ml-auto size-3.5 transition-all duration-300 group-hover/user:translate-y-[-1px]" />
               </SidebarMenuButton>
-            </DropdownMenuTrigger>
+            </PopoverTrigger>
 
-            <DropdownMenuContent
-              className="w-56"
+            <PopoverContent
+              className="w-[--radix-popover-trigger-width] min-w-56 rounded-lg p-1 bg-popover text-popover-foreground border shadow-md"
               side={isMobile ? "bottom" : "right"}
               align="end"
               sideOffset={4}
             >
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
-                    <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider">
-                      {getInitials(name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{displayName}</span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      {displayEmail}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-2 px-2.5 py-2 text-left text-sm">
+                <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
+                  <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider">
+                    {getInitials(name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold text-foreground">{displayName}</span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {displayEmail}
+                  </span>
                 </div>
-              </DropdownMenuLabel>
+              </div>
 
-              <DropdownMenuSeparator />
+              <div className="-mx-1 h-px bg-border" />
 
-              <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <UserCircle />
-                    Account
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setShowChangePassword(true)}>
-                  <KeyRound />
-                  Change Password
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+              <div className="flex flex-col">
+                <Link
+                  href="/profile"
+                  className={cn(
+                    "group flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left",
+                    pathname === "/profile"
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-primary hover:text-primary-foreground text-foreground"
+                  )}
+                >
+                  <UserCircle className={cn("size-4", pathname === "/profile" ? "text-primary-foreground" : "text-muted-foreground group-hover:text-primary-foreground")} />
+                  <span>Account</span>
+                </Link>
+                <button
+                  onClick={() => setShowChangePassword(true)}
+                  className="group hover:bg-primary hover:text-primary-foreground text-foreground flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
+                >
+                  <KeyRound className="size-4 text-muted-foreground group-hover:text-primary-foreground" />
+                  <span>Change Password</span>
+                </button>
+              </div>
 
-              <DropdownMenuSeparator />
+              <div className="-mx-1 h-px bg-border" />
 
-              <DropdownMenuItem
-                onSelect={handleSignOut}
-                className="text-destructive focus:text-destructive"
+              <button
+                onClick={handleSignOut}
+                className="hover:bg-destructive/10 hover:text-destructive text-destructive flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
               >
-                <LogOut />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <LogOut className="size-4" />
+                <span>Sign Out</span>
+              </button>
+            </PopoverContent>
+          </Popover>
         </SidebarMenuItem>
       </SidebarMenu>
 

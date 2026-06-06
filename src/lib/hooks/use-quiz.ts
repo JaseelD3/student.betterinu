@@ -51,7 +51,7 @@ export function useSubmitQuiz() {
     },
     onSuccess: (_result, variables) => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.quiz.detail(variables.courseId, variables.moduleId),
+        queryKey: queryKeys.quiz.detail(variables.courseId, variables.dayId),
       })
       queryClient.invalidateQueries({
         queryKey: queryKeys.progress.detail(variables.courseId),

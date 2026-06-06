@@ -1,6 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 
 import { apiClient } from "@/lib/api-client"
 import { queryKeys } from "@/lib/query-keys"
@@ -34,26 +35,31 @@ type StudentProfileFull = {
 export function useStudentProfile() {
   const { setStudent, token } = useAuthStore()
 
-  return useQuery({
+  const query = useQuery({
     queryKey: queryKeys.profile.me(),
     queryFn: async () => {
       const profile = await apiClient<StudentProfileFull>("/api/student/profile")
       return profile
     },
-    onSuccess: (profile: StudentProfileFull) => {
+    staleTime: 5 * 60_000,
+  })
+
+  useEffect(() => {
+    if (query.data) {
       setStudent(
         {
-          id: profile.id,
-          name: profile.name,
-          email: profile.email,
-          avatarUrl: profile.avatar_url ?? null,
+          id: query.data.id,
+          name: query.data.name,
+          email: query.data.email,
+          avatarUrl: query.data.avatar_url ?? null,
           role: "student",
         },
         token ?? ""
       )
-    },
-    staleTime: 5 * 60_000,
-  })
+    }
+  }, [query.data, setStudent, token])
+
+  return query
 }
 
 export type { StudentProfileFull }
