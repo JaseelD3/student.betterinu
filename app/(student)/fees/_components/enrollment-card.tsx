@@ -1,101 +1,117 @@
 import { CreditCard } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import type { StudentFeeEnrollment } from "@/lib/services/student-fee-service"
+import { fmt } from "./fee-utils"
 import { InstallmentTimelineNode } from "./installment-timeline-node"
 import { PaymentHistory } from "./payment-history"
-import { fmt } from "./fee-utils"
 
-export function EnrollmentCard({
-  enrollment,
-}: {
-  enrollment: StudentFeeEnrollment
-}) {
+export function EnrollmentCard({ enrollment }: { enrollment: StudentFeeEnrollment }) {
   const isInstallment = enrollment.paymentType === "installment"
   const pct =
     enrollment.totalAmount > 0
-      ? Math.min(
-          Math.round(
-            (enrollment.paidAmount / enrollment.totalAmount) * 100
-          ),
-          100
-        )
+      ? Math.min(Math.round((enrollment.paidAmount / enrollment.totalAmount) * 100), 100)
       : 0
   const hasWaiver = enrollment.totalWaiverReduction > 0
 
   return (
-    <div className="space-y-4">
-      {/* Enrollment Header */}
-      <Card className="gap-0">
-        <CardHeader className="border-b pb-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <CreditCard className="size-4 text-primary" />
-              <CardTitle className="text-sm font-bold text-foreground">
-                {enrollment.courseTitle}
-              </CardTitle>
-              <Badge variant="outline" className="text-[10px] font-semibold capitalize">
-                {isInstallment ? "Installment Plan" : "One-time Payment"}
-              </Badge>
-              {enrollment.isPlanCustomized && (
-                <Badge
-                  variant="outline"
-                  className="border-status-todo/30 bg-status-todo/10 text-[10px] font-semibold text-status-todo-foreground"
-                >
-                  Custom Plan
-                </Badge>
-              )}
+    <div className="flex flex-col gap-3">
+
+      {/* ── Main card ──────────────────────────────────────── */}
+      <div className="overflow-hidden rounded-md border border-border bg-card">
+
+        {/* Header */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3.5">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <CreditCard className="size-3.5" />
             </div>
+            <p className="truncate text-sm font-bold text-foreground">
+              {enrollment.courseTitle}
+            </p>
           </div>
-        </CardHeader>
-        <CardContent className="pt-4">
-          {/* Fee summary numbers */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase">Total Fee</p>
-              <p className="text-lg font-black text-foreground">{fmt(enrollment.totalAmount)}</p>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="rounded-md border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+              {isInstallment ? "Installment" : "One-time"}
+            </span>
+            {enrollment.isPlanCustomized && (
+              <span className="rounded-md border border-primary/30 bg-primary/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                Custom
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="px-5 py-5">
+
+          {/* 3-col fee stats */}
+          <div className="mb-5 grid grid-cols-3 divide-x divide-border">
+            <div className="pr-5">
+              <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Total Fee
+              </p>
+              <p className="text-xl font-black text-foreground">
+                {fmt(enrollment.totalAmount)}
+              </p>
               {hasWaiver && (
-                <p className="text-[10px] text-muted-foreground line-through">
+                <p className="mt-1 text-[11px] text-muted-foreground line-through">
                   {fmt(enrollment.originalTotalAmount)}
                 </p>
               )}
             </div>
-            <div>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase">Paid</p>
-              <p className="text-lg font-black text-status-approved-foreground">{fmt(enrollment.paidAmount)}</p>
+
+            <div className="px-5">
+              <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Paid
+              </p>
+              <p className="text-xl font-black text-accent">
+                {fmt(enrollment.paidAmount)}
+              </p>
             </div>
-            <div>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase">Outstanding</p>
-              <p className={cn("text-lg font-black", enrollment.outstandingBalance > 0 ? "text-status-pending-foreground" : "text-status-approved-foreground")}>
+
+            <div className="pl-5">
+              <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Outstanding
+              </p>
+              <p
+                className={cn(
+                  "text-xl font-black",
+                  enrollment.outstandingBalance > 0
+                    ? enrollment.installments.some((inst) => inst.status === "overdue")
+                      ? "text-status-rejected-foreground"
+                      : "text-status-pending-foreground"
+                    : "text-status-approved-foreground"
+                )}
+              >
                 {fmt(enrollment.outstandingBalance)}
               </p>
             </div>
           </div>
 
           {/* Progress */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Payment progress</span>
-              <span className="font-bold text-foreground">{pct}%</span>
+          <div className="space-y-1.5">
+            <div className="flex items-baseline justify-between">
+              <span className="text-xs text-muted-foreground">Payment progress</span>
+              <span className="text-xs font-bold text-foreground">{pct}%</span>
             </div>
-            <Progress value={pct} className="h-1.5" indicatorClassName="bg-accent" />
+            <Progress value={pct} className="h-1.5" indicatorClassName="bg-primary" />
           </div>
 
-          {/* Waiver summary */}
+          {/* Waiver strip */}
           {hasWaiver && (
-            <div className="mt-3 flex flex-wrap gap-3 rounded-md bg-status-approved/10 border border-status-approved/30 px-3 py-2 text-[11px] text-muted-foreground">
-              <span>
+            <div className="mt-4 flex flex-wrap gap-4 rounded-md border border-success/25 bg-success/8 px-3.5 py-2.5">
+              <span className="text-[11px] text-muted-foreground">
                 Original:{" "}
                 <span className="font-medium text-foreground line-through">
                   {fmt(enrollment.originalTotalAmount)}
                 </span>
               </span>
-              <span className="font-semibold text-status-approved-foreground">
+              <span className="text-[11px] font-bold text-success">
                 Waiver: −{fmt(enrollment.totalWaiverReduction)}
               </span>
-              <span>
+              <span className="text-[11px] text-muted-foreground">
                 Payable:{" "}
                 <span className="font-semibold text-foreground">
                   {fmt(enrollment.totalAmount)}
@@ -103,20 +119,20 @@ export function EnrollmentCard({
               </span>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Installment Timeline */}
+      {/* ── Installment Timeline ───────────────────────────── */}
       {isInstallment && (
-        <Card className="gap-0">
-          <CardHeader className="border-b pb-3">
-            <CardTitle className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
+        <div className="overflow-hidden rounded-md border border-border bg-card">
+          <div className="border-b border-border px-5 py-3.5">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               Installment Timeline
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
+            </p>
+          </div>
+          <div className="px-5 py-4">
             {enrollment.installments.length === 0 ? (
-              <p className="py-6 text-center text-xs text-muted-foreground">
+              <p className="py-8 text-center text-xs text-muted-foreground">
                 No installments found.
               </p>
             ) : (
@@ -129,11 +145,11 @@ export function EnrollmentCard({
                 />
               ))
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Payment History */}
+      {/* ── Payment History ────────────────────────────────── */}
       {enrollment.paymentLogs.length > 0 && (
         <PaymentHistory logs={enrollment.paymentLogs} />
       )}

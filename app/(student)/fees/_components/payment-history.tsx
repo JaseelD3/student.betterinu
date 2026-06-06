@@ -35,22 +35,22 @@ export function PaymentHistory({ logs }: { logs: StudentPaymentLog[] }) {
       {open && (
         <div className="border-t border-border">
           <div className="overflow-x-auto">
-            <table className="w-full text-xs">
+            <table className="w-full min-w-[500px] table-fixed text-xs">
               <thead className="bg-muted/30">
                 <tr>
-                  <th className="px-4 py-2 text-left font-semibold text-muted-foreground">
+                  <th className="w-[20%] px-4 py-2 text-left font-semibold text-muted-foreground">
                     Date
                   </th>
-                  <th className="px-4 py-2 text-right font-semibold text-muted-foreground">
+                  <th className="w-[20%] px-4 py-2 text-left font-semibold text-muted-foreground">
                     Amount
                   </th>
-                  <th className="px-4 py-2 text-left font-semibold text-muted-foreground">
+                  <th className="w-[20%] px-4 py-2 text-left font-semibold text-muted-foreground">
                     Mode
                   </th>
-                  <th className="px-4 py-2 text-left font-semibold text-muted-foreground">
+                  <th className="w-[25%] px-4 py-2 text-left font-semibold text-muted-foreground">
                     Reference
                   </th>
-                  <th className="px-4 py-2 text-right font-semibold text-muted-foreground">
+                  <th className="w-[15%] px-4 py-2 text-right font-semibold text-muted-foreground">
                     Receipt
                   </th>
                 </tr>
@@ -61,14 +61,14 @@ export function PaymentHistory({ logs }: { logs: StudentPaymentLog[] }) {
                     key={log.id}
                     className="bg-card transition-colors hover:bg-muted/10"
                   >
-                    <td className="px-4 py-2.5 text-muted-foreground">
+                    <td className="px-4 py-2.5 text-muted-foreground truncate">
                       {fmtDate(log.paymentDate)}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-semibold text-status-approved-foreground">
+                    <td className="px-4 py-2.5 text-left font-semibold text-status-approved-foreground truncate">
                       {fmt(log.amountPaid)}
                     </td>
-                    <td className="px-4 py-2.5">{fmtMode(log.paymentMode)}</td>
-                    <td className="px-4 py-2.5 text-muted-foreground">
+                    <td className="px-4 py-2.5 truncate">{fmtMode(log.paymentMode)}</td>
+                    <td className="px-4 py-2.5 text-muted-foreground truncate">
                       {log.referenceNumber ?? (
                         <span className="text-[10px] italic">—</span>
                       )}

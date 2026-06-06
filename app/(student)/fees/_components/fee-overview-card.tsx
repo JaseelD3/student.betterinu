@@ -58,7 +58,7 @@ export function FeeOverviewCard({
             <p className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
               Paid
             </p>
-            <p className="text-xl font-black tracking-tight text-status-approved-foreground sm:text-2xl">
+            <p className="text-xl font-black tracking-tight text-accent sm:text-2xl">
               {fmt(totalPaid)}
             </p>
           </div>
@@ -69,7 +69,13 @@ export function FeeOverviewCard({
             <p
               className={cn(
                 "text-xl font-black tracking-tight sm:text-2xl",
-                totalBalance > 0 ? "text-status-pending-foreground" : "text-status-approved-foreground"
+                totalBalance > 0
+                  ? enrollments.some((e) =>
+                      e.installments.some((i) => i.status === "overdue")
+                    )
+                    ? "text-status-rejected-foreground"
+                    : "text-status-pending-foreground"
+                  : "text-status-approved-foreground"
               )}
             >
               {fmt(totalBalance)}

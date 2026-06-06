@@ -1,6 +1,6 @@
 import {
   AlertCircle,
-  CheckCircle2,
+  Check,
   Clock,
   Minus,
 } from "lucide-react"
@@ -51,16 +51,16 @@ export const STATUS_CFG: Record<
 > = {
   paid: {
     label: "Paid",
-    icon: CheckCircle2,
-    dotCls: "bg-accent border-accent",
+    icon: Check,
+    dotCls: "bg-transparent border-accent text-accent",
     badgeCls: "bg-status-approved/15 text-status-approved-foreground border-status-approved/30",
-    rowCls: "opacity-75",
+    rowCls: "",
     lineCls: "bg-accent/60",
   },
   upcoming: {
     label: "Upcoming",
     icon: Clock,
-    dotCls: "bg-status-todo border-status-todo",
+    dotCls: "bg-transparent border-status-todo text-status-todo",
     badgeCls: "bg-status-todo/15 text-status-todo-foreground border-status-todo/30",
     rowCls: "",
     lineCls: "bg-border",
@@ -68,7 +68,7 @@ export const STATUS_CFG: Record<
   partially_paid: {
     label: "Partial",
     icon: Minus,
-    dotCls: "bg-status-pending border-status-pending",
+    dotCls: "bg-transparent border-status-pending text-status-pending",
     badgeCls: "bg-status-pending/15 text-status-pending-foreground border-status-pending/30",
     rowCls: "ring-1 ring-status-pending/40 bg-status-pending/5",
     lineCls: "bg-status-pending/50",
@@ -76,17 +76,17 @@ export const STATUS_CFG: Record<
   overdue: {
     label: "Overdue",
     icon: AlertCircle,
-    dotCls: "bg-status-rejected border-status-rejected",
+    dotCls: "bg-transparent border-status-rejected text-status-rejected",
     badgeCls: "bg-status-rejected/15 text-status-rejected-foreground border-status-rejected/30",
     rowCls: "ring-1 ring-status-rejected/40 bg-status-rejected/5",
     lineCls: "bg-status-rejected/40",
   },
   waived: {
     label: "Waived",
-    icon: CheckCircle2,
-    dotCls: "bg-purple-400 border-purple-400",
+    icon: Check,
+    dotCls: "bg-transparent border-purple-400 text-purple-500 dark:text-purple-400",
     badgeCls: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/30 dark:text-purple-400 dark:border-purple-900/30",
-    rowCls: "opacity-65",
+    rowCls: "",
     lineCls: "bg-purple-200 dark:bg-purple-800",
   },
 }

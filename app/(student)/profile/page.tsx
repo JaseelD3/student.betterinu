@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-
 import { cn } from "@/lib/utils"
 import {
   Mail,
@@ -12,119 +11,245 @@ import {
   User,
   FileText,
   ShieldAlert,
-  UserCheck,
+  HeartPulse,
+  BookOpen,
+  Paperclip,
+  BadgeCheck,
+  IdCard,
 } from "lucide-react"
-import RoboLoader from "@/components/loading/robo-loader"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
-  Avatar as UIDAvatar,
+  Avatar as UIAvatar,
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-
+import RoboLoader from "@/components/loading/robo-loader"
 import { studentApi } from "@/lib/api-client"
 import { PageWrapper } from "@/components/layout/page-wrapper"
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+type StudentStatus = "active" | "inactive" | "pending"
+type StudentType = "online" | "offline"
+
+interface Student {
+  id: string
+  name: string
+  email: string
+  phone?: string | null
+  address?: string | null
+  gender?: string | null
+  date_of_birth?: string | null
+  student_type?: StudentType | null
+  student_code?: string | null
+  status?: StudentStatus | null
+  profile_image_url?: string | null
+  highest_qualification?: string | null
+  current_status?: string | null
+  year_of_passing?: string | number | null
+  emergency_contact_name?: string | null
+  emergency_contact_relation?: string | null
+  emergency_contact_phone?: string | null
+  id_proof_url?: string | null
+  certification_url?: string | null
+  created_at?: string | null
+}
+
+// ─── Config ───────────────────────────────────────────────────────────────────
 
 const STATUS_CFG = {
   active: {
     label: "Active",
-    cls: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30",
+    dot: "bg-emerald-500",
+    cls: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900/40",
   },
-  inactive: { 
-    label: "Inactive", 
-    cls: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/30" 
+  inactive: {
+    label: "Inactive",
+    dot: "bg-rose-500",
+    cls: "bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-900/40",
   },
   pending: {
     label: "Pending",
-    cls: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/30",
+    dot: "bg-amber-500",
+    cls: "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900/40",
   },
 } as const
 
-const STUDENT_TYPE_CFG = {
-  online: { label: "Online Student" },
-  offline: { label: "Offline Student" },
-} as const
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function Avatar({ url, name }: { url?: string; name: string }) {
-  const initials = name
+function getInitials(name: string) {
+  return name
     .split(" ")
     .slice(0, 2)
     .map((n) => n[0])
     .join("")
     .toUpperCase()
+}
+
+function formatDate(d?: string | null) {
+  if (!d) return null
+  return new Date(d).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })
+}
+
+function capitalize(s?: string | null) {
+  if (!s) return null
+  return s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, " ")
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function StudentAvatar({
+  url,
+  name,
+}: {
+  url?: string | null
+  name: string
+}) {
   return (
-    <UIDAvatar className="size-24 shadow-md ring-4 ring-background">
+    <UIAvatar className="size-20 ring-3 ring-background shadow-lg">
       {url && <AvatarImage src={url} alt={name} className="object-cover" />}
-      <AvatarFallback className="bg-primary/10 text-primary text-3xl font-bold">
-        {initials}
+      <AvatarFallback className="bg-primary text-blue-200 text-2xl font-normal">
+        {getInitials(name)}
       </AvatarFallback>
-    </UIDAvatar>
+    </UIAvatar>
   )
 }
 
-function InfoRow({
+// Panel with labelled header
+function Panel({
+  title,
   icon: Icon,
-  label,
-  value,
+  children,
+  className,
+  headClassName,
 }: {
+  title: string
   icon: React.ElementType
-  label: string
-  value?: string | number | null
+  children: React.ReactNode
+  className?: string
+  headClassName?: string
 }) {
-  const displayValue =
-    value !== undefined && value !== null && value !== "" ? value : "-"
-
   return (
-    <div className="border-default flex items-start gap-3 border-b py-3 last:border-0">
-      <div className="bg-primary/5 mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md">
-        <Icon className="text-primary size-4" />
+    <div
+      className={cn(
+        "overflow-hidden rounded-md border border-border bg-card  border-primary/20 ",
+        className
+      )}
+    >
+      <div
+        className={cn(
+          "flex items-center gap-3 border-b border-border/60 px-5 py-3",
+          headClassName
+        )}
+      >
+        <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+          <Icon className="size-4" />
+        </div>
+        <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+          {title}
+        </span>
       </div>
-      <div>
-        <p className="text-muted-foreground mb-0.5 text-xs font-medium">{label}</p>
-        <p className="text-foreground text-sm font-semibold">{displayValue}</p>
-      </div>
+      {children}
     </div>
   )
 }
 
-function SectionCard({
-  title,
-  children,
-  className,
+// Single labelled info row inside a panel
+function InfoRow({
+  label,
+  value,
 }: {
-  title: string
-  children: React.ReactNode
-  className?: string
+  label: string
+  value?: string | number | null
 }) {
+  const display =
+    value !== undefined && value !== null && value !== "" ? value : null
+
   return (
-    <Card className={cn("gap-0 pb-1", className)}>
-      <CardHeader className="border-default border-b pb-3">
-        <CardTitle className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">{children}</CardContent>
-    </Card>
+    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 border-b border-border/50 px-5 py-3 last:border-0 hover:bg-muted/40 transition-colors">
+      <span className="text-xs text-muted-foreground/80">
+        {label}
+      </span>
+      {display !== null ? (
+        <span
+          className={cn(
+            "text-sm font-medium text-foreground text-left sm:text-right"
+          )}
+        >
+          {display}
+        </span>
+      ) : (
+        <span className="text-sm text-muted-foreground/40">—</span>
+      )}
+    </div>
   )
 }
 
+// Compact stat card
+function StatCard({
+  label,
+  value,
+  sub,
+}: {
+  label: string
+  value?: string | number | null
+  sub?: string | null
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-md border border-border bg-card px-5 pb-4 pt-5  border-primary/20 ">
+      {/* top accent line */}
+      <p className="mb-2 text-xs font-semibold tracking-wider uppercase text-muted-foreground/60">
+        {label}
+      </p>
+      <p className="text-lg leading-tight text-foreground font-semibold">
+        {value ?? <span className="text-muted-foreground/40 text-sm font-normal">—</span>}
+      </p>
+      {sub && (
+        <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
+      )}
+    </div>
+  )
+}
+
+// Document attachment row
+function DocRow({ url, label, sub }: { url: string; label: string; sub: string }) {
+  return (
+    <div className="flex items-center gap-4 border-b border-border/50 px-5 py-4 last:border-0 hover:bg-muted/40 transition-colors">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
+        <FileText className="size-4" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium text-foreground">{label}</p>
+        <p className="text-xs text-muted-foreground">{sub}</p>
+      </div>
+      <a
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        className="shrink-0 rounded-md border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
+      >
+        View File
+      </a>
+    </div>
+  )
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function StudentProfilePage() {
-  const [student, setStudent] = useState<any>(null)
+  const [student, setStudent] = useState<Student | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     studentApi
       .getProfile()
-      .then((data) => {
-        setStudent(data)
-      })
-      .catch((err) => {
-        setError(err.message || "An error occurred")
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      .then((data: Student) => setStudent(data))
+      .catch((err: Error) => setError(err.message || "An error occurred"))
+      .finally(() => setLoading(false))
   }, [])
 
   if (loading) {
@@ -137,18 +262,16 @@ export default function StudentProfilePage() {
 
   if (error || !student) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="border-default flex flex-col items-center justify-center rounded-md border border-dashed bg-card py-20 text-center shadow-sm">
+      <div className="mx-auto max-w-4xl px-4 py-10">
+        <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-border bg-card py-20 text-center">
           <ShieldAlert className="mb-4 size-10 text-destructive" />
-          <h3 className="text-foreground text-lg font-bold">
-            Failed to load profile
-          </h3>
-          <p className="text-muted-foreground mt-2 text-sm">
-            {error || "Please sign in again."}
+          <h3 className="text-lg font-bold">Failed to load profile</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {error ?? "Please sign in again."}
           </p>
           <Link
             href="/"
-            className="text-primary mt-6 text-sm font-bold hover:underline"
+            className="mt-6 text-sm font-bold text-primary hover:underline"
           >
             Go to Home
           </Link>
@@ -158,178 +281,187 @@ export default function StudentProfilePage() {
   }
 
   const statusCfg =
-    STATUS_CFG[student.status as keyof typeof STATUS_CFG] ?? STATUS_CFG.active
-  const typeCfg = STUDENT_TYPE_CFG[
-    student.student_type as keyof typeof STUDENT_TYPE_CFG
-  ] ?? { label: "Student" }
+    STATUS_CFG[(student.status ?? "active") as keyof typeof STATUS_CFG] ??
+    STATUS_CFG.active
 
-  const formatDate = (d?: string) =>
-    d
-      ? new Date(d).toLocaleDateString("en-IN", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })
-      : undefined
+  const enrolledDate = formatDate(student.created_at)
 
-  const renderDocRow = (url: string, label: string) => (
-    <div className="border-default bg-muted/40 hover:bg-muted/70 flex items-center justify-between gap-3 rounded-md border p-3 transition-colors">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="bg-primary/5 border-primary/10 flex size-10 shrink-0 items-center justify-center rounded-md border">
-          <FileText className="text-primary size-5" />
-        </div>
-        <div className="min-w-0">
-          <p className="text-foreground truncate text-sm font-bold">{label}</p>
-          <p className="text-muted-foreground truncate text-xs">Uploaded Attachment</p>
-        </div>
-      </div>
-      <a
-        href={url}
-        target="_blank"
-        rel="noreferrer"
-        className="text-primary border-border hover:bg-muted inline-flex shrink-0 items-center gap-1.5 rounded-md border bg-card px-3 py-2 text-xs font-bold transition-colors hover:underline"
-      >
-        View File
-      </a>
-    </div>
-  )
+  const hasDocs = !!(student.id_proof_url || student.certification_url)
 
   return (
-    <PageWrapper className="bg-muted/30 pb-20 sm:pb-20 md:pb-5">
-      <div className="mx-auto max-w-7xl w-full">
-        {/* Page header */}
-        <div className="border-default mb-6 flex flex-wrap items-center justify-between gap-4 rounded-md border bg-card p-5">
-          <div className="flex items-center gap-5">
-            <Avatar url={student.profile_image_url} name={student.name} />
-            <div>
-              <div className="flex flex-wrap items-center gap-2.5">
-                <h1 className="font-display text-foreground text-2xl font-bold tracking-tight">
+    <PageWrapper className="bg-muted/30 pb-20 md:pb-8">
+      <div className="mx-auto w-full  space-y-3">
+
+        {/* ── Hero Card ─────────────────────────────────────────── */}
+        <div className="overflow-hidden rounded-md border border-border bg-card  border-primary/20 ">
+          {/* Stripe */}
+          <div
+            className="relative h-24 bg-primary"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(255,255,255,0.04) 12px, rgba(255,255,255,0.04) 13px)",
+            }}
+          >
+            <span className="absolute right-5 top-4 text-xs tracking-widest uppercase text-primary-foreground/50 font-semibold">
+              Betterinu LMS · Student Record
+            </span>
+          </div>
+
+          {/* Body */}
+          <div className="px-6 pb-6">
+            {/* Avatar row */}
+            <div className="-mt-10 mb-4 flex items-end justify-between">
+              <StudentAvatar url={student.profile_image_url} name={student.name} />
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold tracking-wide",
+                  statusCfg.cls
+                )}
+              >
+                <span className={cn("size-1.5 rounded-full", statusCfg.dot)} />
+                {statusCfg.label}
+              </span>
+            </div>
+
+            {/* Name, email & meta tags row */}
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              {/* Left: Name / email */}
+              <div>
+                <h1 className="text-3xl font-bold leading-tight tracking-tight text-foreground">
                   {student.name}
                 </h1>
-                <span
-                  className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold ${statusCfg.cls}`}
-                >
-                  {statusCfg.label}
-                </span>
+                <p className="mt-1 text-sm text-muted-foreground">{student.email}</p>
               </div>
-              <p className="text-muted-foreground mt-1 text-sm">{student.email}</p>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="bg-muted border-default text-muted-foreground rounded-md border px-2 py-0.5 font-mono text-[11px]">
-                  ID: {student.student_code || student.id.slice(0, 8)}
-                </span>
-                <span className="border-default text-muted-foreground rounded-md border px-2 py-0.5 text-[11px] font-semibold">
-                  {typeCfg.label}
-                </span>
+
+              {/* Right: Meta tags */}
+              <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                {(student.student_code || student.id) && (
+                  <span className="rounded-md border border-border/60 bg-muted/60 px-3 py-1 text-xs text-muted-foreground font-medium">
+                    <span className="font-bold text-foreground">ID</span>
+                    {" · "}
+                    {student.student_code ?? student.id.slice(0, 8)}
+                  </span>
+                )}
+                {student.student_type && (
+                  <span className="rounded-md border border-border/60 bg-muted/60 px-3 py-1 text-xs text-muted-foreground font-medium">
+                    <span className="font-bold text-foreground">Type</span>
+                    {" · "}
+                    {capitalize(student.student_type)}
+                  </span>
+                )}
+                {enrolledDate && (
+                  <span className="rounded-md border border-border/60 bg-muted/60 px-3 py-1 text-xs text-muted-foreground font-medium">
+                    <span className="font-bold text-foreground">Enrolled</span>
+                    {" · "}
+                    {enrolledDate}
+                  </span>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Responsive Cards Grid */}
-        <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
-          {/* Contact Info */}
-          <div className="lg:col-span-2">
-            <SectionCard title="Contact Information" className="h-full">
-              <InfoRow
-                icon={Mail}
-                label="Email Address"
-                value={student.email}
-              />
-              <InfoRow
-                icon={Phone}
-                label="Phone Number"
-                value={student.phone}
-              />
-              <InfoRow icon={MapPin} label="Address" value={student.address} />
-            </SectionCard>
+        {/* ── Stat Strip ────────────────────────────────────────── */}
+        <div className="grid grid-cols-3 gap-3">
+          <StatCard
+            label="Qualification"
+            value={student.highest_qualification}
+            sub="Highest degree"
+          />
+          <StatCard
+            label="Year of Passing"
+            value={student.year_of_passing}
+            sub="Graduation year"
+          />
+          <StatCard
+            label="Current Status"
+            value={capitalize(student.current_status)}
+            sub="Academic / professional"
+          />
+        </div>
+
+        {/* ── Contact + Personal ────────────────────────────────── */}
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Panel title="Contact Information" icon={Mail}>
+            <InfoRow label="Email" value={student.email} />
+            <InfoRow label="Phone" value={student.phone} />
+            <InfoRow label="Address" value={student.address} />
+          </Panel>
+
+          <Panel title="Personal Information" icon={User}>
+            <InfoRow label="Gender" value={capitalize(student.gender)} />
+            <InfoRow
+              label="Date of Birth"
+              value={formatDate(student.date_of_birth)}
+            />
+            <InfoRow
+              label="Student Type"
+              value={capitalize(student.student_type)}
+            />
+          </Panel>
+        </div>
+
+        {/* ── Emergency Contact ─────────────────────────────────── */}
+        <div className="overflow-hidden rounded-md border border-border bg-card  border-primary/20 ">
+          {/* Purple accent header */}
+          <div className="flex items-center gap-3 bg-primary px-5 py-3">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary-foreground/20 text-primary-foreground">
+              <HeartPulse className="size-4" />
+            </div>
+            <span className="text-xs font-semibold tracking-widest uppercase text-primary-foreground/90">
+              Emergency Contact
+            </span>
           </div>
 
-          {/* Personal Info */}
-          <div className="lg:col-span-1">
-            <SectionCard title="Personal Information" className="h-full">
-              <InfoRow icon={User} label="Gender" value={student.gender} />
-              <InfoRow
-                icon={Calendar}
-                label="Date of Birth"
-                value={formatDate(student.date_of_birth)}
-              />
-              <InfoRow
-                icon={UserCheck}
-                label="Student Type"
-                value={
-                  student.student_type
-                    ? student.student_type.charAt(0).toUpperCase() +
-                      student.student_type.slice(1)
-                    : null
-                }
-              />
-            </SectionCard>
-          </div>
-
-          {/* Academic Info */}
-          <div className="lg:col-span-2">
-            <SectionCard title="Academic Profile" className="h-full">
-              <InfoRow
-                icon={User}
-                label="Highest Qualification"
-                value={student.highest_qualification}
-              />
-              <InfoRow
-                icon={User}
-                label="Current Status"
-                value={
-                  student.current_status
-                    ? student.current_status.charAt(0).toUpperCase() +
-                      student.current_status.slice(1).replace("_", " ")
-                    : null
-                }
-              />
-              <InfoRow
-                icon={Calendar}
-                label="Year of Passing"
-                value={student.year_of_passing}
-              />
-            </SectionCard>
-          </div>
-
-          {/* Emergency Contact */}
-          <div className="flex h-full flex-col gap-6 lg:col-span-1">
-            <SectionCard title="Emergency Contact" className="flex-1">
-              <InfoRow
-                icon={User}
-                label="Contact Name"
-                value={student.emergency_contact_name}
-              />
-              <InfoRow
-                icon={User}
-                label="Relationship"
-                value={student.emergency_contact_relation}
-              />
-              <InfoRow
-                icon={Phone}
-                label="Phone Number"
-                value={student.emergency_contact_phone}
-              />
-            </SectionCard>
+          {/* 3-col horizontal on md+, stacked on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            <div className="border-b border-border/50 px-5 py-4 md:border-b-0 md:border-r">
+              <p className="mb-1 text-xs text-muted-foreground/80">Contact Name</p>
+              <p className="text-sm font-medium text-foreground">
+                {student.emergency_contact_name ?? (
+                  <span className="text-muted-foreground/40">—</span>
+                )}
+              </p>
+            </div>
+            <div className="border-b border-border/50 px-5 py-4 md:border-b-0 md:border-r">
+              <p className="mb-1 text-xs text-muted-foreground/80">Relationship</p>
+              <p className="text-sm font-medium text-foreground">
+                {student.emergency_contact_relation ?? (
+                  <span className="text-muted-foreground/40">—</span>
+                )}
+              </p>
+            </div>
+            <div className="px-5 py-4">
+              <p className="mb-1 text-xs text-muted-foreground/80">Phone</p>
+              <p className="text-sm font-medium text-foreground">
+                {student.emergency_contact_phone ?? (
+                  <span className="text-muted-foreground/40">—</span>
+                )}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Documents Section */}
-        {(student.certification_url || student.id_proof_url) && (
-          <div className="mt-6">
-            <SectionCard title="Uploaded Documents">
-              <div className="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2">
-                {student.id_proof_url &&
-                  renderDocRow(student.id_proof_url, "Government ID Proof")}
-                {student.certification_url &&
-                  renderDocRow(
-                    student.certification_url,
-                    "Qualification Certificate"
-                  )}
-              </div>
-            </SectionCard>
-          </div>
+        {/* ── Documents ─────────────────────────────────────────── */}
+        {hasDocs && (
+          <Panel title="Uploaded Documents" icon={Paperclip}>
+            {student.id_proof_url && (
+              <DocRow
+                url={student.id_proof_url}
+                label="Government ID Proof"
+                sub="Identity document · Uploaded attachment"
+              />
+            )}
+            {student.certification_url && (
+              <DocRow
+                url={student.certification_url}
+                label="Qualification Certificate"
+                sub="Academic certificate · Uploaded attachment"
+              />
+            )}
+          </Panel>
         )}
+
       </div>
     </PageWrapper>
   )

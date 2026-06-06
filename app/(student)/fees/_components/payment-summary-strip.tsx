@@ -1,18 +1,11 @@
-import { CalendarDays, MessageSquareWarning } from "lucide-react"
+import { AlertCircle, CalendarDays } from "lucide-react"
 import type {
   StudentFeeEnrollment,
   StudentInstallment,
 } from "@/lib/services/student-fee-service"
 import { fmt, fmtDate } from "./fee-utils"
 
-export function PaymentSummaryStrip({
-  enrollments,
-}: {
-  enrollments: StudentFeeEnrollment[]
-}) {
-  const now = new Date()
-  now.setHours(0, 0, 0, 0)
-
+export function PaymentSummaryStrip({ enrollments }: { enrollments: StudentFeeEnrollment[] }) {
   let nextInst: StudentInstallment | null = null
   let nextEnrTitle = ""
 
@@ -20,7 +13,6 @@ export function PaymentSummaryStrip({
     for (const inst of enr.installments) {
       if (inst.status === "paid" || inst.status === "waived") continue
       const due = new Date(inst.dueDate)
-      due.setHours(0, 0, 0, 0)
       if (!nextInst || due < new Date(nextInst.dueDate)) {
         nextInst = inst
         nextEnrTitle = enr.courseTitle
@@ -28,26 +20,22 @@ export function PaymentSummaryStrip({
     }
   }
 
-  const hasOverdue = enrollments.some((e) =>
-    e.installments.some((i) => i.status === "overdue")
-  )
   const overdueCount = enrollments.reduce(
-    (count, e) =>
-      count + e.installments.filter((i) => i.status === "overdue").length,
+    (n, e) => n + e.installments.filter((i) => i.status === "overdue").length,
     0
   )
 
-  if (!nextInst && !hasOverdue) return null
+  if (!nextInst && overdueCount === 0) return null
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-md border bg-card px-4 py-3 shadow-xs">
+    <div className="flex flex-wrap items-center gap-4 rounded-md border border-border bg-card px-5 py-3.5 ">
       {nextInst && (
-        <div className="flex flex-1 items-center gap-3">
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/10">
-            <CalendarDays className="size-4 text-primary" />
+        <div className="flex flex-1 items-center gap-3 min-w-[180px]">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <CalendarDays className="size-4" />
           </div>
           <div>
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
               Next Due
             </p>
             <p className="text-sm font-bold text-foreground">
@@ -56,16 +44,16 @@ export function PaymentSummaryStrip({
                 — {fmtDate(nextInst.dueDate)}
               </span>
             </p>
-            <p className="text-[10px] text-muted-foreground">{nextEnrTitle}</p>
+            <p className="text-[11px] text-muted-foreground">{nextEnrTitle}</p>
           </div>
         </div>
       )}
 
-      {hasOverdue && (
-        <div className="flex items-center gap-2 rounded-md border border-status-rejected/30 bg-status-rejected/10 px-3 py-2">
-          <MessageSquareWarning className="size-4 shrink-0 text-status-rejected-foreground" />
-          <p className="text-xs font-semibold text-status-rejected-foreground">
-            {overdueCount} overdue — please contact admin
+      {overdueCount > 0 && (
+        <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2">
+          <AlertCircle className="size-3.5 shrink-0 text-destructive" />
+          <p className="text-xs font-bold text-destructive">
+            {overdueCount} overdue — contact admin
           </p>
         </div>
       )}
