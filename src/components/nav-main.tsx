@@ -91,12 +91,15 @@ export function NavMain() {
                   "group/btn relative h-10 rounded-sm transition-all duration-200 ease-in-out",
                   isCoursesActive
                     ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground pl-3 font-bold shadow-md"
-                    : "text-sidebar-foreground/70 hover:text-primary pl-3 hover:bg-transparent active:bg-transparent"
+                    : "text-sidebar-foreground/70 hover:text-primary pl-3 hover:bg-transparent active:bg-transparent",
+                  !courses[0] && "opacity-50 pointer-events-none"
                 )}
               >
                 <Link
-                  href={courses[0] ? `/course/${courses[0].id}` : "/"}
+                  href={courses[0] ? `/course/${courses[0].id}` : "#"}
                   className="flex items-center gap-3"
+                  aria-disabled={!courses[0]}
+                  tabIndex={!courses[0] ? -1 : 0}
                 >
                   <BookOpen
                     className={cn(

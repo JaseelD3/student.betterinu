@@ -10,7 +10,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 const sora = Sora({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 })
 
 const lato = Lato({

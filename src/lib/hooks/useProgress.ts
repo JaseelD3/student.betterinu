@@ -54,14 +54,19 @@ export function useProgress() {
 
     // Fast local hydration
     const raw = window.localStorage.getItem(storageKey)
+    let localProgress: StudentProgress | null = null
     if (raw) {
       try {
-        setProgress({ ...initialProgress, ...JSON.parse(raw) })
+        localProgress = { ...initialProgress, ...JSON.parse(raw) }
+        setProgress(localProgress)
       } catch (e) { }
     }
     setIsHydrated(true)
 
-    // Fetch from database to ensure cross-device sync
+    // Fetch from database to ensure cross-device sync.
+    // We only merge server data if it has MORE completed items than what we
+    // have locally — this prevents a stale server response from rolling back
+    // a completion the user just made in this session.
     if (!globalSyncPromise) {
       globalSyncPromise = studentApi.getProgress().catch((err) => {
         console.error("Failed to sync progress from db", err)
@@ -71,9 +76,29 @@ export function useProgress() {
 
     globalSyncPromise?.then((data) => {
       if (mounted && data?.progress) {
-        const merged = { ...initialProgress, ...data.progress }
-        setProgress(merged)
-        window.localStorage.setItem(storageKey, JSON.stringify(merged))
+        // Merge: keep whichever set of completed items is larger (local wins for fresh completions)
+        const serverProgress = { ...initialProgress, ...data.progress }
+        setProgress((current) => {
+          const mergedSubModules = Array.from(
+            new Set([...current.completedSubModules, ...serverProgress.completedSubModules])
+          )
+          const mergedDays = Array.from(
+            new Set([...current.completedDays, ...serverProgress.completedDays])
+          )
+          const mergedWeeks = Array.from(
+            new Set([...current.completedWeeks, ...serverProgress.completedWeeks])
+          )
+          const merged: StudentProgress = {
+            ...serverProgress,
+            completedSubModules: mergedSubModules,
+            completedDays: mergedDays,
+            completedWeeks: mergedWeeks,
+            // Keep higher XP (local session may have earned more)
+            xp: Math.max(current.xp, serverProgress.xp),
+          }
+          window.localStorage.setItem(storageKey, JSON.stringify(merged))
+          return merged
+        })
       }
     })
 
@@ -102,6 +127,10 @@ export function useProgress() {
   const syncToDb = useCallback((newProgress: StudentProgress) => {
     studentApi
       .saveProgress(newProgress)
+      .then(() => {
+        // Reset the sync promise so the next lesson mount re-fetches confirmed data
+        globalSyncPromise = null
+      })
       .catch((err) => console.error("Failed to save progress to db", err))
   }, [])
 

@@ -32,7 +32,7 @@ export function DocViewer({ content }: { content: any }) {
         <article className="doc-content space-y-8">
           <section className="">
             <div
-              className="rich-content text-secondary"
+              className="rich-content text-foreground/90"
               dangerouslySetInnerHTML={{ __html: preprocessHtml(content) }}
             />
           </section>
@@ -54,7 +54,7 @@ export function DocViewer({ content }: { content: any }) {
                 {section.heading}
               </h2>
               <div
-                className="rich-content text-secondary mt-4"
+                className="rich-content text-foreground/90 mt-4"
                 dangerouslySetInnerHTML={{
                   __html: preprocessHtml(section.body),
                 }}
@@ -107,7 +107,7 @@ export function DocViewer({ content }: { content: any }) {
                 <div className="mt-5 flex flex-wrap gap-2">
                   {section.links.map((link: any) => (
                     <a
-                      className="border-default bg-elevated text-secondary transition-smooth hover:text-foreground focus-ring rounded-full border px-3 py-2 text-xs font-bold"
+                      className="border-default bg-elevated text-foreground/80 transition-smooth hover:text-foreground focus-ring rounded-full border px-3 py-2 text-xs font-bold"
                       href={link.url}
                       key={`${section.heading}-${link.url}`}
                       rel="noopener"
@@ -132,7 +132,7 @@ export function DocViewer({ content }: { content: any }) {
         >
           {content.sections.map((section: any) => (
             <a
-              className="text-secondary hover:bg-subtle hover:text-foreground focus-ring rounded-md px-2 py-1 text-sm"
+              className="text-foreground/80 hover:bg-subtle hover:text-foreground focus-ring rounded-md px-2 py-1 text-sm"
               href={`#${slugify(section.heading)}`}
               key={section.heading}
             >

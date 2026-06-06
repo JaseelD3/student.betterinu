@@ -12,6 +12,8 @@ export default function CourseLearnPage() {
   const { courseId } = useParams<{ courseId: string }>()
   const [course, setCourse] = useState<Course | null>(null)
 
+  // We only need the course shell (title, meta) here.
+  // The full curriculum (weeks/days) is fetched lazily inside LearnClient.
   useEffect(() => {
     studentApi
       .getCourse(courseId)
@@ -33,7 +35,7 @@ export default function CourseLearnPage() {
     // noPadding — LearnClient applies its own padding so the left sidebar
     // can bleed flush to the left edge while the right column gets p-4 sm:p-6
     <PageWrapper noPadding className="pb-16 md:pb-0">
-      <LearnClient course={course} />
+      <LearnClient courseId={courseId} course={course} />
     </PageWrapper>
   )
 }

@@ -14,9 +14,11 @@ import { ModuleAccordion } from "./module-accordion"
 export function WeekCard({
   courseId,
   week,
+  isLoading = false,
 }: {
   courseId: CourseId
   week: Week
+  isLoading?: boolean
 }) {
   const { areAllWeekDaysComplete, hasPassedQuiz, isSubModuleComplete } =
     useProgress()
@@ -28,6 +30,28 @@ export function WeekCard({
     : 0
   const daysComplete = areAllWeekDaysComplete(courseId, week.id)
   const passed = hasPassedQuiz(courseId, week.id)
+
+  // ── Loading skeleton ──────────────────────────────────────────────────────
+  if (isLoading) {
+    return (
+      <section className="space-y-4" id={week.id}>
+        <Card>
+          <CardContent className="py-0">
+            <div className="animate-pulse flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="h-3 w-1/3 rounded bg-muted" />
+                <div className="h-4 w-2/3 rounded bg-muted" />
+                <div className="h-2.5 w-1/4 rounded bg-muted" />
+              </div>
+              <div className="w-full shrink-0 sm:w-48 space-y-1.5">
+                <div className="h-2 w-full rounded-full bg-muted" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+    )
+  }
 
   return (
     <section className="space-y-4" id={week.id}>

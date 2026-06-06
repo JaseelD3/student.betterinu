@@ -1,7 +1,19 @@
 import { getClientAuth } from "@/lib/firebase-client"
 
 import type { AttachedFile } from "@/components/ui/FileUploader"
-import type { Course, StudentProgress } from "@/types"
+import type { Course, StudentProgress, Week } from "@/types"
+
+/** Lightweight week descriptor returned by the curriculum-index endpoint.
+ *  Contains only the fields needed to render the sidebar without fetching
+ *  the full week payload (no days, no quiz). */
+export type WeekStub = {
+  id: string
+  course_id: string
+  position: number
+  title: string
+  is_locked: boolean
+  is_shared: boolean
+}
 
 export type ApiRequestOptions = Omit<RequestInit, "body"> & {
   body?: BodyInit | object
@@ -116,6 +128,22 @@ export const studentApi = {
   getCourse(courseId: string) {
     return apiClient<{ course: Course }>(
       `/api/student/courses/${encodeURIComponent(courseId)}`
+    )
+  },
+
+  /** GET /api/student/courses/:courseId/curriculum
+   *  Returns the ordered week-stub list (no days, no quiz payload). */
+  getCurriculumIndex(courseId: string) {
+    return apiClient<{ weeks: WeekStub[] }>(
+      `/api/student/courses/${encodeURIComponent(courseId)}/curriculum`
+    )
+  },
+
+  /** GET /api/student/courses/:courseId/curriculum/:weekId
+   *  Returns the full week row including days + quiz. */
+  getWeek(courseId: string, weekId: string) {
+    return apiClient<{ week: Week }>(
+      `/api/student/courses/${encodeURIComponent(courseId)}/curriculum/${encodeURIComponent(weekId)}`
     )
   },
 

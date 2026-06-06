@@ -14,6 +14,7 @@ import {
   HelpCircle,
   ArrowLeft,
   LayoutList,
+  Loader2,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import type { Course, Day, SubModule, Week } from "@/types"
@@ -115,7 +116,7 @@ function SidebarSubModuleItem({
         <span className="min-w-0 flex-1">
           <span
             className={cn(
-              "block truncate text-xs font-semibold transition-colors text-foreground/90",
+              "block whitespace-normal break-words text-xs leading-snug font-semibold transition-colors text-foreground/90",
               isActive ? "text-primary" : !isComplete && "group-hover:text-primary"
             )}
           >
@@ -255,7 +256,7 @@ export function LessonViewerClient({
           href={`/course/${course.id}/learn`}
         >
           <ChevronLeft className="size-4" aria-hidden />
-          Back to Curriculum
+          Back to Curriculum  
         </Link>
       </div>
     )
@@ -300,7 +301,7 @@ export function LessonViewerClient({
                     className="mb-1 flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-primary-foreground/70 uppercase transition-colors hover:text-primary-foreground"
                   >
                     <ArrowLeft className="size-3" />
-                    Back to Curriculum
+                    Back to Curriculum  
                   </Link>
                   <p className="truncate text-base font-bold leading-snug text-primary-foreground">
                     {day.title}
@@ -350,7 +351,7 @@ export function LessonViewerClient({
 
         {/* ── MAIN CONTENT — scrolls independently ── */}
         <div className="min-w-0 flex-1 overflow-y-auto scrollbar-minimal">
-          <div className="w-full space-y-6 px-5 py-5 md:pt-5">
+          <div className="w-full space-y-4 px-5 py-5 md:pt-5">
             {/* Lesson header */}
             <div className="bg-card ring-foreground/10 rounded-md ring-1">
               <div className="px-4 py-3">
@@ -369,117 +370,140 @@ export function LessonViewerClient({
                 <h1 className="text-foreground mt-1.5 text-base font-bold leading-snug">
                   {subModule.title}
                 </h1>
-                {subModule.duration && (
+                {/* {subModule.duration && (
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     Estimated time · {subModule.duration}
                   </p>
-                )}
+                )} */}
               </div>
             </div>
 
             {/* Content renderer */}
-            {subModule.type === "video" ? (
-              <div className="space-y-5">
-                <VideoPlayer module={subModule} />
-                {subModule.attachedFiles?.length ? (
-                  <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
-                ) : null}
-              </div>
-            ) : subModule.type === "doc" || subModule.type === "lesson" ? (
-              <div className="space-y-5">
-                {subModule.sections?.length ? (
-                  <LessonSectionViewer
-                    sections={subModule.sections}
-                    pagePadding={subModule.pagePadding}
-                    pageBgColor={subModule.pageBgColor}
-                  />
-                ) : (
-                  <DocViewer content={subModule.content ?? ""} />
-                )}
-                {subModule.attachedFiles?.length ? (
-                  <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
-                ) : null}
-              </div>
-            ) : subModule.type === "mixed" ? (
-              <div className="space-y-10">
-                {(subModule.blocks ?? []).map((block, bIdx) => (
-                  <div key={bIdx} className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-px flex-1 bg-border" />
-                      <h3 className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
-                        {block.title}
-                      </h3>
-                      <div className="h-px flex-1 bg-border" />
-                    </div>
-                    {block.kind === "video" ? (
-                      <VideoPlayer
-                        module={{
-                          ...subModule,
-                          videoUrl: block.videoUrl,
-                          description: block.description,
-                        }}
-                      />
-                    ) : (
-                      <DocViewer content={block.content} />
-                    )}
+            <div className="relative bg-card rounded-md border border-border overflow-hidden min-h-[400px]">
+              {isLoading ? (
+                /* ── Skeleton shown while new lesson data is fetching ── */
+                <div className="p-6 space-y-5 animate-pulse">
+                  <div className="space-y-2">
+                    <div className="h-3 w-16 rounded bg-muted" />
+                    <div className="h-6 w-2/3 rounded bg-muted" />
                   </div>
-                ))}
-                {subModule.attachedFiles?.length ? (
-                  <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
-                ) : null}
-              </div>
-            ) : subModule.type === "quiz" ? (
-              <QuizViewer
-                moduleId={subModule.id}
-                courseId={course.id}
-                weekId={week.id}
-                dayId={day.id}
-                quizData={subModule.quizData ?? { questions: [], passingScore: 70 }}
-                onPass={() =>
-                  markSubModuleComplete(subModule.id, day.id, day.subModules.map((m) => m.id))
-                }
-              />
-            ) : subModule.type === "assignment" ? (
-              <AssignmentViewer
-                module={subModule}
-                courseId={course.id}
-                weekId={week.id}
-                dayId={day.id}
-                onApprovedComplete={() =>
-                  markSubModuleComplete(subModule.id, day.id, day.subModules.map((m) => m.id))
-                }
-              />
-            ) : (
-              <div className="rounded-md border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-                Unknown content type
-              </div>
-            )}
-
-            {subModule.externalLinks?.length ? (
-              <section>
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-border" />
-                  <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
-                    External Resources
-                  </span>
-                  <div className="h-px flex-1 bg-border" />
+                  <div className="h-px w-full bg-border" />
+                  <div className="space-y-3">
+                    <div className="h-4 w-full rounded bg-muted" />
+                    <div className="h-4 w-[90%] rounded bg-muted" />
+                    <div className="h-4 w-[80%] rounded bg-muted" />
+                  </div>
+                  <div className="h-48 w-full rounded-md bg-muted" />
+                  <div className="space-y-3">
+                    <div className="h-4 w-full rounded bg-muted" />
+                    <div className="h-4 w-[85%] rounded bg-muted" />
+                    <div className="h-4 w-[70%] rounded bg-muted" />
+                    <div className="h-4 w-[95%] rounded bg-muted" />
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {subModule.externalLinks.map((link) => (
-
-                    <a key={link.url}
-                      href={link.url}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      className="group flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
-                    >
-                      <ExternalLink className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                      {link.label}
-                    </a>
+              ) : subModule.type === "video" ? (
+                <div className="space-y-5">
+                  <VideoPlayer module={subModule} />
+                  {subModule.attachedFiles?.length ? (
+                    <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
+                  ) : null}
+                </div>
+              ) : subModule.type === "doc" || subModule.type === "lesson" ? (
+                <div className="space-y-5">
+                  {subModule.sections?.length ? (
+                    <LessonSectionViewer
+                      sections={subModule.sections}
+                      pagePadding={subModule.pagePadding}
+                      pageBgColor={subModule.pageBgColor}
+                    />
+                  ) : (
+                    <DocViewer content={subModule.content ?? ""} />
+                  )}
+                  {subModule.attachedFiles?.length ? (
+                    <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
+                  ) : null}
+                </div>
+              ) : subModule.type === "mixed" ? (
+                <div className="space-y-10">
+                  {(subModule.blocks ?? []).map((block, bIdx) => (
+                    <div key={bIdx} className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-px flex-1 bg-border" />
+                        <h3 className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+                          {block.title}
+                        </h3>
+                        <div className="h-px flex-1 bg-border" />
+                      </div>
+                      {block.kind === "video" ? (
+                        <VideoPlayer
+                          module={{
+                            ...subModule,
+                            videoUrl: block.videoUrl,
+                            description: block.description,
+                          }}
+                        />
+                      ) : (
+                        <DocViewer content={block.content} />
+                      )}
+                    </div>
                   ))}
+                  {subModule.attachedFiles?.length ? (
+                    <FileViewer files={subModule.attachedFiles} title="Lesson Attachments" />
+                  ) : null}
                 </div>
-              </section>
-            ) : null}
+              ) : subModule.type === "quiz" ? (
+                <QuizViewer
+                  moduleId={subModule.id}
+                  courseId={course.id}
+                  weekId={week.id}
+                  dayId={day.id}
+                  quizData={subModule.quizData ?? { questions: [], passingScore: 70 }}
+                  onPass={() =>
+                    markSubModuleComplete(subModule.id, day.id, day.subModules.map((m) => m.id))
+                  }
+                />
+              ) : subModule.type === "assignment" ? (
+                <AssignmentViewer
+                  module={subModule}
+                  courseId={course.id}
+                  weekId={week.id}
+                  dayId={day.id}
+                  onApprovedComplete={() =>
+                    markSubModuleComplete(subModule.id, day.id, day.subModules.map((m) => m.id))
+                  }
+                />
+              ) : (
+                <div className="rounded-md border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
+                  Unknown content type
+                </div>
+              )}
+
+              {subModule.externalLinks?.length ? (
+                <section>
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+                      External Resources
+                    </span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {subModule.externalLinks.map((link) => (
+
+                      <a key={link.url}
+                        href={link.url}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="group flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+                      >
+                        <ExternalLink className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

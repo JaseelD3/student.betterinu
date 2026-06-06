@@ -2,30 +2,18 @@
 
 import { useQuery } from "@tanstack/react-query"
 
-import { apiClient } from "@/lib/api-client"
+import { studentApi } from "@/lib/api-client"
 import { queryKeys } from "@/lib/query-keys"
 import type { Lesson } from "@/types/lesson"
 
-// ── How lessons work in this backend ──────────────────────────────────────
-// There is no dedicated lesson endpoint.
-// Lessons (subModules) are embedded inside the course curriculum JSON:
-//   GET /api/student/courses/:courseId → { course: { weeks: Week[] } }
-// Each Week has days, each day has subModules (which are lessons/quizzes/assignments).
-
-type CourseWithCurriculum = {
-  id: string
-  weeks: {
-    id: string
-    days: {
-      id: string
-      subModules: (Lesson & { id: string })[]
-    }[]
-  }[]
-}
+// ── How lessons work in this backend ──────────────────────────────────────────
+// Each lesson (subModule) lives inside a Week's days array.
+// We fetch only the single week (GET /api/student/courses/:courseId/curriculum/:weekId)
+// instead of loading the entire course. weekId is always available in the URL.
 
 /**
- * Fetches a single lesson (subModule) by extracting it from the course curriculum.
- * Backend: GET /api/student/courses/:courseId → { course } — no dedicated lesson endpoint.
+ * Fetches a single lesson (subModule) by loading only the required week.
+ * Backend: GET /api/student/courses/:courseId/curriculum/:weekId
  */
 export function useLesson(
   courseId: string,
@@ -35,16 +23,10 @@ export function useLesson(
   return useQuery({
     queryKey: queryKeys.lessons.detail(courseId, weekId, moduleId),
     queryFn: async () => {
-      const res = await apiClient<{ course: CourseWithCurriculum }>(
-        `/api/student/courses/${encodeURIComponent(courseId)}`
-      )
-      // Extract the sub-module from the nested curriculum structure
-      for (const week of res.course?.weeks ?? []) {
-        if (week.id !== weekId) continue
-        for (const day of week.days ?? []) {
-          for (const mod of day.subModules ?? []) {
-            if (mod.id === moduleId) return mod as Lesson
-          }
+      const { week } = await studentApi.getWeek(courseId, weekId)
+      for (const day of week?.days ?? []) {
+        for (const mod of day.subModules ?? []) {
+          if (mod.id === moduleId) return mod as unknown as Lesson
         }
       }
       return null

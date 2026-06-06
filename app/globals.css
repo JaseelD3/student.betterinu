@@ -419,3 +419,70 @@
   -webkit-backdrop-filter: blur(12px) saturate(140%);
   box-shadow: inset 0 1px 0px 0px rgba(255, 255, 255, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
+@layer components {
+  /* ── Rich Content Styling ── */
+  /* Full fidelity rendering of Quill/TipTap rich HTML in the student lesson viewer */
+  .rich-content { font-family: var(--font-sans); line-height: 1.7; word-break: break-word; overflow-wrap: break-word; }
+
+  /* Headings use the display font (Sora) */
+  .rich-content h1,
+  .rich-content h2,
+  .rich-content h3,
+  .rich-content h4,
+  .rich-content h5,
+  .rich-content h6 { font-family: var(--font-display); font-weight: 400; color: var(--foreground); line-height: 1.25; margin-top: 0.75em; margin-bottom: 0.5em; }
+  .rich-content h1 { font-size: 2rem; }
+  .rich-content h2 { font-size: 1.5rem; }
+  .rich-content h3 { font-size: 1.25rem; }
+  .rich-content h4 { font-size: 1.1rem; }
+
+  /* Paragraphs */
+  .rich-content p { margin-top: 0; margin-bottom: 0.85em; line-height: 1.7; }
+  .rich-content p:last-child { margin-bottom: 0; }
+  .rich-content p.ql-blank { min-height: 1.7em; }
+
+  /* Lists — force disc/decimal back since Tailwind preflight removes them */
+  .rich-content ul { list-style-type: disc !important; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.75rem; }
+  .rich-content ol { list-style-type: decimal !important; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.75rem; }
+  .rich-content li { margin-bottom: 0.35rem; line-height: 1.65; }
+  .rich-content li > ul,
+  .rich-content li > ol { margin-top: 0.25rem; margin-bottom: 0; }
+
+  /* Inline formatting */
+  .rich-content strong, .rich-content b { font-weight: 700; }
+  .rich-content em, .rich-content i { font-style: italic; }
+  .rich-content u { text-decoration: underline; text-underline-offset: 3px; }
+  .rich-content s { text-decoration: line-through; }
+  .rich-content a { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; font-weight: 600; }
+
+  /* Quill size helpers */
+  .rich-content .ql-size-small  { font-size: 0.75em; }
+  .rich-content .ql-size-large  { font-size: 1.5em; }
+  .rich-content .ql-size-huge   { font-size: 2.5em; }
+
+  /* Quill alignment */
+  .rich-content .ql-align-center  { text-align: center !important; }
+  .rich-content .ql-align-right   { text-align: right !important; }
+  .rich-content .ql-align-justify { text-align: justify !important; }
+
+  /* Code */
+  .rich-content pre { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; font-family: var(--font-mono); font-size: 0.875rem; overflow-x: auto; margin: 0.75rem 0; }
+  .rich-content code { background: var(--muted); border-radius: 4px; padding: 0.1em 0.4em; font-family: var(--font-mono); font-size: 0.875em; }
+  .rich-content pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* Tables */
+  .rich-content table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.9rem; }
+  .rich-content th { border: 1px solid var(--border); padding: 0.6rem 0.85rem; text-align: left; font-weight: 700; color: var(--foreground); background: var(--muted); }
+  .rich-content td { border: 1px solid var(--border); padding: 0.6rem 0.85rem; color: var(--foreground); white-space: normal; word-break: break-word; }
+  .rich-content tr:nth-child(even) td { background: color-mix(in oklch, var(--muted) 50%, transparent); }
+
+  /* Misc */
+  .rich-content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .rich-content blockquote { border-left: 3px solid var(--primary); padding-left: 1rem; margin: 1rem 0; color: var(--muted-foreground); font-style: italic; }
+  .rich-content img { max-width: 100%; border-radius: var(--radius-md); }
+}
+
+@layer components {
+  .rich-content > *:first-child { margin-top: 0; }
+  .rich-content > *:last-child { margin-bottom: 0; }
+}

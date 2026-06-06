@@ -16,3 +16,24 @@ export function useCourse(courseId: string) {
     staleTime: 60_000,
   })
 }
+
+export function useCurriculumIndex(courseId: string) {
+  return useQuery({
+    queryKey: ["course", courseId, "curriculum-index"],
+    queryFn: () => studentApi.getCurriculumIndex(courseId),
+    select: (data) => data.weeks,
+    enabled: Boolean(courseId),
+    staleTime: 5 * 60_000,
+  })
+}
+
+export function useWeek(courseId: string, weekId: string, enabled: boolean = true) {
+  return useQuery({
+    queryKey: ["course", courseId, "week", weekId],
+    queryFn: () => studentApi.getWeek(courseId, weekId),
+    select: (data) => data.week,
+    enabled: Boolean(courseId) && Boolean(weekId) && enabled,
+    staleTime: 5 * 60_000,
+  })
+}
+

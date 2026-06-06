@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { AlertCircle } from "lucide-react"
 
-import { useCourse } from "@/lib/hooks/use-course"
+import { useCourse, useCurriculumIndex } from "@/lib/hooks/use-course"
 import { Button } from "@/components/ui/button"
 
 import { CourseDetailSkeleton } from "./course-detail-skeleton"
@@ -16,6 +16,7 @@ type CourseDetailClientProps = {
 
 export function CourseDetailClient({ courseId }: CourseDetailClientProps) {
   const { data: course, isLoading, isError, error } = useCourse(courseId)
+  const { data: weeks = [] } = useCurriculumIndex(courseId)
 
   if (isLoading) {
     return <CourseDetailSkeleton />
@@ -49,7 +50,7 @@ export function CourseDetailClient({ courseId }: CourseDetailClientProps) {
 
       {/* Body — Full width weekly curriculum */}
       <div className="w-full">
-        <SyllabusAccordion course={course} />
+        <SyllabusAccordion course={course} weeks={weeks} />
       </div>
     </div>
   )

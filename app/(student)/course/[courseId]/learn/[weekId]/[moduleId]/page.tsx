@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useParams } from "next/navigation"
 import { LessonViewerClient } from "../../_components/lesson-viewer-client"
 import RoboLoader from "@/components/loading/robo-loader"
@@ -15,34 +15,39 @@ type ModuleMatch = {
   subModule: SubModule
 }
 
+// Global cache to survive Next.js remounting the page on URL change
+let cachedMatch: ModuleMatch | null = null
+
 export default function ModuleViewerPage() {
   const { courseId, weekId, moduleId } = useParams<{
     courseId: string
     weekId: string
     moduleId: string
   }>()
-  const [match, setMatch] = useState<ModuleMatch | null>(null)
+  // Initialize with the cached match so the sidebar never disappears during navigation
+  const [match, setMatch] = useState<ModuleMatch | null>(cachedMatch)
   const [error, setError] = useState("")
+  // true only while fetching — does NOT blank out the whole page on re-fetch
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     setIsLoading(true)
-    studentApi
-      .getCourse(courseId)
-      .then(({ course }) => {
-        for (const week of course.weeks) {
-          for (const day of week.days) {
-            const subModule = day.subModules.find(
-              (item) => item.id === moduleId
-            )
-            if (subModule && week.id === weekId) {
-              setMatch({ course, week, day, subModule })
-              setIsLoading(false)
-              return
-            }
+
+    Promise.all([
+      studentApi.getCourse(courseId),
+      studentApi.getWeek(courseId, weekId),
+    ])
+      .then(([{ course }, { week }]) => {
+        for (const day of week.days) {
+          const subModule = day.subModules.find((item) => item.id === moduleId)
+          if (subModule) {
+            const newMatch = { course, week, day, subModule }
+            setMatch(newMatch)
+            cachedMatch = newMatch // Update global cache
+            setIsLoading(false)
+            return
           }
         }
-
         setError("Lesson not found")
         setIsLoading(false)
       })
@@ -60,7 +65,7 @@ export default function ModuleViewerPage() {
     )
   }
 
-  // Only show full page loader on initial load when we have NO match data to render the sidebar
+  // Only show the full-page loader the very first time (no match data yet)
   if (!match) {
     return (
       <PageWrapper>
@@ -71,6 +76,7 @@ export default function ModuleViewerPage() {
     )
   }
 
+  // On subsequent lesson switches: sidebar stays rendered, content area shows spinner
   return (
     <PageWrapper noPadding className="min-h-0 overflow-hidden pb-16 md:pb-0">
       <LessonViewerClient

@@ -44,7 +44,7 @@ function preprocessHtml(html: string): string {
 //           <h3 className="font-semibold text-foreground text-sm">{title}</h3>
 //         )}
 //         <div
-//           className="relative overflow-hidden rounded-md border border-default shadow-sm"
+//           className="relative overflow-hidden rounded-sm border border-default shadow-xs"
 //           style={{ paddingBottom: "56.25%" }}
 //         >
 //           <iframe
@@ -66,7 +66,7 @@ function preprocessHtml(html: string): string {
 //           <h3 className="font-semibold text-foreground text-sm">{title}</h3>
 //         )}
 //         <div
-//           className="relative overflow-hidden rounded-md border border-default shadow-sm"
+//           className="relative overflow-hidden rounded-sm border border-default shadow-xs"
 //           style={{ paddingBottom: "56.25%" }}
 //         >
 //           <iframe
@@ -89,7 +89,7 @@ function preprocessHtml(html: string): string {
 //       )}
 //       <video
 //         controls
-//         className="w-full rounded-md border border-default shadow-sm"
+//         className="w-full rounded-sm border border-default shadow-xs"
 //         src={url}
 //       >
 //         Your browser does not support the video tag.
@@ -157,7 +157,7 @@ function YouTubePlayer({ ytId, title }: { ytId: string; title?: string }) {
         <h3 className="text-foreground text-sm font-semibold">{title}</h3>
       )}
       <div
-        className="border-default relative overflow-hidden rounded-md border shadow-sm"
+        className="border-default relative overflow-hidden rounded-sm border shadow-xs"
         style={{ paddingBottom: "56.25%" }}
       >
         {!playing ? (
@@ -244,7 +244,7 @@ function VideoRenderer({ url, title }: { url: string; title?: string }) {
           <h3 className="text-foreground text-sm font-semibold">{title}</h3>
         )}
         <div
-          className="border-default relative overflow-hidden rounded-md border shadow-sm"
+          className="border-default relative overflow-hidden rounded-sm border shadow-xs"
           style={{ paddingBottom: "56.25%" }}
         >
           <iframe
@@ -273,7 +273,7 @@ function VideoRenderer({ url, title }: { url: string; title?: string }) {
       )}
       <video
         controls
-        className="border-default w-full rounded-md border shadow-sm"
+        className="border-default w-full rounded-sm border shadow-xs"
         src={url}
       >
         Your browser does not support the video tag.
@@ -327,10 +327,10 @@ export function SectionBlock({ section }: { section: LessonSection }) {
     case "rich_text":
       return (
         <div
-          className={`py-4 ${getPaddingClass(section.paddingX)} ${getAlignClass(section.align, true)}`}
+          className={`pt-1 pb-1 ${getPaddingClass(section.paddingX)} ${getAlignClass(section.align, true)}`}
         >
           <div
-            className="rich-content text-secondary block w-full text-left leading-snug"
+            className="rich-content text-foreground/80 text-[14px] block w-full text-left leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: preprocessHtml(section.content),
             }}
@@ -349,7 +349,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
 
       return (
         <figure
-          className={`flex flex-col py-4 ${getPaddingClass(section.paddingX)} ${getFlexItemAlign(section.align)}`}
+          className={`py-1 flex flex-col ${getPaddingClass(section.paddingX)} ${getFlexItemAlign(section.align)}`}
         >
           {section.url ? (
             <Image
@@ -357,12 +357,12 @@ export function SectionBlock({ section }: { section: LessonSection }) {
               alt={section.caption ?? "Lesson image"}
               width={1200}
               height={800}
-              className={`${currentSizeCls} ${getAlignClass(section.align)} border-default bg-checkerboard max-h-[75vh] rounded-md border object-contain`}
+              className={`${currentSizeCls} ${getAlignClass(section.align)} border-default bg-checkerboard max-h-[75vh] rounded-sm border object-contain`}
               loading="lazy"
             />
           ) : (
             <div
-              className={`bg-subtle border-default text-muted flex h-32 items-center justify-center rounded-md border border-dashed text-xs ${currentSizeCls}`}
+              className={`bg-subtle border-default text-muted flex h-32 items-center justify-center rounded-sm border border-dashed text-xs ${currentSizeCls}`}
             >
               Image section
             </div>
@@ -390,7 +390,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
         "w-[80%] min-w-[600px]" // lg is default
       return (
         <div
-          className={`flex py-4 ${getPaddingClass(section.paddingX)} ${getFlexAlign(section.align)}`}
+          className={`flex py-2 ${getPaddingClass(section.paddingX)} ${getFlexAlign(section.align)}`}
         >
           <div className={`${currentSizeCls} ${getAlignClass(section.align)}`}>
             <VideoRenderer url={section.url} title={section.title} />
@@ -404,8 +404,8 @@ export function SectionBlock({ section }: { section: LessonSection }) {
         <div
           className={`flex py-2 ${getPaddingClass(section.paddingX, true)} ${getFlexAlign(section.align)}`}
         >
-          <div className="border-default bg-surface flex w-full max-w-[260px] items-center gap-2 rounded-md border px-3 py-2 shadow-sm">
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-red-100 bg-red-50">
+          <div className="border-default bg-surface flex w-full max-w-[260px] items-center gap-2 rounded-sm border px-3 py-2 shadow-xs">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-sm border border-red-100 bg-red-50">
               <FileText className="size-4 text-red-500" />
             </div>
 
@@ -423,7 +423,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
               href={section.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-semibold text-red-600 transition-colors hover:bg-red-100"
+              className="inline-flex shrink-0 items-center gap-1 rounded-sm border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-semibold text-red-600 transition-colors hover:bg-red-100"
             >
               <ExternalLink className="size-3" />
               View
@@ -435,15 +435,15 @@ export function SectionBlock({ section }: { section: LessonSection }) {
     case "link":
       return (
         <div
-          className={`flex py-4 ${getPaddingClass(section.paddingX)} ${getFlexAlign(section.align)}`}
+          className={`flex py-2 ${getPaddingClass(section.paddingX)} ${getFlexAlign(section.align)}`}
         >
           <a
             href={section.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group border-default bg-surface hover:border-primary flex w-full max-w-3xl items-start gap-4 rounded-md border px-3 py-3 shadow-sm transition-all hover:shadow-sm"
+            className="group border-default bg-surface hover:border-primary flex w-full max-w-3xl items-start gap-4 rounded-sm border px-3 py-3 shadow-xs transition-all hover:shadow-xs"
           >
-            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-md border border-teal-100 bg-teal-50">
+            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-teal-100 bg-teal-50">
               {section.thumbnailUrl ? (
                 <Image
                   src={section.thumbnailUrl}
@@ -470,29 +470,27 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                 {section.title}
               </p>
               {section.description && (
-                <p className="text-muted mt-1 text-xs leading-relaxed">
+                <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                   {section.description}
                 </p>
               )}
-              <p className="text-muted/70 mt-1.5 truncate text-[10px]">
+              <p className="text-muted-foreground/80 mt-1.5 truncate text-[10px]">
                 {section.url}
               </p>
             </div>
-            <ExternalLink className="text-muted group-hover:text-primary mt-1 size-4 shrink-0 transition-colors" />
+            <ExternalLink className="text-muted-foreground group-hover:text-primary mt-1 size-4 shrink-0 transition-colors" />
           </a>
         </div>
       )
 
     case "task":
       return (
-        <div
-          className={`bg-indigo-50/30 py-6 ${getPaddingClass(section.paddingX)}`}
-        >
+        <div className={`py-2 bg-indigo-50/30 ${getPaddingClass(section.paddingX)}`}>
           <div
-            className={`max-w-2xl space-y-4 rounded-md border border-indigo-100 bg-white p-5 shadow-sm ${getAlignClass(section.align)}`}
+            className={`max-w-2xl space-y-4 rounded-sm border border-indigo-100 bg-white p-5 shadow-xs ${getAlignClass(section.align)}`}
           >
             <div className="flex items-center gap-3 border-b border-indigo-50 pb-3">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-indigo-100">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-indigo-100">
                 <CheckSquare className="size-4 text-indigo-700" />
               </div>
               <div>
@@ -517,7 +515,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
             <div className="pt-2">
               <button
                 type="button"
-                className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 sm:w-auto"
+                className="w-full rounded-sm bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 sm:w-auto"
               >
                 {section.submissionType === "file"
                   ? "Upload Submission"
@@ -541,7 +539,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
             <div key={col.id} className="min-w-0">
               {col.type === "rich_text" && (
                 <div
-                  className="rich-content text-secondary px-4 py-3 leading-snug"
+                  className="px-4 py-3 rich-content text-foreground/80 text-[14px] leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: preprocessHtml(col.content || ""),
                   }}
@@ -554,7 +552,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                     alt={col.caption ?? ""}
                     width={600}
                     height={400}
-                    className="max-h-64 w-full rounded-md object-contain"
+                    className="max-h-64 w-full rounded-sm object-contain"
                     loading="lazy"
                   />
                   {col.caption && (
@@ -565,7 +563,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                 </figure>
               )}
               {col.type === "image" && !col.url && (
-                <div className="text-muted bg-subtle border-default m-3 flex h-24 items-center justify-center rounded-md border border-dashed text-xs">
+                <div className="text-muted bg-subtle border-default m-3 flex h-24 items-center justify-center rounded-sm border border-dashed text-xs">
                   No image
                 </div>
               )}
@@ -575,7 +573,7 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                 </div>
               )}
               {col.type === "video" && !col.url && (
-                <div className="text-muted bg-subtle border-default m-3 flex h-24 items-center justify-center rounded-md border border-dashed text-xs">
+                <div className="text-muted bg-subtle border-default m-3 flex h-24 items-center justify-center rounded-sm border border-dashed text-xs">
                   No video URL
                 </div>
               )}
@@ -585,9 +583,9 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                     href={col.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-surface flex items-center gap-3 rounded-md px-3 py-2.5 transition-all hover:shadow-sm"
+                    className="bg-surface flex items-center gap-3 rounded-sm px-3 py-2.5 transition-all hover:shadow-xs"
                   >
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-red-100 bg-red-50">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-sm border border-red-100 bg-red-50">
                       <FileText className="size-4 text-red-500" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -608,9 +606,9 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                     href={col.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group bg-surface flex items-start gap-3 rounded-md px-3 py-2.5 transition-all hover:shadow-sm"
+                    className="group bg-surface flex items-start gap-3 rounded-sm px-3 py-2.5 transition-all hover:shadow-xs"
                   >
-                    <div className="mt-0.5 flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-teal-100 bg-teal-50 p-1.5">
+                    <div className="mt-0.5 flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-teal-100 bg-teal-50 p-1.5">
                       {col.thumbnailUrl ? (
                         <Image
                           src={col.thumbnailUrl}
@@ -637,20 +635,20 @@ export function SectionBlock({ section }: { section: LessonSection }) {
                         {col.title || "Link"}
                       </p>
                       {col.description && (
-                        <p className="text-muted mt-0.5 text-xs leading-relaxed">
+                        <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
                           {col.description}
                         </p>
                       )}
-                      <p className="text-muted/70 mt-1 truncate text-[10px]">
+                      <p className="text-muted-foreground/80 mt-1 truncate text-[10px]">
                         {col.url}
                       </p>
                     </div>
-                    <ExternalLink className="text-muted group-hover:text-primary mt-1 size-3.5 shrink-0 transition-colors" />
+                    <ExternalLink className="text-muted-foreground group-hover:text-primary mt-1 size-3.5 shrink-0 transition-colors" />
                   </a>
                 </div>
               )}
               {!col.type && (
-                <div className="text-muted bg-subtle border-default m-3 flex h-16 items-center justify-center rounded-md border border-dashed text-xs">
+                <div className="text-muted bg-subtle border-default m-3 flex h-16 items-center justify-center rounded-sm border border-dashed text-xs">
                   Empty column
                 </div>
               )}
@@ -696,8 +694,8 @@ export function LessonSectionViewer({
 
   return (
     <div
-      className={`flex flex-col overflow-hidden ${paddingCls}`}
-      style={{ backgroundColor: pageBgColor || "#ffffff" }}
+      className={`flex flex-col overflow-hidden py-6 ${paddingCls}`}
+      style={{ backgroundColor: pageBgColor || "transparent" }}
     >
       {sections.map((section) => (
         <div
