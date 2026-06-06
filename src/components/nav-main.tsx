@@ -9,6 +9,7 @@ import {
   ClipboardList,
   LifeBuoy,
   CalendarDays,
+  Wallet,
 } from "lucide-react"
 
 import {
@@ -25,6 +26,7 @@ const NAV_MAIN = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Assignments", href: "/assignments", icon: ClipboardList },
   { title: "Attendance", href: "/attendance", icon: CalendarDays },
+  { title: "Fees", href: "/fees", icon: Wallet },
 ]
 
 const NAV_SECONDARY = [{ title: "Support", href: "/support", icon: LifeBuoy }]

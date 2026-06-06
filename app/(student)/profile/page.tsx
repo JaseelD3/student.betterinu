@@ -11,22 +11,17 @@ import {
   Calendar,
   User,
   FileText,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
   ShieldAlert,
-  CreditCard,
   UserCheck,
 } from "lucide-react"
 import RoboLoader from "@/components/loading/robo-loader"
-import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
   Avatar as UIDAvatar,
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { StudentFeeSection } from "@/components/student/fee/student-fee-section"
+
 import { studentApi } from "@/lib/api-client"
 import { PageWrapper } from "@/components/layout/page-wrapper"
 
@@ -335,23 +330,6 @@ export default function StudentProfilePage() {
             </SectionCard>
           </div>
         )}
-
-        {/* Fee Section */}
-        <div className="mt-6">
-          <Card>
-            <CardHeader className="border-default border-b pb-3">
-              <div className="flex items-center gap-2">
-                <CreditCard className="text-primary size-4" />
-                <CardTitle className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-                  Fee & Payments
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <StudentFeeSection />
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </PageWrapper>
   )

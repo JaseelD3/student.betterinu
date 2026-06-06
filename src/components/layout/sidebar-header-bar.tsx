@@ -21,6 +21,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/courses": "My Courses",
   "/assignments": "My Tasks",
   "/attendance": "My Attendance",
+  "/fees": "My Fees",
   "/profile": "My Profile",
   "/support": "Support",
   "/about": "About",
