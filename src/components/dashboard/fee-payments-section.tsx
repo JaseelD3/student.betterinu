@@ -46,9 +46,17 @@ function getOverdueInstalments(
 export function FeePaymentsSection() {
   const { data: feeDetail, isLoading, isError } = useStudentFee()
 
-  const totalPaid = feeDetail?.paidAmount ?? 0
-  const totalOutstanding = feeDetail?.outstandingBalance ?? 0
-  const instalments = feeDetail?.instalments ?? []
+  const firstEnrollment = feeDetail?.[0]
+
+  const totalPaid = firstEnrollment?.paidAmount ?? 0
+  const totalOutstanding = firstEnrollment?.outstandingBalance ?? 0
+  const installmentsRaw = firstEnrollment?.installments ?? []
+  const instalments: FeeInstalment[] = installmentsRaw.map((inst) => ({
+    id: inst.id,
+    amount: inst.totalAmount,
+    dueDate: inst.dueDate,
+    status: (inst.status === "overdue" ? "overdue" : inst.status === "paid" ? "paid" : "pending"),
+  }))
   const nextInstalment = getNextInstalment(instalments)
   const overdueList = getOverdueInstalments(instalments)
 
@@ -76,7 +84,7 @@ export function FeePaymentsSection() {
           <Skeleton className="h-24 w-full rounded-md" />
           <Skeleton className="h-16 w-full rounded-md" />
         </div>
-      ) : isError || !feeDetail ? (
+      ) : isError || !feeDetail || feeDetail.length === 0 ? (
         <div className="bg-card ring-foreground/10 ring-dashed flex flex-col items-center justify-center gap-2 rounded-md py-10 ring-1">
           <CreditCard className="text-muted-foreground size-8" />
           <p className="text-muted-foreground text-xs">
@@ -155,7 +163,7 @@ export function FeePaymentsSection() {
           {/* Course row */}
           <div className="bg-muted/40 ring-foreground/6 flex items-center justify-between rounded-md px-3 py-2 ring-1">
             <p className="text-foreground truncate text-[11px] font-medium">
-              {feeDetail.courseTitle}
+              {firstEnrollment?.courseTitle}
             </p>
             <span
               className={`shrink-0 text-[11px] font-bold ${

@@ -10,6 +10,7 @@ import {
   useDashboardAssignments,
 } from "@/lib/hooks/use-dashboard"
 import { useAuthStore } from "@/store/useAuthStore"
+import { AttendanceWidget } from "@/components/student/attendance-widget"
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -37,6 +38,9 @@ export function DashboardShell() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8">
+      {/* ── Attendance punch-in/out ───────────────────────────────────── */}
+      <AttendanceWidget />
+
       {/* ── Page header ──────────────────────────────────────────────── */}
       <header className="flex flex-col gap-1">
         <h1 className="font-display text-foreground text-2xl font-semibold sm:text-3xl">

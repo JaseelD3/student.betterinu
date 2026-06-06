@@ -47,4 +47,10 @@ export const queryKeys = {
     all: () => ["progress"] as const,
     detail: (courseId: string) => ["progress", "detail", courseId] as const,
   },
+  attendance: {
+    history: (year: number, month: number) =>
+      ["attendance", "history", year, month] as const,
+    leave: (month: string) => ["attendance", "leave", month] as const,
+    status: () => ["attendance", "status"] as const,
+  },
 } as const

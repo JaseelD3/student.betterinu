@@ -9,6 +9,7 @@ import {
   ClipboardList,
   UserCircle,
   LifeBuoy,
+  CalendarDays,
 } from "lucide-react"
 
 import {
@@ -24,6 +25,7 @@ import { useCourses } from "@/lib/hooks/use-courses"
 const NAV_MAIN = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Assignments", href: "/assignments", icon: ClipboardList },
+  { title: "Attendance", href: "/attendance", icon: CalendarDays },
   { title: "My Profile", href: "/profile", icon: UserCircle },
 ]
 

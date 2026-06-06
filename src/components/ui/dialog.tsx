@@ -64,7 +64,7 @@ export function Dialog({
       aria-label={title}
     >
       <div
-        className={`w-full ${sizeClasses[size]} border-default bg-elevated shadow-modal animate-in zoom-in-95 flex max-h-[90vh] flex-col rounded-md border p-5 duration-200`}
+        className={`w-full ${sizeClasses[size]} border-default bg-card dark:bg-elevated shadow-modal animate-in zoom-in-95 flex max-h-[90vh] flex-col rounded-md border p-5 duration-200`}
       >
         <div className="mb-4 flex shrink-0 items-center justify-between gap-4">
           <h2 className="font-display text-xl font-bold">{title}</h2>

@@ -47,6 +47,42 @@
   --status-approved-foreground: oklch(0.33 0.12 148);
   --status-rejected: oklch(0.93 0.06 22);
   --status-rejected-foreground: oklch(0.42 0.18 22);
+  /* Attendance status tokens */
+  --att-present: oklch(85.978% 0.19956 145.159);
+  --att-present-fg: oklch(0.22 0.18 138);
+  --att-present-border: oklch(0.65 0.18 138);
+
+  --att-late: oklch(0.86 0.18 88);
+  --att-late-fg: oklch(0.28 0.18 75);
+  --att-late-border: oklch(0.65 0.17 80);
+
+  --att-early-checkout: oklch(0.86 0.17 52);
+  --att-early-checkout-fg: oklch(0.28 0.19 44);
+  --att-early-checkout-border: oklch(0.65 0.17 48);
+
+  --att-half-day: oklch(0.84 0.14 228);
+  --att-half-day-fg: oklch(0.24 0.18 228);
+  --att-half-day-border: oklch(0.62 0.15 228);
+
+  --att-absent: oklch(0.86 0.17 22);
+  --att-absent-fg: oklch(0.26 0.22 22);
+  --att-absent-border: oklch(0.62 0.20 22);
+
+  --att-leave: oklch(0.84 0.14 272);
+  --att-leave-fg: oklch(0.24 0.17 272);
+  --att-leave-border: oklch(0.62 0.14 272);
+
+  --att-holiday: oklch(0.84 0.14 300);
+  --att-holiday-fg: oklch(0.24 0.16 300);
+  --att-holiday-border: oklch(0.62 0.13 300);
+
+  --att-pending-leave: oklch(0.84 0.13 208);
+  --att-pending-leave-fg: oklch(0.24 0.15 208);
+  --att-pending-leave-border: oklch(0.62 0.12 208);
+
+  --att-future: oklch(0.92 0.015 240);
+  --att-future-fg: oklch(0.50 0.03 240);
+  --att-future-border: oklch(0.72 0.03 240);
   --font-sans:
     Segoe UI, Helvetica Neue, Helvetica, Lucida Grande, Arial, Ubuntu,
     Cantarell, Fira Sans, sans-serif;
@@ -125,6 +161,34 @@
   --status-approved-foreground: oklch(0.82 0.10 148);
   --status-rejected: oklch(0.22 0.06 22);
   --status-rejected-foreground: oklch(0.82 0.12 22);
+  /* Attendance status tokens — dark */
+  --att-present: oklch(0.55 0.18 138);
+  --att-present-fg: oklch(0.95 0.15 138);
+  --att-present-border: oklch(0.70 0.16 138);
+  --att-late: oklch(0.55 0.16 88);
+  --att-late-fg: oklch(0.95 0.15 88);
+  --att-late-border: oklch(0.70 0.14 88);
+  --att-early-checkout: oklch(0.55 0.16 54);
+  --att-early-checkout-fg: oklch(0.95 0.15 54);
+  --att-early-checkout-border: oklch(0.70 0.15 54);
+  --att-half-day: oklch(0.52 0.16 228);
+  --att-half-day-fg: oklch(0.95 0.12 228);
+  --att-half-day-border: oklch(0.65 0.13 228);
+  --att-absent: oklch(0.55 0.18 22);
+  --att-absent-fg: oklch(0.95 0.15 22);
+  --att-absent-border: oklch(0.70 0.16 22);
+  --att-leave: oklch(0.52 0.16 272);
+  --att-leave-fg: oklch(0.95 0.12 272);
+  --att-leave-border: oklch(0.65 0.12 272);
+  --att-holiday: oklch(0.52 0.16 300);
+  --att-holiday-fg: oklch(0.95 0.12 300);
+  --att-holiday-border: oklch(0.65 0.12 300);
+  --att-pending-leave: oklch(0.52 0.15 208);
+  --att-pending-leave-fg: oklch(0.95 0.12 208);
+  --att-pending-leave-border: oklch(0.65 0.11 208);
+  --att-future: oklch(0.35 0.02 240);
+  --att-future-fg: oklch(0.65 0.02 240);
+  --att-future-border: oklch(0.50 0.02 240);
   /* Custom dark token overrides */
   --bg-base: oklch(0.145 0 0);
   --bg-surface: oklch(0.205 0 0);
@@ -247,6 +311,25 @@
   --color-status-approved-foreground: var(--status-approved-foreground);
   --color-status-rejected: var(--status-rejected);
   --color-status-rejected-foreground: var(--status-rejected-foreground);
+  /* Attendance status token utilities */
+  --color-att-present: var(--att-present);
+  --color-att-present-fg: var(--att-present-fg);
+  --color-att-late: var(--att-late);
+  --color-att-late-fg: var(--att-late-fg);
+  --color-att-early-checkout: var(--att-early-checkout);
+  --color-att-early-checkout-fg: var(--att-early-checkout-fg);
+  --color-att-half-day: var(--att-half-day);
+  --color-att-half-day-fg: var(--att-half-day-fg);
+  --color-att-absent: var(--att-absent);
+  --color-att-absent-fg: var(--att-absent-fg);
+  --color-att-leave: var(--att-leave);
+  --color-att-leave-fg: var(--att-leave-fg);
+  --color-att-holiday: var(--att-holiday);
+  --color-att-holiday-fg: var(--att-holiday-fg);
+  --color-att-pending-leave: var(--att-pending-leave);
+  --color-att-pending-leave-fg: var(--att-pending-leave-fg);
+  --color-att-future: var(--att-future);
+  --color-att-future-fg: var(--att-future-fg);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
@@ -265,6 +348,12 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+}
+
+/* Glassmorphism utility for attendance calendar cells */
+.att-glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 @layer base {
@@ -322,4 +411,11 @@
 
 .dark .scrollbar-minimal::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.att-glass {
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: inset 0 1px 0px 0px rgba(255, 255, 255, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
