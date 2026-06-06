@@ -83,7 +83,7 @@ export function FeeOverviewCard({
             <span>Payment progress </span>
             <span className="font-bold text-foreground">{pct}%</span>
           </div>
-          <Progress value={pct} className="h-2.5 rounded-full" />
+          <Progress value={pct} className="h-2.5 rounded-full" indicatorClassName="bg-accent" />
         </div>
       </CardContent>
     </Card>

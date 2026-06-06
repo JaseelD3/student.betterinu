@@ -80,7 +80,7 @@ export function EnrollmentCard({
               <span>Payment progress</span>
               <span className="font-bold text-foreground">{pct}%</span>
             </div>
-            <Progress value={pct} className="h-1.5" />
+            <Progress value={pct} className="h-1.5" indicatorClassName="bg-accent" />
           </div>
 
           {/* Waiver summary */}

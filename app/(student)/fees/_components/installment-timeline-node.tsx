@@ -120,6 +120,7 @@ export function InstallmentTimelineNode({
                 100
               )}
               className="h-1 flex-1"
+              indicatorClassName="bg-accent"
             />
             <span className="shrink-0 text-[10px] font-medium text-muted-foreground">
               {Math.min(
