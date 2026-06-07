@@ -2,6 +2,7 @@
 export const queryKeys = {
   dashboard: {
     courses: () => ["dashboard", "courses"] as const,
+    weekProgress: () => ["dashboard", "week-progress"] as const,
     assignments: () => ["dashboard", "assignments"] as const,
     standaloneTasks: () => ["dashboard", "standalone-tasks"] as const,
     fee: () => ["dashboard", "fee"] as const,

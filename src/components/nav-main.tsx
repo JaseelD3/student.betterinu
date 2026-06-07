@@ -26,7 +26,7 @@ const NAV_MAIN = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Assignments", href: "/assignments", icon: ClipboardList },
   { title: "Attendance", href: "/attendance", icon: CalendarDays },
-  { title: "Fees", href: "/fees", icon: Wallet },
+  { title: "Fees and fines", href: "/fees", icon: Wallet },
 ]
 
 const NAV_SECONDARY = [{ title: "Support", href: "/support", icon: LifeBuoy }]
@@ -163,9 +163,9 @@ export function NavMain() {
       </SidebarGroup>
 
       <SidebarGroup className="mt-auto">
-        <SidebarGroupLabel className="text-sidebar-foreground/45 px-3 text-[10px] font-bold tracking-wider uppercase select-none">
+        {/* <SidebarGroupLabel className="text-sidebar-foreground/45 px-3 text-[10px] font-bold tracking-wider uppercase select-none">
           Support
-        </SidebarGroupLabel>
+        </SidebarGroupLabel> */}
         <SidebarGroupContent>
           <SidebarMenu className="gap-1.5">
             {NAV_SECONDARY.map((item) => {

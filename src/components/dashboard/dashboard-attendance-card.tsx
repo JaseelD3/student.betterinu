@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog } from "@/components/ui/dialog"
+import { Skeleton } from "@/components/ui/skeleton"
 
 function fmtTime(iso: string) {
   return new Date(iso).toLocaleTimeString("en-IN", {
@@ -201,8 +202,24 @@ export function DashboardAttendanceCard() {
 
   if (isLoading) {
     return (
-      <Card className="rounded-lg h-[180px] flex items-center justify-center bg-card shadow-sm border-none">
-        <Loader2 className="size-6 text-muted-foreground animate-spin" />
+      <Card className="rounded-lg h-full min-h-[180px] py-0 gap-5 overflow-hidden flex flex-col bg-card border-border/50">
+        <CardHeader className="px-5 py-5 pb-0">
+          <Skeleton className="h-4 w-32" />
+        </CardHeader>
+        <CardContent className="px-5 pb-6 pt-0 flex-1 flex flex-col justify-between">
+          <div className="flex flex-col gap-6 flex-1">
+            <div className="flex flex-1 flex-col items-center justify-center text-center gap-4">
+              <Skeleton className="size-10 rounded-2xl" />
+              <div className="flex flex-col items-center gap-2">
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+            </div>
+            <div className="mt-auto">
+              <Skeleton className="w-full h-12 rounded-lg" />
+            </div>
+          </div>
+        </CardContent>
       </Card>
     )
   }

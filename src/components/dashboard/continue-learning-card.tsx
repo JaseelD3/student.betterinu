@@ -1,11 +1,12 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, BookOpen, GraduationCap } from "lucide-react"
+import { ArrowRight, BookOpen, GraduationCap, CalendarDays, Layers } from "lucide-react"
 import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer } from "recharts"
 
-import { useDashboardProgress } from "@/lib/hooks/use-dashboard-progress"
+import { useWeekProgress } from "@/lib/hooks/use-dashboard-progress"
+import { useCourses } from "@/lib/hooks/use-courses"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -14,7 +15,7 @@ type ProgressChartProps = { pct: number }
 
 function ProgressChart({ pct }: ProgressChartProps) {
   return (
-    <ResponsiveContainer width={120} height={120}>
+    <ResponsiveContainer width={90} height={90}>
       <RadialBarChart
         cx="50%"
         cy="50%"
@@ -31,7 +32,7 @@ function ProgressChart({ pct }: ProgressChartProps) {
           y="50%"
           textAnchor="middle"
           dominantBaseline="central"
-          fontSize={20}
+          fontSize={16}
           fontWeight={700}
           fill="currentColor"
         >
@@ -43,75 +44,141 @@ function ProgressChart({ pct }: ProgressChartProps) {
 }
 
 export function ContinueLearningCard() {
-  const { data, isLoading, isError } = useDashboardProgress()
+  const { data, isLoading, isError } = useWeekProgress()
+  const { data: courses = [] } = useCourses()
 
   if (isLoading) {
     return (
-      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex-1 flex flex-col">
-        <CardContent className="p-6 flex flex-col items-center flex-1 justify-center gap-6">
-          <Skeleton className="size-[160px] rounded-full" />
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex flex-col">
+        <CardContent className="p-5 flex flex-col items-center flex-1 justify-center gap-4">
+          <Skeleton className="size-[90px] rounded-full" />
           <div className="w-full space-y-2 text-center flex flex-col items-center">
             <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-6 w-40" />
-            <Skeleton className="mt-4 h-10 w-full rounded-xl" />
+            <Skeleton className="h-5 w-40" />
+            <Skeleton className="mt-3 h-10 w-full rounded-md" />
           </div>
         </CardContent>
       </Card>
     )
   }
 
-  if (isError || !data) {
+  // null means the API returned 404 — student has no enrolled course
+  if (data === null) {
     return (
-      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg flex flex-col items-center justify-center gap-3 py-14 text-center flex-1 bg-white dark:bg-card">
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg flex flex-col items-center justify-center gap-4 py-10 text-center bg-white dark:bg-card">
         <GraduationCap className="size-10 text-muted-foreground/30" />
         <div>
-          <p className="font-semibold text-foreground">No course enrolled</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">
-            Contact your admin to get enrolled.
+          <p className="font-semibold text-foreground text-sm">No course enrolled</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            You are not enrolled in any course yet.
           </p>
         </div>
+        <Button asChild size="lg" className={cn("mt-2", !courses[0] && "opacity-50 pointer-events-none")}>
+          <Link
+            href={courses[0] ? `/course/${courses[0].id}` : "#"}
+            aria-disabled={!courses[0]}
+            tabIndex={!courses[0] ? -1 : 0}
+          >
+            Enroll Now
+          </Link>
+        </Button>
       </Card>
     )
   }
 
-  const { courseId, courseTitle, completionPercentage, completedModules, totalModules } = data
-  const pct = completionPercentage
+  // isError = real API error (5xx etc) — show minimal fallback, keep card visible
+  if (isError || !data) {
+    return (
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg flex flex-col items-center justify-center gap-4 py-10 text-center bg-white dark:bg-card">
+        <GraduationCap className="size-10 text-muted-foreground/30" />
+        <p className="text-xs text-muted-foreground">Could not load progress. Please refresh.</p>
+      </Card>
+    )
+  }
+
+  const {
+    courseId,
+    courseTitle,
+    weekNumber,
+    weekTitle,
+    dayNumber,
+    dayTitle,
+    weekCompleted,
+    weekTotal,
+    weekPct,
+    completedModules,
+    totalModules,
+    overallPct,
+  } = data
 
   return (
     <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex flex-col flex-1">
-      <CardContent className="p-6 flex flex-col items-center text-center flex-1">
-        <div className="w-full flex items-center justify-between mb-2">
-          <h2 className="text-sm font-bold text-foreground">Course Progress</h2>
-          <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+      <CardContent className="p-5 flex flex-col items-center text-center flex-1">
+
+        {/* Header */}
+        <div className="w-full flex items-center justify-between mb-3">
+          <h2 className="text-[11px] font-bold tracking-widest uppercase text-muted-foreground">
+            Course Progress
+          </h2>
+          <span className="bg-primary/10 text-primary text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
             Active
           </span>
         </div>
 
-        <div className="text-left w-full mb-6">
-          <p className="text-[10px] text-muted-foreground font-medium truncate">{courseTitle}</p>
+        {/* Course title */}
+        <div className="text-left w-full mb-3">
+          <p className="text-xs text-foreground font-semibold truncate">{courseTitle}</p>
         </div>
 
-        {/* Big Radial Chart */}
-        <div className="flex-1 flex items-center justify-center min-h-[180px] w-full">
-          <div className="scale-125 transform">
-            <ProgressChart pct={pct} />
+        {/* Week + Day badges */}
+        <div className="w-full flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5 flex-1">
+            <CalendarDays className="size-3 text-primary shrink-0" />
+            <div className="text-left min-w-0">
+              <p className="text-[9px] text-primary/70 font-semibold uppercase tracking-wider">Week</p>
+              <p className="text-xs font-bold text-primary truncate">
+                Week {weekNumber}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 rounded-md bg-violet-500/10 px-2.5 py-1.5 flex-1">
+            <Layers className="size-3 text-violet-500 shrink-0" />
+            <div className="text-left min-w-0">
+              <p className="text-[9px] text-violet-500/70 font-semibold uppercase tracking-wider">Day</p>
+              <p className="text-xs font-bold text-violet-600 dark:text-violet-400 truncate">
+                Day {dayNumber}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex w-full items-center justify-between mt-6 mb-6">
+        {/* Radial chart — week lessons */}
+        <div className="flex-1 flex flex-col items-center justify-center my-1 w-full min-h-[120px]">
+          <ProgressChart pct={weekPct} />
+          <p className="text-[10px] text-muted-foreground mt-1 font-medium">
+            This week's lessons
+          </p>
+        </div>
+
+        {/* Week stats */}
+        <div className="flex w-full items-center justify-between mt-3 mb-4">
           <div className="text-left">
-            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest mb-1">Completed</p>
-            <p className="text-xl font-black text-foreground">{completedModules} <span className="text-xs text-muted-foreground font-medium">lessons</span></p>
+            <p className="text-[9px] text-muted-foreground font-semibold uppercase tracking-widest mb-0.5">Done</p>
+            <p className="text-lg font-black text-foreground">
+              {weekCompleted} <span className="text-[10px] text-muted-foreground font-medium">lessons</span>
+            </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest mb-1">Total</p>
-            <p className="text-xl font-black text-foreground">{totalModules} <span className="text-xs text-muted-foreground font-medium">lessons</span></p>
+            <p className="text-[9px] text-muted-foreground font-semibold uppercase tracking-widest mb-0.5">Week Total</p>
+            <p className="text-lg font-black text-foreground">
+              {weekTotal} <span className="text-[10px] text-muted-foreground font-medium">lessons</span>
+            </p>
           </div>
         </div>
 
-        <Button asChild size="lg" className="w-full gap-2 rounded-md font-bold">
+        <Button asChild size="lg" className="w-full gap-2 py-2 rounded-md font-bold text-xs mt-auto">
           <Link href={`/course/${courseId}/learn`}>
-            {pct === 0 ? (
+            {overallPct === 0 ? (
               <>
                 Start Learning
                 <ArrowRight className="size-4" />
