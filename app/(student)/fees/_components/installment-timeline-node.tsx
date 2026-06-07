@@ -30,11 +30,11 @@ export function InstallmentTimelineNode({
       <div className="flex flex-col items-center pt-0.5">
         <div
           className={cn(
-            "flex size-7 shrink-0 items-center justify-center rounded-full border-2",
+            "flex size-5 md:size-7 shrink-0 items-center justify-center rounded-full border-2",
             cfg.dotCls
           )}
         >
-          <StatusIcon className="size-3" />
+          <StatusIcon className="size-2.5 md:size-3" />
         </div>
         {!isLast && (
           <div className={cn("mt-1 w-px flex-1 min-h-8", cfg.lineCls)} />

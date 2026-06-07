@@ -246,4 +246,20 @@ export const studentApi = {
   getReceipt<T>(paymentLogId: string) {
     return apiClient<T>(`/api/receipts/${encodeURIComponent(paymentLogId)}`)
   },
+
+  getFines() {
+    return apiClient<{
+      fines: {
+        id: string
+        fine_type: "absent" | "leave"
+        period_label: string
+        fine_amount: number
+        status: "pending" | "paid" | "waived"
+        waive_reason: string | null
+        leave_date: string | null
+        absent_date: string | null
+        created_at: string
+      }[]
+    }>("/api/student/fines")
+  },
 }

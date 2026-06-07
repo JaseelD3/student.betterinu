@@ -52,5 +52,6 @@ export const queryKeys = {
       ["attendance", "history", year, month] as const,
     leave: (month: string) => ["attendance", "leave", month] as const,
     status: () => ["attendance", "status"] as const,
+    fines: () => ["attendance", "fines"] as const,
   },
 } as const

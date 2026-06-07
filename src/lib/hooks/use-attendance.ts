@@ -11,6 +11,7 @@ import {
   punchIn,
   punchOut,
 } from "@/lib/attendance/api"
+import { studentApi } from "@/lib/api-client"
 
 export function useAttendanceHistory(year: number, month: number) {
   return useQuery({
@@ -74,5 +75,13 @@ export function usePunchOut() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.attendance.status(),
       }),
+  })
+}
+
+export function useFines() {
+  return useQuery({
+    queryKey: queryKeys.attendance.fines(),
+    queryFn: () => studentApi.getFines(),
+    staleTime: 60_000,
   })
 }

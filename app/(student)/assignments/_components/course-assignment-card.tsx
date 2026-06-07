@@ -17,6 +17,7 @@ export type CourseAssignmentRow = {
   submission_status: "pending" | "approved" | "rejected"
   submitted_at: string
   feedback: string | null
+  marks_obtained: number | null
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -76,6 +77,11 @@ export function CourseAssignmentCard({
             </span>
           )}
         </div>
+        {a.marks_obtained != null && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-[10px] font-bold text-accent-foreground">
+            🏆 {a.marks_obtained} marks
+          </span>
+        )}
       </div>
     </div>
   )

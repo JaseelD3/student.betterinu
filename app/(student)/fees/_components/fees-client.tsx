@@ -6,6 +6,7 @@ import { useStudentFee } from "@/lib/hooks/useStudentFee"
 import { ReminderBanners } from "./reminder-banners"
 import { PaymentSummaryStrip } from "./payment-summary-strip"
 import { EnrollmentCard } from "./enrollment-card"
+import { FineHistoryCard } from "../../attendance/_components/fine-history-card"
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
 function FeesSkeleton() {
@@ -56,12 +57,22 @@ export function FeesClient() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
-          <ReminderBanners enrollments={enrollments} />
-          <PaymentSummaryStrip enrollments={enrollments} />
-          {enrollments.map((enr) => (
-            <EnrollmentCard key={enr.enrollmentId} enrollment={enr} />
-          ))}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Main Fee Content (Left 2/3) */}
+          <div className="flex flex-col gap-4 lg:col-span-2">
+            <ReminderBanners enrollments={enrollments} />
+            <PaymentSummaryStrip enrollments={enrollments} />
+            {enrollments.map((enr) => (
+              <EnrollmentCard key={enr.enrollmentId} enrollment={enr} />
+            ))}
+          </div>
+
+          {/* Fines Section (Right 1/3, Sticky) */}
+          <div className="lg:col-span-1 relative">
+            <div className="sticky top-2 h-[400px] lg:h-[calc(100vh-6rem)]">
+              <FineHistoryCard />
+            </div>
+          </div>
         </div>
       )}
     </div>
