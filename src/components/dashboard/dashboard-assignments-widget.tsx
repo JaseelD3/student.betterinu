@@ -130,11 +130,18 @@ export function DashboardAssignmentsWidget() {
               {latest.map((a) => {
                 const overdue = isOverdue(a.due_date)
                 const s = getStatusStyle(a.submission_status, overdue)
+                const moduleId = (a as any).module_id ?? a.assignment_id
+                const lessonHref =
+                  a.course_id && a.week_id && moduleId
+                    ? `/course/${a.course_id}/learn/${a.week_id}/${moduleId}`
+                    : null
                 return (
-                  <div
+                  <Link
                     key={a.assignment_id}
+                    href={lessonHref ?? "#"}
                     className={cn(
-                      "flex items-center justify-between gap-2 rounded-md border p-3",
+                      "flex items-center justify-between gap-2 rounded-md border p-3 transition-all",
+                      lessonHref && "hover:border-primary/40 hover:shadow-xs cursor-pointer",
                       s.border, s.bg
                     )}
                   >
@@ -162,7 +169,7 @@ export function DashboardAssignmentsWidget() {
                         </span>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
             </div>

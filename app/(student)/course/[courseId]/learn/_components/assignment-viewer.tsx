@@ -14,9 +14,15 @@ import {
   CalendarClock,
   Trophy,
   Plus,
+  ExternalLink,
 } from "lucide-react"
+import Image from "next/image"
 import type { CourseId, SubModule } from "@/types"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import RoboLoader from "@/components/loading/robo-loader"
 import { FileUploader } from "@/components/ui/FileUploader"
 import { FileViewer } from "@/components/ui/FileViewer"
@@ -44,20 +50,17 @@ const STATUS_CONFIG = {
   pending: {
     Icon: Clock,
     label: "Pending Review",
-    color: "text-amber-600",
-    bg: "bg-amber-50 border-amber-200",
+    cls: "assignment-status-pending",
   },
   approved: {
     Icon: CheckCircle2,
     label: "Approved",
-    color: "text-green-600",
-    bg: "bg-green-50 border-green-200",
+    cls: "assignment-status-approved",
   },
   rejected: {
     Icon: XCircle,
     label: "Rejected — please revise and resubmit",
-    color: "text-red-600",
-    bg: "bg-red-50 border-red-200",
+    cls: "assignment-status-rejected",
   },
 }
 
@@ -161,55 +164,51 @@ export function AssignmentViewer({
   return (
     <div className="w-full space-y-6">
       {/* Assignment Header Card */}
-      <div className="border-default bg-surface rounded-md border p-6 shadow-sm">
-        <div className="mb-4 flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-md bg-orange-100">
-            <ClipboardCheck className="size-5 text-orange-600" />
-          </span>
-          <div>
-            <p className="text-[10px] font-bold tracking-widest text-orange-600 uppercase">
-              Assignment
-            </p>
-            <h2 className="font-display text-foreground text-lg font-bold">
-              {title}
-            </h2>
+      <Card className="shadow-none border-0">
+        <CardHeader className="px-6 py-5 pb-2">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-md bg-orange-500/10">
+              <ClipboardCheck className="size-5 text-orange-500" />
+            </span>
+            <div>
+              <p className="text-[10px] font-bold tracking-widest text-orange-500 uppercase">
+                Assignment
+              </p>
+              <CardTitle className="font-display text-lg font-bold">
+                {title}
+              </CardTitle>
+            </div>
           </div>
-        </div>
 
         {/* Meta row */}
-        <div className="mb-4 flex flex-wrap gap-3">
+        <div className="mt-2 flex flex-wrap gap-3">
           {dueDate && (
-            <div className="flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+            <Badge variant="secondary" className="gap-1.5 bg-amber-50 text-amber-700 hover:bg-amber-50 dark:bg-amber-950/40 dark:text-amber-400">
               <CalendarClock className="size-3.5" />
               Due: {new Date(dueDate).toLocaleString()}
-            </div>
+            </Badge>
           )}
           {totalMarks !== undefined && (
-            <div className="flex items-center gap-1.5 rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700">
+            <Badge variant="secondary" className="gap-1.5 bg-purple-50 text-purple-700 hover:bg-purple-50 dark:bg-purple-950/40 dark:text-purple-400">
               <Trophy className="size-3.5" />
               {totalMarks} marks
-            </div>
+            </Badge>
           )}
           <div className="flex flex-wrap items-center gap-1.5">
-            {allowedTypes.map((t) => {
-              const Icon = SUBMISSION_TYPE_ICONS[t] || AlignLeft
-              return (
-                <span
-                  key={t}
-                  className="bg-surface border-default text-muted flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase"
-                >
-                  <Icon className="size-3" />
-                  {t}
-                </span>
-              )
-            })}
+            {allowedTypes.map((t) => (
+              <Badge key={t} variant="outline" className="px-2.5 py-0.5 text-[10px] uppercase tracking-wider">
+                {t}
+              </Badge>
+            ))}
           </div>
         </div>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-2">
 
         {/* Instructions */}
         {instructions && (
           <div
-            className="prose prose-sm text-secondary max-w-none leading-relaxed"
+            className="assignment-instructions rich-content max-w-none"
             dangerouslySetInnerHTML={{ __html: instructions }}
           />
         )}
@@ -228,43 +227,63 @@ export function AssignmentViewer({
 
         {/* Reference links */}
         {(assignmentData?.referenceLinks || []).length > 0 && (
-          <div className="border-default mt-4 space-y-2 border-t pt-4">
-            <p className="text-muted text-xs font-bold tracking-widest uppercase">
+          <div className="mt-5 space-y-3 border-t border-border pt-5">
+            <p className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
               Reference Links
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="space-y-2">
               {assignmentData!.referenceLinks!.map((link, i) => (
                 <a
                   key={i}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-default text-primary hover:border-primary flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold transition-all hover:shadow-sm"
+                  className="group border-default bg-background hover:border-primary flex w-full items-start gap-4 rounded-sm border px-3 py-3 -xs transition-all hover:shadow-sm"
                 >
-                  <Link2 className="size-3 shrink-0" />
-                  {link.label || link.url}
+                  <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-teal-100 bg-teal-50">
+                    {link.url ? (
+                      <Image
+                        src={`https://www.google.com/s2/favicons?domain=${(() => { try { return new URL(link.url).hostname } catch { return '' } })()}&sz=128`}
+                        alt=""
+                        width={48}
+                        height={48}
+                        unoptimized
+                        className="size-10 object-contain"
+                      />
+                    ) : (
+                      <Link2 className="size-6 text-teal-600" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-foreground group-hover:text-primary text-sm font-semibold transition-colors">
+                      {link.label || link.url}
+                    </p>
+                    <p className="text-muted-foreground/80 mt-1 truncate text-[10px]">
+                      {link.url}
+                    </p>
+                  </div>
+                  <ExternalLink className="text-muted-foreground group-hover:text-primary mt-1 size-4 shrink-0 transition-colors" />
                 </a>
               ))}
             </div>
           </div>
         )}
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Status Banner */}
       {submission && status && (
-        <div
-          className={`flex items-start gap-3 rounded-md border p-4 ${status.bg}`}
-        >
-          <status.Icon className={`mt-0.5 size-5 shrink-0 ${status.color}`} />
+        <div className={`flex items-start gap-3 rounded-md  px-4 ${status.cls}`}>
+          <status.Icon className="mt-0.5 size-5 shrink-0" />
           <div>
-            <p className={`text-sm font-bold ${status.color}`}>
+            <p className="text-sm font-bold">
               {status.label}
             </p>
-            <p className="text-muted mt-0.5 text-xs">
+            <p className="mt-0.5 text-xs opacity-80">
               Submitted {new Date(submission.submitted_at).toLocaleString()}
             </p>
             {submission.feedback && (
-              <p className="text-foreground border-default mt-2 rounded-md border bg-white/60 px-3 py-2 text-sm">
+              <p className="mt-2 rounded-md border border-current/20 bg-black/5 px-3 py-2 text-sm">
                 <strong>Instructor Feedback:</strong> {submission.feedback}
               </p>
             )}
@@ -274,12 +293,12 @@ export function AssignmentViewer({
 
       {/* Approved state */}
       {submission?.status === "approved" ? (
-        <div className="flex flex-col items-center justify-center rounded-md border border-green-200 bg-green-50 py-10 text-center">
-          <CheckCircle2 className="mb-3 size-12 text-green-600" />
-          <p className="font-display text-primary text-xl font-bold">
+        <div className="assignment-approved-block flex flex-col items-center justify-center py-10 text-center">
+          <CheckCircle2 className="mb-3 size-12" />
+          <p className="font-display text-xl font-bold">
             Assignment Approved!
           </p>
-          <p className="mt-1 text-sm text-green-600">
+          <p className="mt-1 text-sm opacity-80">
             Your work has been reviewed and approved. Next content is unlocked.
           </p>
           {submission.submitted_files?.length ? (
@@ -293,28 +312,31 @@ export function AssignmentViewer({
         </div>
       ) : (
         /* Submission form */
-        <div className="border-default space-y-5 rounded-md border bg-white p-6 shadow-sm">
-          <h3 className="text-foreground text-sm font-bold">
-            {canEdit
-              ? submission?.status === "rejected"
-                ? "Resubmit Your Work"
-                : "Submit Your Work"
-              : "Your Submission"}
-          </h3>
+        <Card className="shadow-xs">
+          <CardHeader className="px-6 py-0">
+            <CardTitle className="text-lg pb-0 mb-0 font-bold">
+              {canEdit
+                ? submission?.status === "rejected"
+                  ? "Resubmit Your Work"
+                  : "Submit Your Work"
+                : "Your Submission"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6 px-6 pb-6 pt-0">
 
           {/* Text response */}
           {allowedTypes.includes("text") && (
-            <div>
-              <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
                 Text Response
-              </label>
+              </Label>
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 disabled={!canEdit || submitting}
                 placeholder="Write your answer here..."
                 rows={8}
-                className="border-default bg-surface text-foreground focus:border-primary focus:ring-primary/20 w-full resize-y rounded-md border p-4 text-sm leading-relaxed outline-none focus:ring-1 disabled:opacity-60"
+                className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm -xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 resize-y"
               />
             </div>
           )}
@@ -323,9 +345,9 @@ export function AssignmentViewer({
           {allowedTypes.includes("url") && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-muted block text-xs font-bold tracking-widest uppercase">
+                <Label className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
                   Links / URLs
-                </label>
+                </Label>
                 {canEdit && (
                   <button
                     type="button"
@@ -338,14 +360,14 @@ export function AssignmentViewer({
               </div>
 
               {links.length === 0 && canEdit && (
-                <p className="text-muted text-xs italic">
+                <p className="text-muted-foreground text-xs italic">
                   Click "Add Link" to submit URLs.
                 </p>
               )}
 
               {links.map((link, idx) => (
                 <div key={idx} className="flex items-center gap-2">
-                  <input
+                  <Input
                     type="url"
                     value={link}
                     onChange={(e) => {
@@ -355,7 +377,6 @@ export function AssignmentViewer({
                     }}
                     disabled={!canEdit || submitting}
                     placeholder="https://..."
-                    className="border-default bg-surface focus:border-primary focus:ring-primary/20 flex-1 rounded-md border px-4 py-2.5 text-sm outline-none focus:ring-1 disabled:opacity-60"
                   />
                   {canEdit && (
                     <button
@@ -363,7 +384,7 @@ export function AssignmentViewer({
                       onClick={() =>
                         setLinks(links.filter((_, i) => i !== idx))
                       }
-                      className="text-muted shrink-0 p-2 transition-colors hover:text-red-500"
+                      className="text-muted-foreground shrink-0 p-2 transition-colors hover:text-red-500"
                     >
                       <XCircle className="size-4" />
                     </button>
@@ -376,13 +397,13 @@ export function AssignmentViewer({
           {/* File / image upload */}
           {(allowedTypes.includes("file") ||
             allowedTypes.includes("image")) && (
-            <div>
-              <label className="text-muted mb-1 block text-xs font-bold tracking-widest uppercase">
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
                 {allowedTypes.includes("image") &&
                 !allowedTypes.includes("file")
                   ? "Image Upload"
                   : "File Upload"}
-              </label>
+              </Label>
               {canEdit ? (
                 <FileUploader
                   folder={`submissions/${module.id}`}
@@ -431,7 +452,8 @@ export function AssignmentViewer({
                   : "Submit Assignment"}
             </Button>
           )}
-        </div>
+        </CardContent>
+        </Card>
       )}
     </div>
   )

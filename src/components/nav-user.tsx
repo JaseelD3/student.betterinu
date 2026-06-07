@@ -102,11 +102,11 @@ export function NavUser() {
 
               <div className="-mx-1 h-px bg-border" />
 
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-1 ">
                 <Link
                   href="/profile"
                   className={cn(
-                    "group flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left",
+                    "group flex w-full items-center gap-2 border-b  rounded-sm px-2.5 py-1.5 text-sm font-medium transition-colors text-left",
                     pathname === "/profile"
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-primary hover:text-primary-foreground text-foreground"
@@ -117,7 +117,7 @@ export function NavUser() {
                 </Link>
                 <button
                   onClick={() => setShowChangePassword(true)}
-                  className="group hover:bg-primary hover:text-primary-foreground text-foreground flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
+                  className="group hover:bg-primary hover:text-primary-foreground text-foreground flex w-full items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
                 >
                   <KeyRound className="size-4 text-muted-foreground group-hover:text-primary-foreground" />
                   <span>Change Password</span>
@@ -126,13 +126,15 @@ export function NavUser() {
 
               <div className="-mx-1 h-px bg-border" />
 
-              <button
-                onClick={handleSignOut}
-                className="hover:bg-destructive/10 hover:text-destructive text-destructive flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
-              >
-                <LogOut className="size-4" />
-                <span>Sign Out</span>
-              </button>
+              <div className="py-1">
+                <button
+                  onClick={handleSignOut}
+                  className="hover:bg-destructive/10 hover:text-destructive text-destructive flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors text-left"
+                >
+                  <LogOut className="size-4" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
             </PopoverContent>
           </Popover>
         </SidebarMenuItem>
