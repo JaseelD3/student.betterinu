@@ -295,14 +295,8 @@ export default function StudentProfilePage() {
         {/* ── Hero Card ─────────────────────────────────────────── */}
         <div className="overflow-hidden rounded-md border border-border bg-card  border-primary/20 ">
           {/* Stripe */}
-          <div
-            className="relative h-24 bg-primary"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(255,255,255,0.04) 12px, rgba(255,255,255,0.04) 13px)",
-            }}
-          >
-            <span className="absolute right-5 top-4 text-xs tracking-widest uppercase text-primary-foreground/50 font-semibold">
+          <div className="relative h-12 bg-muted/40">
+            <span className="absolute right-5 top-4 text-xs tracking-widest uppercase text-muted-foreground/50 font-semibold">
               Betterinu LMS · Student Record
             </span>
           </div>
@@ -310,7 +304,7 @@ export default function StudentProfilePage() {
           {/* Body */}
           <div className="px-6 pb-6">
             {/* Avatar row */}
-            <div className="-mt-10 mb-4 flex items-end justify-between">
+            <div className="-mt-6 mb-4 flex items-end justify-between">
               <StudentAvatar url={student.profile_image_url} name={student.name} />
               <span
                 className={cn(
@@ -403,12 +397,12 @@ export default function StudentProfilePage() {
 
         {/* ── Emergency Contact ─────────────────────────────────── */}
         <div className="overflow-hidden rounded-md border border-border bg-card  border-primary/20 ">
-          {/* Purple accent header */}
-          <div className="flex items-center gap-3 bg-primary px-5 py-3">
-            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary-foreground/20 text-primary-foreground">
+          {/* Header */}
+          <div className="flex items-center gap-3 border-b border-border/60 px-5 py-3">
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
               <HeartPulse className="size-4" />
             </div>
-            <span className="text-xs font-semibold tracking-widest uppercase text-primary-foreground/90">
+            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
               Emergency Contact
             </span>
           </div>

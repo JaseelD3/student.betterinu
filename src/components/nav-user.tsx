@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ChevronsUpDown, LogOut, UserCircle, KeyRound } from "lucide-react"
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useStudentProfile } from "@/lib/hooks/use-profile"
 import {
   Popover,
   PopoverContent,
@@ -37,6 +38,8 @@ export function NavUser() {
   const [name, setName] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [showChangePassword, setShowChangePassword] = useState(false)
+  const { data: profile } = useStudentProfile()
+  const avatarUrl = profile?.avatar_url ?? (profile as any)?.profile_image_url ?? null
 
   useEffect(() => {
     return getClientAuth().onAuthStateChanged((user) => {
@@ -64,6 +67,7 @@ export function NavUser() {
                 className="border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:border-primary group/user w-full border shadow-2xs transition-all duration-250 ease-in-out"
               >
                 <Avatar className="border-primary-foreground/30 size-8 rounded-md border shadow-inner transition-colors">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} className="object-cover" />}
                   <AvatarFallback className="from-primary-foreground/20 via-primary-foreground/10 text-primary-foreground rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider transition-all duration-300 group-hover/user:scale-105">
                     {getInitials(name)}
                   </AvatarFallback>
@@ -88,6 +92,7 @@ export function NavUser() {
             >
               <div className="flex items-center gap-2 px-2.5 py-2 text-left text-sm">
                 <Avatar className="border-primary/15 size-8 rounded-md border shadow-inner">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} className="object-cover" />}
                   <AvatarFallback className="from-primary/20 via-primary/10 text-primary rounded-md bg-gradient-to-br to-transparent text-xs font-black tracking-wider">
                     {getInitials(name)}
                   </AvatarFallback>

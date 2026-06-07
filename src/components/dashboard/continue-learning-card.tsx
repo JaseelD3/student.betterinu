@@ -49,14 +49,43 @@ export function ContinueLearningCard() {
 
   if (isLoading) {
     return (
-      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex flex-col">
-        <CardContent className="p-5 flex flex-col items-center flex-1 justify-center gap-4">
-          <Skeleton className="size-[90px] rounded-full" />
-          <div className="w-full space-y-2 text-center flex flex-col items-center">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-5 w-40" />
-            <Skeleton className="mt-3 h-10 w-full rounded-md" />
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex flex-col min-h-[380px]">
+        <CardContent className="p-5 flex flex-col flex-1">
+          {/* Header skeleton */}
+          <div className="w-full flex items-center justify-between mb-4">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-12 rounded-full" />
           </div>
+          
+          {/* Title skeleton */}
+          <Skeleton className="h-4 w-3/4 mb-5" />
+          
+          {/* Badges skeleton */}
+          <div className="flex gap-2 mb-6 w-full">
+            <Skeleton className="h-10 flex-1 rounded-md" />
+            <Skeleton className="h-10 flex-1 rounded-md" />
+          </div>
+          
+          {/* Chart skeleton */}
+          <div className="flex-1 flex flex-col items-center justify-center my-2 w-full min-h-[120px]">
+            <Skeleton className="size-[90px] rounded-full" />
+            <Skeleton className="h-3 w-24 mt-3" />
+          </div>
+          
+          {/* Stats skeleton */}
+          <div className="flex w-full items-center justify-between mt-4 mb-5">
+            <div className="space-y-1">
+              <Skeleton className="h-3 w-10" />
+              <Skeleton className="h-6 w-16" />
+            </div>
+            <div className="space-y-1 flex flex-col items-end">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-6 w-16" />
+            </div>
+          </div>
+          
+          {/* Button skeleton */}
+          <Skeleton className="h-10 w-full rounded-md mt-auto" />
         </CardContent>
       </Card>
     )
