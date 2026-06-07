@@ -47,16 +47,13 @@ export function ContinueLearningCard() {
 
   if (isLoading) {
     return (
-      <Card className="overflow-hidden py-0">
-        <Skeleton className="h-36 w-full rounded-none" />
-        <CardContent className="p-5">
-          <div className="flex items-center gap-6">
-            <Skeleton className="size-[120px] shrink-0 rounded-full" />
-            <div className="flex-1 space-y-2">
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-4 w-40" />
-              <Skeleton className="mt-2 h-9 w-36 rounded-md" />
-            </div>
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex-1 flex flex-col">
+        <CardContent className="p-6 flex flex-col items-center flex-1 justify-center gap-6">
+          <Skeleton className="size-[160px] rounded-full" />
+          <div className="w-full space-y-2 text-center flex flex-col items-center">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="mt-4 h-10 w-full rounded-xl" />
           </div>
         </CardContent>
       </Card>
@@ -65,8 +62,8 @@ export function ContinueLearningCard() {
 
   if (isError || !data) {
     return (
-      <Card className="flex flex-col items-center gap-3 py-14 text-center">
-        <GraduationCap className="size-10 text-muted-foreground" />
+      <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg flex flex-col items-center justify-center gap-3 py-14 text-center flex-1 bg-white dark:bg-card">
+        <GraduationCap className="size-10 text-muted-foreground/30" />
         <div>
           <p className="font-semibold text-foreground">No course enrolled</p>
           <p className="mt-0.5 text-sm text-muted-foreground">
@@ -77,66 +74,56 @@ export function ContinueLearningCard() {
     )
   }
 
-  const { courseId, courseTitle, thumbnailUrl, completionPercentage, completedModules, totalModules } = data
+  const { courseId, courseTitle, completionPercentage, completedModules, totalModules } = data
   const pct = completionPercentage
 
   return (
-    <Card className="overflow-hidden py-0">
-      {/* Primary top bar */}
-      <div className="bg-primary px-5 py-6 sm:px-8">
-        <div className="flex items-center justify-between gap-4">
-          <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-bold tracking-widest text-primary-foreground/60 uppercase">
-              Continue Learning
-            </p>
-            <h2 className="mt-1 text-xl font-bold leading-snug text-primary-foreground sm:text-2xl">
-              {courseTitle}
-            </h2>
-          </div>
-
-          {thumbnailUrl ? (
-            <div className="relative hidden size-20 shrink-0 overflow-hidden rounded-md sm:block">
-              <Image src={thumbnailUrl} alt={courseTitle} fill className="object-cover" unoptimized />
-            </div>
-          ) : (
-            <div className="hidden size-20 shrink-0 items-center justify-center rounded-md bg-primary-foreground/10 sm:flex">
-              <GraduationCap className="size-10 text-primary-foreground/40" />
-            </div>
-          )}
+    <Card className="border-none shadow-[0px_4px_20px_rgba(0,0,0,0.03)] rounded-lg overflow-hidden py-0 bg-white dark:bg-card flex flex-col flex-1">
+      <CardContent className="p-6 flex flex-col items-center text-center flex-1">
+        <div className="w-full flex items-center justify-between mb-2">
+          <h2 className="text-sm font-bold text-foreground">Course Progress</h2>
+          <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+            Active
+          </span>
         </div>
-      </div>
 
-      <CardContent className="p-5 sm:p-8">
-        <div className="flex flex-col items-center gap-6 sm:flex-row">
-          <div className="shrink-0">
+        <div className="text-left w-full mb-6">
+          <p className="text-[10px] text-muted-foreground font-medium truncate">{courseTitle}</p>
+        </div>
+
+        {/* Big Radial Chart */}
+        <div className="flex-1 flex items-center justify-center min-h-[180px] w-full">
+          <div className="scale-125 transform">
             <ProgressChart pct={pct} />
           </div>
-          <div className="flex flex-col gap-3 text-center sm:text-left">
-            <div>
-              <p className="text-2xl font-bold text-foreground">
-                {completedModules}
-                <span className="text-base font-medium text-muted-foreground">/{totalModules}</span>
-              </p>
-              <p className="text-sm text-muted-foreground">lessons completed</p>
-            </div>
+        </div>
 
-            <Button asChild size="sm" className="gap-1.5">
-              <Link href={`/course/${courseId}/learn`}>
-                {pct === 0 ? (
-                  <>
-                    Start Learning
-                    <ArrowRight className="size-3.5" />
-                  </>
-                ) : (
-                  <>
-                    <BookOpen className="size-3.5" />
-                    Continue Learning
-                  </>
-                )}
-              </Link>
-            </Button>
+        <div className="flex w-full items-center justify-between mt-6 mb-6">
+          <div className="text-left">
+            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest mb-1">Completed</p>
+            <p className="text-xl font-black text-foreground">{completedModules} <span className="text-xs text-muted-foreground font-medium">lessons</span></p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest mb-1">Total</p>
+            <p className="text-xl font-black text-foreground">{totalModules} <span className="text-xs text-muted-foreground font-medium">lessons</span></p>
           </div>
         </div>
+
+        <Button asChild size="lg" className="w-full gap-2 rounded-md font-bold">
+          <Link href={`/course/${courseId}/learn`}>
+            {pct === 0 ? (
+              <>
+                Start Learning
+                <ArrowRight className="size-4" />
+              </>
+            ) : (
+              <>
+                <BookOpen className="size-4" />
+                Continue Learning
+              </>
+            )}
+          </Link>
+        </Button>
       </CardContent>
     </Card>
   )

@@ -262,4 +262,17 @@ export const studentApi = {
       }[]
     }>("/api/student/fines")
   },
+
+  getEvents() {
+    return apiClient<{
+      events: {
+        id: string
+        title: string
+        description: string | null
+        date: string
+        time: string | null
+        location: string | null
+      }[]
+    }>("/api/student/events")
+  },
 }

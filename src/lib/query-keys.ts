@@ -54,4 +54,7 @@ export const queryKeys = {
     status: () => ["attendance", "status"] as const,
     fines: () => ["attendance", "fines"] as const,
   },
+  events: {
+    list: () => ["events", "list"] as const,
+  },
 } as const

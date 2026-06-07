@@ -32,7 +32,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { LeaveApplyModal } from "@/components/student/leave-apply-modal"
-import { FineHistoryCard } from "./fine-history-card"
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -631,9 +630,6 @@ export function AttendanceClient() {
                 </CardContent>
               </Card>
             )}
-
-            {/* Fine History */}
-            <FineHistoryCard />
           </div>
         </div>
       )}

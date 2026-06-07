@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { AlertCircle } from "lucide-react"
 
 import { useCourseAssignments, useStandaloneAssignments } from "@/lib/hooks/use-assignments"
@@ -16,7 +17,28 @@ type CourseFilter = "all" | "pending" | "approved" | "rejected"
 type OtherFilter = "all" | "todo" | "pending" | "approved" | "rejected"
 
 export function AssignmentsClient() {
-  const [activeTab, setActiveTab] = useState<"course" | "other">("course")
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const initialTab = searchParams.get("tab") === "other" ? "other" : "course"
+  const [activeTab, setActiveTab] = useState<"course" | "other">(initialTab)
+
+  // Sync state if URL changes externally
+  useEffect(() => {
+    const tab = searchParams.get("tab")
+    if (tab === "other" || tab === "course") {
+      setActiveTab(tab)
+    }
+  }, [searchParams])
+
+  const handleTabChange = useCallback((tab: "course" | "other") => {
+    setActiveTab(tab)
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", tab)
+    router.replace(`${pathname}?${params.toString()}`)
+  }, [searchParams, pathname, router])
+
   const [courseFilter, setCourseFilter] = useState<CourseFilter>("all")
   const [otherFilter, setOtherFilter] = useState<OtherFilter>("all")
 
@@ -82,7 +104,7 @@ export function AssignmentsClient() {
       <div className="flex flex-1 w-full flex-col gap-6">
         <AssignmentsTabs
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
           courseFilter={courseFilter}
           onCourseFilterChange={setCourseFilter}
           otherFilter={otherFilter}

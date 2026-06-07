@@ -68,7 +68,7 @@ export function FeesClient() {
           </div>
 
           {/* Fines Section (Right 1/3, Sticky) */}
-          <div className="lg:col-span-1 relative">
+          <div id="fines" className="lg:col-span-1 relative">
             <div className="sticky top-2 h-[400px] lg:h-[calc(100vh-6rem)]">
               <FineHistoryCard />
             </div>
