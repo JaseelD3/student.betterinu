@@ -8,9 +8,11 @@ import {
   fetchAttendanceHistory,
   fetchLeaveRequests,
   fetchAttendanceStatus,
+  fetchLeaveFineSettings,
   punchIn,
   punchOut,
 } from "@/lib/attendance/api"
+import type { ApplyLeavePayload } from "@/lib/attendance/api"
 import { studentApi } from "@/lib/api-client"
 
 export function useAttendanceHistory(year: number, month: number) {
@@ -34,8 +36,7 @@ export function useApplyLeave(year: number, month: number) {
   const queryClient = useQueryClient()
   const monthStr = `${year}-${String(month).padStart(2, "0")}`
   return useMutation({
-    mutationFn: ({ date, reason }: { date: string; reason: string }) =>
-      applyForLeave(date, reason),
+    mutationFn: (payload: ApplyLeavePayload) => applyForLeave(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.attendance.leave(monthStr),
@@ -44,6 +45,14 @@ export function useApplyLeave(year: number, month: number) {
         queryKey: queryKeys.attendance.history(year, month),
       })
     },
+  })
+}
+
+export function useLeaveFineSettings() {
+  return useQuery({
+    queryKey: queryKeys.attendance.fineSettings(),
+    queryFn: fetchLeaveFineSettings,
+    staleTime: 300_000,
   })
 }
 

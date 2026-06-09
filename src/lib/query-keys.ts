@@ -54,6 +54,7 @@ export const queryKeys = {
     leave: (month: string) => ["attendance", "leave", month] as const,
     status: () => ["attendance", "status"] as const,
     fines: () => ["attendance", "fines"] as const,
+    fineSettings: () => ["attendance", "fine-settings"] as const,
   },
   events: {
     list: () => ["events", "list"] as const,

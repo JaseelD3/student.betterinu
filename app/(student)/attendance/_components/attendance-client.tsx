@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import {
-  AlertTriangle,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
   Clock,
   Info,
+  Play,
   Plus,
   StickyNote,
   Timer,
@@ -119,6 +119,13 @@ const STATUS_CFG: Record<DayStatus, StatusCfg> = {
     badge: "bg-att-future/20 text-att-future-fg border-att-future-fg/30",
     dot: "bg-att-future-fg",
     label: "—",
+    Icon: CalendarDays,
+  },
+  before_start: {
+    tile: "bg-muted/30 text-muted-foreground border-muted-foreground/10 opacity-50 cursor-not-allowed",
+    badge: "bg-muted/30 text-muted-foreground border-muted-foreground/20",
+    dot: "bg-muted-foreground",
+    label: "Before Start",
     Icon: CalendarDays,
   },
 }
@@ -246,9 +253,33 @@ export function AttendanceClient() {
   const { data, isLoading } = useAttendanceHistory(year, month)
   const { data: leaveRequests = [] } = useLeaveRequests(year, month)
 
+  // Check if student has startedAt - if not, don't show attendance
+  if (!isLoading && data && !data.startedAt) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
+            <div className="flex size-16 items-center justify-center rounded-full bg-muted">
+              <CalendarDays className="size-8 text-muted-foreground" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">
+                Attendance Not Available
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Your attendance tracking will begin once your programme start date is set. Please contact your administrator.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   // Auto-select today when data loads
   const days = data?.days ?? []
   const summary = data?.summary
+  const startedAt = data?.startedAt
   const displayDay =
     selectedDay ??
     days.find(
@@ -413,6 +444,7 @@ export function AttendanceClient() {
                     "leave",
                     "pending_leave",
                     "holiday",
+                    "before_start",
                   ] as DayStatus[]
                 ).map((s) => (
                   <span key={s} className="flex items-center gap-1.5">
@@ -427,10 +459,12 @@ export function AttendanceClient() {
                 ))}
                 <div className="mx-1 h-3.5 w-px bg-border" />
                 <span className="flex items-center gap-1.5">
-                  {/* <div className="relative size-3 rounded border-2 border-border bg-muted/20"> */}
-                    <span className=" size-1.5 rounded-full bg-muted-foreground/60" />
-                  {/* </div> */}
+                  <span className=" size-1.5 rounded-full bg-muted-foreground/60" />
                   Note Attached
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-tight">Start</span>
+                  Programme Start
                 </span>
               </CardContent>
             </Card>
@@ -457,21 +491,29 @@ export function AttendanceClient() {
                       const cfg = STATUS_CFG[day.status]
                       const isSelected = displayDay?.date === day.date
                       const isToday = day.date === todayStr
+                      const isBeforeStart = day.status === "before_start"
+                      const isStartDay = startedAt && day.date === startedAt
 
                       const tile = (
                         <button
                           key={day.date}
                           type="button"
-                          onClick={() => setSelectedDay(day)}
+                          onClick={() => !isBeforeStart && setSelectedDay(day)}
+                          disabled={isBeforeStart}
                           className={cn(
                             "relative flex aspect-square flex-col items-center justify-center overflow-hidden rounded-md border md:border-2 text-xs font-semibold transition-all att-glass backdrop-blur-sm shadow-sm",
                             cfg.tile,
-                            isToday && "outline outline-1 outline-primary outline-offset-2",
+                            isToday && !isBeforeStart && "outline outline-1 outline-primary outline-offset-2",
                             isSelected && "ring-2 ring-primary ring-offset-2 scale-105 z-10"
                           )}
                         >
+                          {isStartDay && (
+                            <span className="absolute top-3 md:top-1 text-[8px] md:text-[8px] font-bold text-primary uppercase tracking-tight">
+                              Start
+                            </span>
+                          )}
                           <span>{dayNum}</span>
-                          {day.status !== "future" && (
+                          {day.status !== "future" && day.status !== "before_start" && (
                             <span
                               className={cn(
                                 "absolute bottom-0.5 md:bottom-1 size-0.5 md:size-1 rounded-full",
@@ -479,13 +521,13 @@ export function AttendanceClient() {
                               )}
                             />
                           )}
-                          {day.note && day.status !== "future" && (
+                          {day.note && day.status !== "future" && day.status !== "before_start" && (
                             <span className="absolute right-0.5 top-0.5 md:right-1 md:top-1 size-1 md:size-1.5 rounded-full bg-muted-foreground/60" />
                           )}
                         </button>
                       )
 
-                      return day.note && day.status !== "future" ? (
+                      return day.note && day.status !== "future" && day.status !== "before_start" ? (
                         <Tooltip key={day.date}>
                           <TooltipTrigger asChild>{tile}</TooltipTrigger>
                           <TooltipContent side="top" className="max-w-[180px] text-center text-xs">
@@ -590,43 +632,55 @@ export function AttendanceClient() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 px-4 pt-3 pb-4">
-                  {leaveRequests.map((lr) => (
-                    <div
-                      key={lr.id}
-                      className="flex items-start justify-between gap-3 rounded-md border border-border bg-muted/40 p-3"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-xs font-semibold text-foreground">
-                          {new Date(lr.date).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </p>
-                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                          {lr.reason}
-                        </p>
-                        {lr.admin_note && (
-                          <p className="mt-0.5 text-[10px] italic text-muted-foreground">
-                            "{lr.admin_note}"
-                          </p>
-                        )}
-                      </div>
-                      <span
-                        className={cn(
-                          "shrink-0 rounded border px-2 py-0.5 text-[10px] font-bold uppercase",
-                          lr.status === "pending" &&
-                          "bg-att-pending-leave text-att-pending-leave-fg border-att-pending-leave-fg/30",
-                          lr.status === "approved" &&
-                          "bg-att-present text-att-present-fg border-att-present-fg/30",
-                          lr.status === "rejected" &&
-                          "bg-att-absent text-att-absent-fg border-att-absent-fg/30"
-                        )}
+                  {leaveRequests.map((lr) => {
+                    const isMultiDay = lr.start_date && lr.end_date && lr.start_date !== lr.end_date
+                    const displayDate = isMultiDay
+                      ? `${new Date(lr.start_date!).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} — ${new Date(lr.end_date!).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} · ${lr.number_of_days} working day${lr.number_of_days === 1 ? "" : "s"}`
+                      : new Date(lr.start_date ?? lr.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
+
+                    const displayReason = lr.detailed_reason ?? lr.reason
+
+                    return (
+                      <div
+                        key={lr.id}
+                        className="flex items-start justify-between gap-3 rounded-md border border-border bg-muted/40 p-3"
                       >
-                        {lr.status}
-                      </span>
-                    </div>
-                  ))}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <p className="text-xs font-semibold text-foreground">
+                              {displayDate}
+                            </p>
+                            {lr.reason_category && (
+                              <span className="rounded border border-primary/20 bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                                {lr.reason_category}
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                            {displayReason}
+                          </p>
+                          {lr.admin_note && (
+                            <p className="mt-0.5 text-[10px] italic text-muted-foreground">
+                              "{lr.admin_note}"
+                            </p>
+                          )}
+                        </div>
+                        <span
+                          className={cn(
+                            "shrink-0 rounded border px-2 py-0.5 text-[10px] font-bold uppercase",
+                            lr.status === "pending" &&
+                            "bg-att-pending-leave text-att-pending-leave-fg border-att-pending-leave-fg/30",
+                            lr.status === "approved" &&
+                            "bg-att-present text-att-present-fg border-att-present-fg/30",
+                            lr.status === "rejected" &&
+                            "bg-att-absent text-att-absent-fg border-att-absent-fg/30"
+                          )}
+                        >
+                          {lr.status}
+                        </span>
+                      </div>
+                    )
+                  })}
                 </CardContent>
               </Card>
             )}

@@ -11,6 +11,7 @@ export type DayStatus =
   | "open"
   | "future"
   | "pending_leave"
+  | "before_start"
 
 export type DayRecord = {
   date: string
@@ -19,11 +20,34 @@ export type DayRecord = {
   punchOut?: string | null
   duration?: string | null
   note?: string | null
+  isStartDay?: boolean
 }
+
+export type LeaveReasonCategory =
+  | "Medical"
+  | "Family Emergency"
+  | "Personal"
+  | "Academic"
+  | "Travel"
+  | "Other"
+
+export const LEAVE_REASON_CATEGORIES: LeaveReasonCategory[] = [
+  "Medical",
+  "Family Emergency",
+  "Personal",
+  "Academic",
+  "Travel",
+  "Other",
+]
 
 export type LeaveRequest = {
   id: string
   date: string
+  start_date?: string
+  end_date?: string
+  number_of_days?: number
+  reason_category?: LeaveReasonCategory
+  detailed_reason?: string | null
   reason: string
   status: "pending" | "approved" | "rejected"
   admin_note?: string | null
@@ -44,6 +68,32 @@ export type MonthSummary = {
 export type AttendanceHistory = {
   days: DayRecord[]
   summary: MonthSummary
+  startedAt?: string | null
+}
+
+export type LeaveFineSettings = {
+  enabled: boolean
+  free_leaves_per_period: number
+  fine_amount: number
+  fine_period: "monthly" | "yearly"
+  fine_model: string
+  per_day_amount: number
+  weekend_days: string[]
+}
+
+export type ApplyLeavePayload = {
+  start_date: string
+  end_date: string
+  reason_category: LeaveReasonCategory
+  detailed_reason: string
+  declaration_acknowledged: true
+}
+
+export type ApplyLeaveResponse = {
+  ok: true
+  id: string
+  status: string
+  number_of_days: number
 }
 
 export async function fetchAttendanceHistory(
@@ -62,11 +112,15 @@ export async function fetchLeaveRequests(month: string): Promise<LeaveRequest[]>
   return res.requests ?? []
 }
 
-export async function applyForLeave(date: string, reason: string): Promise<void> {
-  await apiClient("/api/student/attendance/leave/apply", {
+export async function applyForLeave(payload: ApplyLeavePayload): Promise<ApplyLeaveResponse> {
+  return apiClient<ApplyLeaveResponse>("/api/student/attendance/leave/apply", {
     method: "POST",
-    body: { date, reason },
+    body: payload,
   })
+}
+
+export async function fetchLeaveFineSettings(): Promise<LeaveFineSettings> {
+  return apiClient<LeaveFineSettings>("/api/student/leave-fine-settings")
 }
 
 export type AttendanceStatus = {
